@@ -1,6 +1,16 @@
 #include "main.h"
 
-pros::Motor motor(1);
+pros::Controller master(pros::E_CONTROLLER_MASTER);
+pros::Motor lift(10);
+
+std::shared_ptr<ChassisController> chassis = ChassisControllerBuilder()
+	.withMotors({-11, 12, -13}, {1, -2, 3})
+	.withDimensions(AbstractMotor::gearset::blue, {{3.25_in, 11.5_in}, imev5BlueTPR})
+	.build();
+
+std::shared_ptr<ChassisModel> model = chassis->getModel();
+
+pros::adi::Pneumatics clamp = pros::adi::Pneumatics('H', false);
 
 /**
  * A callback function for LLEMU's center button.
@@ -26,9 +36,7 @@ void on_center_button() {
  */
 void initialize() {
 	pros::lcd::initialize();
-	pros::lcd::set_text(1, "Hello PROS User!");
-
-	pros::lcd::register_btn1_cb(on_center_button);
+	model->setBrakeMode(okapi::AbstractMotor::brakeMode::brake);
 }
 
 /**
@@ -77,6 +85,18 @@ void autonomous() {}
  */
 void opcontrol() {
 	while (true) {
+		// Arcade control scheme
+		int dir = master.get_analog(ANALOG_LEFT_Y);    // Gets amount forward/backward from left joystick
+		int turn = master.get_analog(ANALOG_RIGHT_X);  // Gets the turn left/right from right joystick
+
+		if (master.get_digital(DIGITAL_A)) {
+			lift.move(127);
+		} else {
+			lift.move(0);
+		}
+		
+		chassis->getModel()->arcade(dir, turn);
+
 		pros::delay(20);                               // Run for 20 ms then update
 	}
 }
