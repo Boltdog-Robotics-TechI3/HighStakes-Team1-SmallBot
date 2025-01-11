@@ -73,8 +73,15 @@ void opcontrol(void);
 #ifdef __cplusplus
 /**
  * You can add C++-only headers here
+ * 
  */
 //#include <iostream>
+// #include "okapi/api.hpp"
+#include "globals.h"
+#include "subsystemHeaders/drivetrain.hpp"
+#include "subsystemHeaders/lift.hpp"
+#include "subsystemHeaders/clamper.hpp"
+
 #endif
 
 #endif  // _PROS_MAIN_H_
