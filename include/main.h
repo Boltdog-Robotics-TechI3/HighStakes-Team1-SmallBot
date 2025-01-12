@@ -78,9 +78,9 @@ void opcontrol(void);
 //#include <iostream>
 // #include "okapi/api.hpp"
 #include "globals.h"
-#include "subsystemHeaders/drivetrain.hpp"
 #include "subsystemHeaders/lift.hpp"
 #include "subsystemHeaders/clamper.hpp"
+#include "subsystemHeaders/drivetrain.hpp"
 
 #endif
 

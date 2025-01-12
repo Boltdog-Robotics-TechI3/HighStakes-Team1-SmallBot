@@ -1,5 +1,7 @@
-#include <main.h>
+#include "main.h"
 
 void liftInitialize();
 
 void liftPeriodic();
+
+void setLiftSpeed(double speed);

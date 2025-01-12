@@ -60,7 +60,9 @@ void competition_initialize() {}
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
-void autonomous() {}
+void autonomous() {
+	skillsAuto();
+}
 
 /**
  * Runs the operator control code. This function will be started in its own task
@@ -83,8 +85,12 @@ void opcontrol() {
 		liftPeriodic();
 		clamperPeriodic();
 
+		if (driverController.get_digital_new_press(DIGITAL_RIGHT)) {
+			autonomous();
+		}
 
 		// Run for 20 ms then update
 		pros::delay(20);  
 	}
 }
+

@@ -1,4 +1,4 @@
-#include <main.h>
+#include "main.h"
 
 void liftInitialize() {
     lift.setBrakeMode(okapi::AbstractMotor::brakeMode::brake);
@@ -9,6 +9,9 @@ void liftPeriodic() {
         lift.controllerSet(1);
     } else {
         lift.controllerSet(0);
-    }
-    
+    }    
+}
+
+void setLiftSpeed(double speed){
+    lift.controllerSet(speed);
 }
