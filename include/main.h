@@ -80,6 +80,7 @@ void opcontrol(void);
 #include "globals.h"
 #include "subsystemHeaders/lift.hpp"
 #include "subsystemHeaders/clamper.hpp"
+#include "subsystemHeaders/ladybrown.hpp"
 #include "subsystemHeaders/drivetrain.hpp"
 
 #endif

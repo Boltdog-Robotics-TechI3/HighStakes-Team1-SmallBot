@@ -29,6 +29,7 @@ void initialize() {
 	drivetrainInitialize();
 	liftInitialize();
 	clamperInitialize();
+	ladybrownInitialize();
 }
 
 /**
@@ -81,13 +82,14 @@ void opcontrol() {
 	while (true) {
 
 		// Run each subsystem's periodic function
-		drivetrainPeriodic();
 		liftPeriodic();
 		clamperPeriodic();
+		ladybrownPeriodic();
+		drivetrainPeriodic();
 
-		if (driverController.get_digital_new_press(DIGITAL_RIGHT)) {
-			autonomous();
-		}
+		// if (driverController.get_digital_new_press(DIGITAL_RIGHT)) {
+		// 	autonomous();
+		// }
 
 		// Run for 20 ms then update
 		pros::delay(20);  

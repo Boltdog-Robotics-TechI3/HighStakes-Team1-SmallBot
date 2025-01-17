@@ -20,28 +20,56 @@ std::shared_ptr<ChassisController> chassis = ChassisControllerBuilder()
 std::shared_ptr<ChassisModel> drivetrain = chassis->getModel();
 
 
+/* 
+*  Runs once when the codebase is initialized. 
+*  Used to set the attributes of objects and other tasks that need to happen at the start.
+*/
 void drivetrainInitialize() {
     drivetrain->setBrakeMode(okapi::AbstractMotor::brakeMode::brake);
     chassis->setMaxVelocity(0.4*chassis->getMaxVelocity());
     }
 
+/* 
+*  Runs every opcontrol cycle. 
+*  This method is used for robot control and printing, as well as anything else
+*  that needs to happen every update cycle in driver control.
+*
+*  Note: This method is not run during autonomous. Any prints you put here
+*  will not work unless the robot is in manual control mode.
+*/
 void drivetrainPeriodic() {
     arcadeDrive();
     
 }
 
+/*
+*  Arcade drive control.
+*  Reads controller stick inputs and converts those into motor
+*  outputs in the style of arcade control.
+*
+*  Up and Down on the left stick make the bot move forwards and backwards.
+*  Left and Right on the right stick make the bot rotate left and right.
+*/
 void arcadeDrive() {
     // Arcade control scheme
-    int leftY = driverController.get_analog(ANALOG_LEFT_Y);    // Gets amount forward/backward from left joystick
-    int rightX = driverController.get_analog(ANALOG_RIGHT_X);  // Gets the turn left/right from right joystick
+    double leftY = driverController.get_analog(ANALOG_LEFT_Y) / 127.0;    // Gets amount forward/backward from left joystick
+    double rightX = driverController.get_analog(ANALOG_RIGHT_X) / 127.0;  // Gets the turn left/right from right joystick
 
     // Apply a cubic scaling to the controller values. This makes driving slower require less percision
-    // int fwdSpeed = pow(leftY / 127, 3) * 127; 
-    // int rotSpeed = pow(rightX / 127, 3) * 127; 
+    double fwdSpeed = pow(leftY, 2); 
+    double rotSpeed = pow(rightX, 2);
+
+    // Account for negatives
+    if (leftY < 0) {
+        fwdSpeed *= -1;
+    } 
+    if (rightX < 0) {
+        rotSpeed *= -1;
+    }
 
     // Applies the speeds to the drivetrain
-    // drivetrain->arcade(fwdSpeed, rotSpeed);
-    drivetrain->arcade(leftY / 127.0, rightX / 127.0, 0.05);
+    drivetrain->arcade(fwdSpeed, rotSpeed);
+    // drivetrain->arcade(leftY, rightX);
 }
 
 void skillsAuto() {

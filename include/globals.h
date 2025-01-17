@@ -18,10 +18,24 @@ extern pros::Controller driverController;
     // Lift
         extern okapi::Motor lift;
 
+    // Ladybrown
+    //     extern okapi::Motor ladybrownA;
+    //     extern okapi::Motor ladybrownB;
+
+    //     extern okapi::MotorGroup ladybrownGroup;
+        
+        extern pros::Motor ladybrownA;
+        extern pros::Motor ladybrownB;
+
+        // extern pros::MotorGroup ladybrownGroup;
+
 // Pneumatics
-extern pros::adi::Pneumatics clamp;
+extern pros::adi::Pneumatics mogoClamp;
 
 // Sensor Initialization
 extern pros::IMU gyro;
 
-extern pros::Optical optical_sensor;
+extern pros::Optical opticalSensor;
+
+extern pros::Rotation rotationSensor;
+

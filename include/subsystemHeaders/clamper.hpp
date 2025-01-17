@@ -3,3 +3,5 @@
 void clamperInitialize();
 
 void clamperPeriodic();
+
+void toggleMogoClamp();
