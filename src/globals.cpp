@@ -28,7 +28,7 @@ pros::Controller driverController(pros::E_CONTROLLER_MASTER);
     pros::Motor ladybrownA(5);
     pros::Motor ladybrownB(6); 
 
-    // pros::MotorGroup ladybrownGroup ({ladybrownA, ladybrownB});
+    pros::MotorGroup ladybrownGroup({5, -6});
 
 // Pneumatics
 pros::adi::Pneumatics mogoClamp = pros::adi::Pneumatics('A', false);

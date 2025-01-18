@@ -6,4 +6,6 @@ void drivetrainPeriodic();
 
 void arcadeDrive();
 
+void matchPlusSideAuto();
+
 void skillsAuto();

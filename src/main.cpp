@@ -62,7 +62,8 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	skillsAuto();
+	// skillsAuto();
+	matchPlusSideAuto();
 }
 
 /**
@@ -87,9 +88,9 @@ void opcontrol() {
 		ladybrownPeriodic();
 		drivetrainPeriodic();
 
-		// if (driverController.get_digital_new_press(DIGITAL_RIGHT)) {
-		// 	autonomous();
-		// }
+		if (driverController.get_digital_new_press(DIGITAL_LEFT)) {
+			autonomous();
+		}
 
 		// Run for 20 ms then update
 		pros::delay(20);  

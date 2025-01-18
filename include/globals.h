@@ -27,7 +27,7 @@ extern pros::Controller driverController;
         extern pros::Motor ladybrownA;
         extern pros::Motor ladybrownB;
 
-        // extern pros::MotorGroup ladybrownGroup;
+        extern pros::MotorGroup ladybrownGroup;
 
 // Pneumatics
 extern pros::adi::Pneumatics mogoClamp;
