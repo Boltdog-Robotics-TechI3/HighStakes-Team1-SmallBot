@@ -40,6 +40,8 @@
  * You should add more #includes here
  */
 #include "okapi/api.hpp"
+#include "pros/apix.h"
+#include "liblvgl/lvgl.h"
 
 /**
  * If you find doing pros::Motor() to be tedious and you'd prefer just to do
@@ -51,7 +53,7 @@
  */
 // using namespace pros;
 // using namespace pros::literals;
-using namespace okapi;
+// using namespace okapi;
 
 /**
  * Prototypes for the competition control tasks are redefined here to ensure
@@ -78,6 +80,7 @@ void opcontrol(void);
 //#include <iostream>
 // #include "okapi/api.hpp"
 #include "globals.h"
+#include "screen.h"
 #include "subsystemHeaders/lift.hpp"
 #include "subsystemHeaders/clamper.hpp"
 #include "subsystemHeaders/ladybrown.hpp"

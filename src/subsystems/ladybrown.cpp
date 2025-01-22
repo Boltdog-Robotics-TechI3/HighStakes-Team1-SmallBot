@@ -1,10 +1,12 @@
 #include "main.h"
 using namespace std;
 
-int ladybrownReadiedPos = 160;
+int ladybrownReadiedPos = 163;
 int ladybrownScoringPos = 770;
 
 int setpoint = 0;
+
+bool manualOverride = false;
 
 // std::shared_ptr<AsyncPositionController<double, double>> ladybrownController = AsyncPosControllerBuilder()
 //     .withMotor(ladybrownGroup)
@@ -52,20 +54,32 @@ void ladybrownInitialize() {
 */
 void ladybrownPeriodic() {
     // manualControl();
-    driverController.set_text(0, 0, to_string(ladybrownA.get_position()));
+    // driverController.set_text(0, 0, to_string(ladybrownA.get_position()));
 
-    setPosition(setpoint);
+    setLadybrownPosition(setpoint);
 
-    if (driverController.get_digital(DIGITAL_DOWN)) {
-        setSetpoint(0);
-    }
-    else if (driverController.get_digital(DIGITAL_RIGHT)) {
-        setSetpoint(ladybrownReadiedPos);
-    }
-    else if (driverController.get_digital_new_press(DIGITAL_UP)) {
-        setSetpoint(ladybrownScoringPos);
+    // if (driverController.get_digital(DIGITAL_L2) && 
+    //     driverController.get_digital(DIGITAL_R2) &&
+    //     driverController.get_digital(DIGITAL_L1) && 
+    //     driverController.get_digital(DIGITAL_R1)) {
+    if (driverController.get_digital_new_press(DIGITAL_LEFT)) {
+        setManualOverride(!manualOverride);
     }
 
+    if (manualOverride) {
+        manualControl();
+    }
+    else {
+        if (driverController.get_digital(DIGITAL_DOWN)) {
+            setLadybrownSetpoint(0);
+        }
+        else if (driverController.get_digital(DIGITAL_RIGHT)) {
+            setLadybrownSetpoint(ladybrownReadiedPos);
+        }
+        else if (driverController.get_digital_new_press(DIGITAL_UP)) {
+            setLadybrownSetpoint(ladybrownScoringPos);
+        }
+    }
  }
 
 /**
@@ -73,7 +87,7 @@ void ladybrownPeriodic() {
 *
 * @param posValue The target position the ladybrown should go to, in [INSERT UNITS HERE]
 */
-void setPosition(int posValue) {
+void setLadybrownPosition(int posValue) {
     if (posValue < 0 || posValue > 800) {
         ladybrownGroup.move_absolute(ladybrownGroup.get_position(), 100);
     }
@@ -83,10 +97,13 @@ void setPosition(int posValue) {
     }
 }
 
-void setSetpoint(int point) {
+void setLadybrownSetpoint(int point) {
     setpoint = point;
 }
 
+void setManualOverride(bool isOverride) {
+    manualOverride = isOverride;
+}
 /**
 *  Lets the ladybrown be controlled manually. 
 *
@@ -104,13 +121,13 @@ void manualControl() {
         // driverController.set_text(0, 0, "Tree");
     }
     else {
-        setLadybrownSpeed(0);
+        setLadybrownPosition(ladybrownA.get_position());
         // driverController.set_text(0, 0, "Epic");
     }
 }
 
 void setLadybrownSpeed(int speed) {
-    if (ladybrownA.get_position() > 800 && speed > 0) {
+    if (ladybrownA.get_position() > 770 && speed > 0) {
         ladybrownGroup.move(0);
     }
     else if (ladybrownA.get_position() <= 0  && speed < 0) {

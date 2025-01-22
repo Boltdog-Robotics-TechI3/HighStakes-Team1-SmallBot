@@ -6,4 +6,6 @@ void liftPeriodic();
 
 void setLiftSpeed(double speed);
 
+bool detectsBadColor();
+
 void eject();

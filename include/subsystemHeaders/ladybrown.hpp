@@ -4,9 +4,11 @@ void ladybrownInitialize();
 
 void ladybrownPeriodic();
 
-void setPosition(int posValue);
+void setLadybrownPosition(int posValue);
 
-void setSetpoint(int point);
+void setLadybrownSetpoint(int point);
+
+void setManualOverride(bool isOverride);
 
 void manualControl();
 

@@ -36,6 +36,15 @@ pros::adi::Pneumatics mogoClamp = pros::adi::Pneumatics('A', false);
 // Sensors
 pros::IMU gyro(6);
 
-pros::Optical opticalSensor(2);
+pros::Optical opticalSensor(10);
 
 pros::Rotation rotationSensor(1);
+
+// Comp Specifications
+bool skills = false;
+bool match = true;
+bool elim = false;
+bool qual = true;
+bool redAlliance = false;
+bool blueAlliance = true;
+int autoSelection = 0; 
