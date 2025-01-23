@@ -9,8 +9,8 @@ void initializeScreen() {
     lv_coord_t screenWidth = lv_obj_get_width(lv_scr_act());
     lv_coord_t screenHeight = lv_obj_get_height(lv_scr_act());
 
-        // **Step 1: Create Three Text Boxes**
-    lv_coord_t textBoxHeight = screenHeight / 6; // Divide top half for 3 text boxes
+    // Divide top half for 3 text boxes
+    lv_coord_t textBoxHeight = screenHeight / 6; 
 
     // Text Box 1
     textBox1 = lv_label_create(lv_scr_act());
@@ -39,7 +39,7 @@ void initializeScreen() {
     lv_obj_set_style_text_align(textBox3, LV_TEXT_ALIGN_CENTER, 0);
     styleTextBox(textBox3, lv_palette_main(LV_PALETTE_BLUE_GREY)); // Green fill color
 
-// **Step 2: Create Button Container**
+    // Create Button Container
     lv_obj_t* buttonContainer = lv_obj_create(lv_scr_act());
     lv_obj_set_size(buttonContainer, screenWidth, screenHeight / 2); // Bottom half
     lv_obj_align(buttonContainer, LV_ALIGN_BOTTOM_MID, 0, 0);
@@ -86,7 +86,13 @@ void updateTextBox(lv_obj_t* textBox, const char* newText) {
     }
 }
 
-// Function to style a text box (with borders)
+/**
+ *  Styles the textboxes on the screen. It sets their border to purple, and the 
+ *  user can input a color for the background.
+ * 
+ *  @param textBox textbox that will be styled
+ *  @param bgColor color to set the background to.
+ */
 void styleTextBox(lv_obj_t* textBox, lv_color_t bgColor) {
     lv_obj_set_style_bg_color(textBox, bgColor, 0); // Set background color
     lv_obj_set_style_bg_opa(textBox, LV_OPA_COVER, 0); // Fully opaque background
@@ -121,12 +127,13 @@ void onCenterButton() {
 *	2 - Match Climb Goal Keep Goal Auto
 *   3 - Match Climb Goal Drop Goal Auto 
 *	4 - Skills Auto
+*   5 - Do Nothing
  */
 void onRightButton() {
 	
 	autoSelection++;
 
-	if (autoSelection >= 5) {
+	if (autoSelection >= 6) {
 		autoSelection = 0;
 	}
 	
@@ -139,7 +146,7 @@ void onRightButton() {
 		case 1: 
 			// Auto where we rush for the plus side goal, grab it, 
 			// then drop it off and go for the alliance side goal instead.
-			updateTextBox(textBox3, "1 - Match Plus Side Drop Goal Auto (NOT FINISHED)");
+			updateTextBox(textBox3, "1 - Match Plus Side Drop Goal Auto");
 			break;
 		case 2: 
 			updateTextBox(textBox3, "2 - Match Climb Goal Keep Goal Auto (NOT FINISHED)");
@@ -150,6 +157,9 @@ void onRightButton() {
 		case 4: 
 			updateTextBox(textBox3, "4 - Skills Auto Selected (NOT FINISHED)");
 			break;
+        case 5:
+ 			updateTextBox(textBox3, "5 - Do Nothing");
+			break;           
 	}
 }
 

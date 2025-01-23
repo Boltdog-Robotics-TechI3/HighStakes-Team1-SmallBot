@@ -9,3 +9,5 @@ void setLiftSpeed(double speed);
 bool detectsBadColor();
 
 void eject();
+
+void colorDetectionTask(void* param);

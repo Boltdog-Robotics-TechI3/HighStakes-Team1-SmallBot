@@ -46,8 +46,27 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	// skillsAuto();
-	matchPlusSideAuto();
+	switch (autoSelection) {
+		case 0:
+			// match Left Side Keep
+			break;
+		case 1:
+			matchPlusSideAuto();
+			break;
+		case 2: 
+			// match Climb Keep 
+			break;
+		case 3:
+			// match climb drop
+			break;
+		case 4:
+			skillsAuto();
+			break;
+		case 5:
+			// Do Nothing
+			break;
+	}
+
 }
 
 /**
@@ -77,9 +96,7 @@ void opcontrol() {
 		}
 
 		// Run for 20 ms then update
-		pros::delay(10);  
-		liftPeriodic();
-		pros::delay(10);
+		pros::delay(20);  
 	}
 }
 

@@ -53,15 +53,10 @@ void ladybrownInitialize() {
 *  will not work unless the robot is in manual control mode.
 */
 void ladybrownPeriodic() {
-    // manualControl();
     // driverController.set_text(0, 0, to_string(ladybrownA.get_position()));
 
     setLadybrownPosition(setpoint);
 
-    // if (driverController.get_digital(DIGITAL_L2) && 
-    //     driverController.get_digital(DIGITAL_R2) &&
-    //     driverController.get_digital(DIGITAL_L1) && 
-    //     driverController.get_digital(DIGITAL_R1)) {
     if (driverController.get_digital_new_press(DIGITAL_LEFT)) {
         setManualOverride(!manualOverride);
     }
@@ -97,35 +92,49 @@ void setLadybrownPosition(int posValue) {
     }
 }
 
+/**
+ * Sets the target position of the ladybrown.
+ * 
+ * @param point the target position in encoder units.
+ */
 void setLadybrownSetpoint(int point) {
     setpoint = point;
 }
 
+/**
+ * Set the state of the manual override.
+ * 
+ * @param isOverride whether or not the manual override should be active
+ */
 void setManualOverride(bool isOverride) {
     manualOverride = isOverride;
 }
+
 /**
 *  Lets the ladybrown be controlled manually. 
 *
 *  This control scheme should only be used if the position control breaks midmatch,
 *  in which case the driver will press the manual override button and be able to control
-*  the lady brown with direct pwm inputs.
+*  the lady brown with direct voltage inputs.
 */
 void manualControl() {
     if (driverController.get_digital(DIGITAL_UP)) {
         setLadybrownSpeed(60);
-        // driverController.set_text(0, 0, "Ball");
     }
     else if (driverController.get_digital(DIGITAL_DOWN)) {
         setLadybrownSpeed(-40);
-        // driverController.set_text(0, 0, "Tree");
     }
     else {
         setLadybrownPosition(ladybrownA.get_position());
-        // driverController.set_text(0, 0, "Epic");
     }
 }
 
+/**
+ * Directly sets the speed of the lady brown. 
+ * Prevents the ladybrown from moving past its limits.
+ * 
+ * @param speed speed to set the ladybrown to, from -127 to 127
+ */
 void setLadybrownSpeed(int speed) {
     if (ladybrownA.get_position() > 770 && speed > 0) {
         ladybrownGroup.move(0);

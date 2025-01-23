@@ -22,17 +22,19 @@ std::shared_ptr<ChassisModel> drivetrain = chassis->getModel();
 
 
 
+
+
 /**
 *  Runs once when the codebase is initialized. 
 *  Used to set the attributes of objects and other tasks that need to happen at the start.
 */
 void drivetrainInitialize() {
     driverController.set_text(0, 0, "");
-    drivetrain->setBrakeMode(okapi::AbstractMotor::brakeMode::brake);
+    drivetrain->setBrakeMode(okapi::AbstractMotor::brakeMode::coast);
     chassis->setMaxVelocity(0.4*chassis->getMaxVelocity());
 
     setDriveMotorCurrentLimits(2500);
-    }
+}
 
 /**
 *  Runs every opcontrol cycle. 
@@ -57,6 +59,8 @@ void drivetrainPeriodic() {
 *
 *  Up and Down on the left stick make the bot move forwards and backwards.
 *  Left and Right on the right stick make the bot rotate left and right.
+*
+*  @param reverse Whether or not the front of the robot should be reversed
 */
 void arcadeDrive(bool reverse) {
     // Arcade control scheme
@@ -84,14 +88,19 @@ void arcadeDrive(bool reverse) {
     // drivetrain->arcade(leftY, rightX);
 }
 
+/** 
+ * Sets the current limits on the drive train
+ * 
+ * @param mAmps the max amount of current the drivetrain should attain in milliamperes.
+ */
 void setDriveMotorCurrentLimits(int mAmps) {
     leftMotorGroup.setCurrentLimit(mAmps);
     rightMotorGroup.setCurrentLimit(mAmps);
 }
 
+
+
 /* AUTONOMOUS */
-
-
 // Task Function used for plus side mogo auto (ill figure out how to do parameters later)
 void moveTaskFunction(void* param) {
     chassis->moveDistance(-4.5_ft);
@@ -104,7 +113,7 @@ void moveTaskFunctionAgain(void* param) {
 }
 
 /**
- *  Match Auto with the mogo on the plus side.
+ *  Match Auto with the mogo on the left side.
  */
 void matchPlusSideAuto() {
     // Set speed to max

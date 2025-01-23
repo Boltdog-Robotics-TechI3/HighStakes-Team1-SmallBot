@@ -22,6 +22,9 @@ void clamperPeriodic() {
     }
 }
 
+/**
+ * Toggles the state of the mogo clamper
+ */
 void toggleMogoClamp() {
     mogoClamp.toggle();
 }
