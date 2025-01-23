@@ -3,8 +3,6 @@
 using namespace std;
 using namespace okapi;
 
-// shared_ptr<IterativePosPIDController> pidController = IterativeControllerFactory()
-
 bool isFrontReversed = false;
 
 auto chassis = std::dynamic_pointer_cast<ChassisControllerPID>(ChassisControllerBuilder()
@@ -18,11 +16,6 @@ auto chassis = std::dynamic_pointer_cast<ChassisControllerPID>(ChassisController
     .build());
 
 std::shared_ptr<ChassisModel> drivetrain = chassis->getModel();
-
-
-
-
-
 
 /**
 *  Runs once when the codebase is initialized. 
@@ -101,6 +94,8 @@ void setDriveMotorCurrentLimits(int mAmps) {
 
 
 /* AUTONOMOUS */
+
+/* TASKS */
 // Task Function used for plus side mogo auto (ill figure out how to do parameters later)
 void moveTaskFunction(void* param) {
     chassis->moveDistance(-4.5_ft);
@@ -112,10 +107,13 @@ void moveTaskFunctionAgain(void* param) {
     pros::delay(5000);
 }
 
+
+/* ROUTINES */
+
 /**
- *  Match Auto with the mogo on the left side.
+ *  Match Auto with the mogo on the left side that drops it after grabbing it.
  */
-void matchPlusSideAuto() {
+void matchLeftMogoDropAuto() {
     // Set speed to max
     chassis->setMaxVelocity((10.0/4.0)*chassis->getMaxVelocity());
     chassis->setGains(       
@@ -179,6 +177,47 @@ void matchPlusSideAuto() {
     pros::delay(100);
     setLiftSpeed(127);
     pros::delay(500);
+}
+
+void matchLeftMogoKeepAuto() {
+    // Set speed to max
+    chassis->setMaxVelocity((10.0/4.0)*chassis->getMaxVelocity());
+    chassis->setGains(       
+        {0.0011, 0, 0.00004},
+        {0.005, 0, 0.00012},
+        {0.0005, 0, 0.0000}
+    );
+
+    // Lower acceleration to prevent it from hopping onto the red ring and getting stuck
+    setDriveMotorCurrentLimits(1800);
+    
+    // Begin moving towards plus-side mogo 
+    pros::Task* moveTask = new pros::Task(moveTaskFunction);
+
+    // Set up a timer to clamp the mogo. Once clamped, cancel the movement task to make the robot stop.
+    pros::Task task{[=] {
+            pros::delay(1200);
+            toggleMogoClamp();
+            if (moveTask) {
+                moveTask->remove(); // Stop the task
+                delete moveTask;
+            }
+    }};
+
+    // This delay is necessary as tasks are immediately passed.
+    pros::delay(1200);
+
+    // Set the max velocity and gains to 40 percent max speed.
+    chassis->setMaxVelocity(0.4*chassis->getMaxVelocity());
+    chassis->setGains(
+        {0.005, 0, 0.00012},
+        {0.005, 0, 0.00012},
+        {0.001, 0, 0.0000}
+    );
+
+    // Move back and drop off plus side mogo
+    chassis->moveDistance(3.7_ft);
+    chassis->waitUntilSettled();
 }
 
 /**

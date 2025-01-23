@@ -8,6 +8,6 @@ void arcadeDrive(bool reverse);
 
 void setDriveMotorCurrentLimits(int mAmps);
 
-void matchPlusSideAuto();
+void matchLeftMogoDropAuto();
 
 void skillsAuto();

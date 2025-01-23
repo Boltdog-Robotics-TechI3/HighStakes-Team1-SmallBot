@@ -51,7 +51,7 @@ void autonomous() {
 			// match Left Side Keep
 			break;
 		case 1:
-			matchPlusSideAuto();
+			matchLeftMogoDropAuto();
 			break;
 		case 2: 
 			// match Climb Keep 
