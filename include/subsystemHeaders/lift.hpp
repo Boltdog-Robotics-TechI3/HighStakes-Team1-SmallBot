@@ -11,3 +11,5 @@ bool detectsBadColor();
 void eject();
 
 void colorDetectionTask(void* param);
+
+void intakeUntilColor(void* param);

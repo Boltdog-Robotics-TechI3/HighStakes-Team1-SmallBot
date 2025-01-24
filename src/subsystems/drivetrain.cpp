@@ -7,11 +7,11 @@ bool isFrontReversed = false;
 
 auto chassis = std::dynamic_pointer_cast<ChassisControllerPID>(ChassisControllerBuilder()
 	.withMotors(leftMotorGroup, rightMotorGroup)
-	.withDimensions({AbstractMotor::gearset::blue, (60.0/36.0)}, {{3.25_in, 11.5_in}, imev5BlueTPR})
+	.withDimensions({AbstractMotor::gearset::blue, (60.0/36.0)}, {{2.96_in, 11.5_in}, imev5BlueTPR})
     .withGains(
         {0.005, 0, 0.00012},
-        {0.005, 0, 0.00012},
-        {0.001, 0, 0.0000}
+        {0.004, 0.0003, 0.00004},
+        {0.0001, 0, 0.0000}
     )
     .build());
 
@@ -26,7 +26,7 @@ void drivetrainInitialize() {
     drivetrain->setBrakeMode(okapi::AbstractMotor::brakeMode::coast);
     chassis->setMaxVelocity(0.4*chassis->getMaxVelocity());
 
-    setDriveMotorCurrentLimits(2500);
+    setDriveMotorCurrentLimits(2000);
 }
 
 /**
@@ -98,17 +98,40 @@ void setDriveMotorCurrentLimits(int mAmps) {
 /* TASKS */
 // Task Function used for plus side mogo auto (ill figure out how to do parameters later)
 void moveTaskFunction(void* param) {
-    chassis->moveDistance(-4.5_ft);
+    chassis->moveDistance(-3.75_ft);
 }
 
 // Task Function used for plus side mogo auto (ill figure out how to do parameters later)
 void moveTaskFunctionAgain(void* param) {
-    chassis->moveDistance(4.4_ft);
+    chassis->moveDistance(4.3_ft);
     pros::delay(5000);
 }
 
+// Task Function used for skills auto (ill figure out how to do parameters later)
+void moveTaskFunctionAgain2(void* param) {
+    chassis->moveDistance(1.3_ft);
+}
 
 /* ROUTINES */
+
+void testAuto() {
+    // chassis->moveDistance(2_ft);
+    chassis->setMaxVelocity((10.0/4.0)*chassis->getMaxVelocity());
+    chassis->setGains(       
+        {0.001, 0, 0.00004},
+        {0.0012, 0, 0.00002},
+        {0.0005, 0, 0.0000}
+    );
+
+    chassis->turnAngle(90_deg);
+
+    chassis->setMaxVelocity(0.4*chassis->getMaxVelocity());
+    chassis->setGains(
+        {0.005, 0, 0.00012},
+        {0.005, 0, 0.00012},
+        {0.001, 0, 0.0000}
+    );
+}
 
 /**
  *  Match Auto with the mogo on the left side that drops it after grabbing it.
@@ -117,7 +140,7 @@ void matchLeftMogoDropAuto() {
     // Set speed to max
     chassis->setMaxVelocity((10.0/4.0)*chassis->getMaxVelocity());
     chassis->setGains(       
-        {0.0011, 0, 0.00004},
+        {0.001, 0, 0.00004},
         {0.005, 0, 0.00012},
         {0.0005, 0, 0.0000}
     );
@@ -130,7 +153,7 @@ void matchLeftMogoDropAuto() {
 
     // Set up a timer to clamp the mogo. Once clamped, cancel the movement task to make the robot stop.
     pros::Task task{[=] {
-            pros::delay(1200);
+            pros::delay(1150);
             toggleMogoClamp();
             if (moveTask) {
                 moveTask->remove(); // Stop the task
@@ -158,7 +181,7 @@ void matchLeftMogoDropAuto() {
     setDriveMotorCurrentLimits(2500);
 
     // Go grab alliance side mogo
-    chassis->turnAngle(225_deg);
+    chassis->turnAngle(210_deg);
     chassis->waitUntilSettled();
     chassis->moveDistance(-2.1_ft);
     chassis->waitUntilSettled();
@@ -167,7 +190,7 @@ void matchLeftMogoDropAuto() {
     // Move back and turn towards the climb's base
     chassis->moveDistance(2.1_ft);
     chassis->waitUntilSettled();
-    chassis->turnAngle(150_deg);
+    chassis->turnAngle(125_deg);
     chassis->waitUntilSettled();
 
     // Move onto the climb base, and while doing so score the preload.
@@ -183,20 +206,20 @@ void matchLeftMogoKeepAuto() {
     // Set speed to max
     chassis->setMaxVelocity((10.0/4.0)*chassis->getMaxVelocity());
     chassis->setGains(       
-        {0.0011, 0, 0.00004},
+        {0.0009, 0, 0.00004},
         {0.005, 0, 0.00012},
-        {0.0005, 0, 0.0000}
+        {0.000, 0, 0.0000}
     );
 
     // Lower acceleration to prevent it from hopping onto the red ring and getting stuck
-    setDriveMotorCurrentLimits(1800);
+    setDriveMotorCurrentLimits(1000);
     
     // Begin moving towards plus-side mogo 
     pros::Task* moveTask = new pros::Task(moveTaskFunction);
 
     // Set up a timer to clamp the mogo. Once clamped, cancel the movement task to make the robot stop.
     pros::Task task{[=] {
-            pros::delay(1200);
+            pros::delay(1275);
             toggleMogoClamp();
             if (moveTask) {
                 moveTask->remove(); // Stop the task
@@ -205,7 +228,7 @@ void matchLeftMogoKeepAuto() {
     }};
 
     // This delay is necessary as tasks are immediately passed.
-    pros::delay(1200);
+    pros::delay(1300);
 
     // Set the max velocity and gains to 40 percent max speed.
     chassis->setMaxVelocity(0.4*chassis->getMaxVelocity());
@@ -215,9 +238,29 @@ void matchLeftMogoKeepAuto() {
         {0.001, 0, 0.0000}
     );
 
-    // Move back and drop off plus side mogo
-    chassis->moveDistance(3.7_ft);
+    // reset Current limits back to where they need to be
+   setDriveMotorCurrentLimits(2000);
+
+    // Move back and turn towards near ring stack
+    setLiftSpeed(1);
+    chassis->moveDistance(2.7_ft);
     chassis->waitUntilSettled();
+    chassis->turnAngle(90_deg);
+    chassis->waitUntilSettled();
+    setLiftSpeed(0);
+    pros::Task taskIntake(intakeUntilColor);
+    chassis->moveDistance(1.6_ft);
+    chassis->waitUntilSettled();
+    pros::delay(2000);
+    chassis->turnAngle(180_deg);
+    chassis->waitUntilSettled();
+    setLiftSpeed(1);
+    chassis->moveDistance(3.5_ft);
+    setLadybrownSpeed(40);
+    pros::delay(3000);
+    setLadybrownSpeed(0);
+    pros::delay(3000);
+    setLiftSpeed(0);
 }
 
 /**
@@ -225,75 +268,95 @@ void matchLeftMogoKeepAuto() {
 */
 void skillsAuto() {
     //portion to grab first donut
-    setLiftSpeed(1);
-	chassis->moveDistance(3.1_ft);
+    pros::Task* intakeTask = new pros::Task(intakeUntilColor);
+	chassis->moveDistance(3.4_ft);
     chassis->waitUntilSettled();
     pros::delay(700);
-    setLiftSpeed(0);
+	chassis->moveDistance(-0.35_ft);
+    chassis->waitUntilSettled();
+    
 
     // Drive to and grab first mogo
-    chassis->turnAngle(98_deg);
+    chassis->turnAngle(90_deg);
     chassis->waitUntilSettled();
-    chassis->moveDistance(-1.9_ft);
+    chassis->moveDistance(-1.7_ft);
     chassis->waitUntilSettled();
     toggleMogoClamp();
     pros::delay(200);
     setLiftSpeed(1);
     pros::delay(500);
+    setLiftSpeed(1);
 
     // Grab autoline ring.
-    chassis->turnAngle(-100_deg);
+    chassis->turnAngle(-90_deg);
     chassis->waitUntilSettled();
-    chassis->moveDistance(2_ft);
+    setLiftSpeed(1);
+    chassis->moveDistance(2.4_ft);
     chassis->waitUntilSettled();
+    setLiftSpeed(1);
     pros::delay(500);
 
     // Grab ring that is close to corner
-    chassis->turnAngle(195_deg);
+    chassis->turnAngle(180_deg);
     chassis->waitUntilSettled();
-    chassis->moveDistance(3.9_ft);
+    setLiftSpeed(1);
+    chassis->moveDistance(4.7_ft);
     chassis->waitUntilSettled();
-    pros::delay(500);
+    setLiftSpeed(1);
+    pros::delay(1000);
+    chassis->moveDistance(-.4_ft);
+    chassis->waitUntilSettled();
+
 
     // Grab corner ring
-    chassis->turnAngle(47_deg);
-    chassis->waitUntilSettled();
-    chassis->moveDistance(1.6_ft);
-    chassis->waitUntilSettled();
-    pros::delay(500);
+    // chassis->turnAngle(45_deg);
+    // chassis->waitUntilSettled();
+    // pros::Task* driveTask = new pros::Task(moveTaskFunctionAgain2);
+    // pros::delay(2000);
+    // driveTask->remove();
 
     // Back off from corner and place goal
-    chassis->moveDistance(-1_ft);
+    // chassis->moveDistance(-1.2_ft);
+    // chassis->waitUntilSettled();
+    chassis->turnAngle(-135_deg);
     chassis->waitUntilSettled();
     setLiftSpeed(0);
-    chassis->turnAngle(194_deg);
-    chassis->waitUntilSettled();
-    chassis->moveDistance(-0.5_ft);
+    // chassis->turnAngle(180_deg);
+    // chassis->waitUntilSettled();
+    chassis->moveDistance(-0.8_ft);
     chassis->waitUntilSettled();
     toggleMogoClamp();
     pros::delay(500);
 
     // Drive to the mogo on the other side of the field on auto line close to 
-    chassis->moveDistance(1.3_ft);
+    chassis->moveDistance(1.1_ft);
     chassis->waitUntilSettled();
     chassis->turnAngle(-45_deg);
     chassis->waitUntilSettled();
-    chassis->moveDistance(4.15_ft);
+    chassis->moveDistance(4_ft);
     chassis->waitUntilSettled();
-    chassis->turnAngle(-140_deg);
+    chassis->turnAngle(-135_deg);
     chassis->waitUntilSettled();  
-    chassis->moveDistance(-2.6_ft);
+    chassis->moveDistance(-1.5_ft);
     chassis->waitUntilSettled();  
     toggleMogoClamp();
     pros::delay(500);
 
-    // Grab center rings
-    chassis->turnAngle(-105_deg);
+    // Bring mogo to corner
+    chassis->turnAngle(90_deg);
+    chassis->waitUntilSettled();
+    setLiftSpeed(1);
+    chassis->moveDistanceAsync(4_ft);
+    chassis->waitUntilSettled();
+    pros::delay(3000);
+    chassis->moveDistance(1.5_ft);
+    chassis->waitUntilSettled();
+    chassis->turnAngle(180_deg);
     chassis->waitUntilSettled();  
-    chassis->moveDistance(2.2_ft);
+    chassis->moveDistance(5_ft);
     chassis->waitUntilSettled();
-    chassis->turnAngle(30_deg);
-    chassis->waitUntilSettled();
-    chassis->moveDistance(0.7_ft);
-    chassis->waitUntilSettled();
+
+
+
+
 }

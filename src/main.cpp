@@ -46,26 +46,29 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	switch (autoSelection) {
-		case 0:
-			// match Left Side Keep
-			break;
-		case 1:
-			matchLeftMogoDropAuto();
-			break;
-		case 2: 
-			// match Climb Keep 
-			break;
-		case 3:
-			// match climb drop
-			break;
-		case 4:
-			skillsAuto();
-			break;
-		case 5:
-			// Do Nothing
-			break;
-	}
+	// switch (autoSelection) {
+	// 	case 0:
+	// 		// match Left Side Keep
+			// matchLeftMogoKeepAuto();
+	// 		break;
+	// 	case 1:
+			// matchLeftMogoDropAuto();
+	// 		break;
+	// 	case 2: 
+	// 		// match Climb Keep 
+	// 		break;
+	// 	case 3:
+	// 		// match climb drop
+	// 		break;
+	// 	case 4:
+			// skillsAuto();
+		// 	break;
+		// case 5:
+		// 	// Do Nothing
+		// 	break;
+	// }
+
+	testAuto();
 
 }
 
@@ -91,7 +94,7 @@ void opcontrol() {
 		ladybrownPeriodic();
 		drivetrainPeriodic();
 
-		if (driverController.get_digital_new_press(DIGITAL_LEFT)) {
+		if (driverController.get_digital_new_press(DIGITAL_Y)) {
 			autonomous();
 		}
 

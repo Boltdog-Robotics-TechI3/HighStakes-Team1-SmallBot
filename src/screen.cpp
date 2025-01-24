@@ -16,10 +16,10 @@ void initializeScreen() {
     textBox1 = lv_label_create(lv_scr_act());
     lv_obj_set_size(textBox1, screenWidth, textBoxHeight);
     lv_obj_align(textBox1, LV_ALIGN_TOP_MID, 0, 0); // Align to the top
-    lv_label_set_text(textBox1, "Blue side is selected");
+    lv_label_set_text(textBox1, "Red side is selected");
     lv_label_set_long_mode(textBox1, LV_LABEL_LONG_WRAP);
     lv_obj_set_style_text_align(textBox1, LV_TEXT_ALIGN_CENTER, 0);
-    styleTextBox(textBox1, lv_palette_main(LV_PALETTE_BLUE)); 
+    styleTextBox(textBox1, lv_palette_main(LV_PALETTE_RED)); 
 
     // Text Box 2
     textBox2 = lv_label_create(lv_scr_act());
@@ -172,17 +172,16 @@ void onLeftButton() {
 	pressed = !pressed;
 
 	if (pressed) {
-		updateTextBox(textBox1, "Red side is selected");
-        styleTextBox(textBox1, lv_palette_main(LV_PALETTE_RED)); 
-
-		blueAlliance = false;
-		redAlliance = true;
-
-	} else {
 		updateTextBox(textBox1, "Blue side is selected");
         styleTextBox(textBox1, lv_palette_main(LV_PALETTE_BLUE)); 
 		redAlliance = false;
 		blueAlliance = true;
 
+	} else {
+		updateTextBox(textBox1, "Red side is selected");
+        styleTextBox(textBox1, lv_palette_main(LV_PALETTE_RED)); 
+
+		blueAlliance = false;
+		redAlliance = true;
 	}
 }

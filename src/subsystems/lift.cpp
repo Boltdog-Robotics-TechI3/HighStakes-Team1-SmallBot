@@ -93,7 +93,7 @@ bool detectsBadColor() {
  */
 void eject() {
     lift.controllerSet(1);
-    pros::delay(135);
+    pros::delay(145);
     lift.controllerSet(0);
     pros::delay(250);
 }
@@ -113,4 +113,19 @@ void colorDetectionTask(void* param) {
         pros::delay(20);
     }
     
+}
+
+void intakeUntilColor(void* param) {
+    while (true) {
+        setLiftSpeed(1);
+        if (redAlliance && opticalSensor.get_hue() >= 1 && opticalSensor.get_hue() <= 25) {
+            setLiftSpeed(0);
+            break;
+        }
+        else if (blueAlliance && opticalSensor.get_hue() >= 130 && opticalSensor.get_hue() <= 230) {
+            setLiftSpeed(0);
+            break;
+        }
+        pros::delay(20);
+    }
 }
