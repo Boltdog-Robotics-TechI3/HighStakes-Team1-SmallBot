@@ -98,7 +98,7 @@ void setDriveMotorCurrentLimits(int mAmps) {
 /* TASKS */
 // Task Function used for plus side mogo auto (ill figure out how to do parameters later)
 void moveTaskFunction(void* param) {
-    chassis->moveDistance(-3.75_ft);
+    chassis->moveDistance(-4.05_ft);
 }
 
 // Task Function used for plus side mogo auto (ill figure out how to do parameters later)
@@ -206,7 +206,7 @@ void matchLeftMogoKeepAuto() {
     // Set speed to max
     chassis->setMaxVelocity((10.0/4.0)*chassis->getMaxVelocity());
     chassis->setGains(       
-        {0.0009, 0, 0.00004},
+        {0.00095, 0, 0.00004},
         {0.005, 0, 0.00012},
         {0.000, 0, 0.0000}
     );
@@ -219,7 +219,7 @@ void matchLeftMogoKeepAuto() {
 
     // Set up a timer to clamp the mogo. Once clamped, cancel the movement task to make the robot stop.
     pros::Task task{[=] {
-            pros::delay(1275);
+            pros::delay(1225);
             toggleMogoClamp();
             if (moveTask) {
                 moveTask->remove(); // Stop the task
@@ -228,7 +228,7 @@ void matchLeftMogoKeepAuto() {
     }};
 
     // This delay is necessary as tasks are immediately passed.
-    pros::delay(1300);
+    pros::delay(1250);
 
     // Set the max velocity and gains to 40 percent max speed.
     chassis->setMaxVelocity(0.4*chassis->getMaxVelocity());
@@ -248,10 +248,14 @@ void matchLeftMogoKeepAuto() {
     chassis->turnAngle(90_deg);
     chassis->waitUntilSettled();
     setLiftSpeed(0);
+
+    // Grab ring in stack
     pros::Task taskIntake(intakeUntilColor);
     chassis->moveDistance(1.6_ft);
     chassis->waitUntilSettled();
     pros::delay(2000);
+
+    // Turn around and head for climb
     chassis->turnAngle(180_deg);
     chassis->waitUntilSettled();
     setLiftSpeed(1);

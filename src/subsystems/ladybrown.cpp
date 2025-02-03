@@ -1,7 +1,7 @@
 #include "main.h"
 using namespace std;
 
-int ladybrownReadiedPos = 163;
+int ladybrownReadiedPos = 170;
 int ladybrownScoringPos = 770;
 
 int setpoint = 0;
@@ -125,7 +125,8 @@ void manualControl() {
         setLadybrownSpeed(-40);
     }
     else {
-        setLadybrownPosition(ladybrownA.get_position());
+        setLadybrownSetpoint(ladybrownA.get_position());
+        setLadybrownPosition(setpoint);
     }
 }
 

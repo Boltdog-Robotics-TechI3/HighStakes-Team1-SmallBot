@@ -141,7 +141,7 @@ void onRightButton() {
 		case 0: 
 			// Auto where we rush for the plus side goal, grab it, 
 			// then score rings on it and drop it off in the corner.
-			updateTextBox(textBox3, "0 - Match Plus Side Keep Goal Auto (NOT FINISHED)");
+			updateTextBox(textBox3, "0 - Match Plus Side Keep Goal Auto");
 			break;
 		case 1: 
 			// Auto where we rush for the plus side goal, grab it, 
@@ -149,13 +149,13 @@ void onRightButton() {
 			updateTextBox(textBox3, "1 - Match Plus Side Drop Goal Auto");
 			break;
 		case 2: 
-			updateTextBox(textBox3, "2 - Match Climb Goal Keep Goal Auto (NOT FINISHED)");
+			updateTextBox(textBox3, "2 - Match Climb Goal Keep Goal Auto");
 			break;
 		case 3: 
-			updateTextBox(textBox3, "3 - Match Climb Goal Drop Goal Selected (NOT FINISHED)");
+			updateTextBox(textBox3, "3 - Match Climb Goal Drop Goal Selected");
 			break;
 		case 4: 
-			updateTextBox(textBox3, "4 - Skills Auto Selected (NOT FINISHED)");
+			updateTextBox(textBox3, "4 - Skills Auto Selected");
 			break;
         case 5:
  			updateTextBox(textBox3, "5 - Do Nothing");
