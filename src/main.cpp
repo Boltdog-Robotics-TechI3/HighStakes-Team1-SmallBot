@@ -14,6 +14,7 @@ void initialize() {
 	liftInitialize();
 	clamperInitialize();
 	ladybrownInitialize();
+	gyro.reset(true);
 }
 
 /**

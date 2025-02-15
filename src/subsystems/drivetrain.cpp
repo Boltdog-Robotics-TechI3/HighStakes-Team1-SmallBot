@@ -1,5 +1,6 @@
 #include "main.h"
 #include <iostream>
+#include <chrono>
 using namespace std;
 using namespace okapi;
 
@@ -10,12 +11,46 @@ auto chassis = std::dynamic_pointer_cast<ChassisControllerPID>(ChassisController
 	.withDimensions({AbstractMotor::gearset::blue, (60.0/36.0)}, {{2.96_in, 11.5_in}, imev5BlueTPR})
     .withGains(
         {0.005, 0, 0.00012},
-        {0.004, 0.0003, 0.00004},
+        {1.5, 0.0003, 10},
         {0.0001, 0, 0.0000}
     )
     .build());
 
 std::shared_ptr<ChassisModel> drivetrain = chassis->getModel();
+
+/// @brief Custom Turnangle Function
+/// @param angle angle in degrees
+/// @param timeout timeout before the robot gives up in seconds
+void turnAngle(float angle, int timeout = 10) {
+    auto gains = get<1>(chassis->getGains());
+
+    float target = angle + gyro.get_rotation();
+    float error = angle;
+	float previousError = 0;
+	float integral = 0;
+	float errorCounter = 0;
+	float precision = 1;
+	
+	auto exitTime = std::chrono::high_resolution_clock::now() + std::chrono::seconds(timeout);
+	while (errorCounter < 50 && std::chrono::high_resolution_clock::now() < exitTime) {
+		integral += error;
+		float velocity = setMinAbs((gains.kP * error + (error - previousError) * gains.kD + gains.kI * integral), 1);
+		rightMotorGroup.moveVelocity(-velocity);
+		leftMotorGroup.moveVelocity(velocity);
+		pros::delay(10);
+		//driverController.print(0,0,"%f", velocity);
+		previousError = error;
+		error = target - gyro.get_rotation();
+		if (abs(error) < precision) {
+			errorCounter++;
+		}
+		else {
+			errorCounter = 0;
+		}
+	}
+	rightMotorGroup.moveVelocity(0);
+	leftMotorGroup.moveVelocity(0);
+}
 
 /**
 *  Runs once when the codebase is initialized. 
@@ -63,6 +98,10 @@ void arcadeDrive(bool reverse) {
     // Apply a squared scaling to the controller values. This makes driving slower require less percision
     double fwdSpeed = pow(leftY, 2); 
     double rotSpeed = pow(rightX, 2);
+
+    if (driverController.get_digital(DIGITAL_B)) {
+        turnAngle(45);
+    }
 
     // Account for negatives
     if (leftY < 0) {

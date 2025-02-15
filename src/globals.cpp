@@ -34,7 +34,7 @@ pros::Controller driverController(pros::E_CONTROLLER_MASTER);
 pros::adi::Pneumatics mogoClamp = pros::adi::Pneumatics('A', false);
 
 // Sensors
-pros::IMU gyro(6);
+pros::IMU gyro(7);
 
 pros::Optical opticalSensor(10);
 

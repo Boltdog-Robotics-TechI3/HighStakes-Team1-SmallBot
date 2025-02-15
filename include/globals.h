@@ -1,4 +1,5 @@
 #include "main.h"
+#define setMinAbs(num, bound) ((num > -(bound) && num < bound) ? ((num >= 0) ? bound : -(bound)) : num)
 
 // Controller Setup
 extern pros::Controller driverController;
