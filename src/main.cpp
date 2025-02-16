@@ -92,7 +92,10 @@ void opcontrol() {
 		drivetrainPeriodic();
 
 		if (driverController.get_digital_new_press(DIGITAL_Y)) {
-			autonomous();
+			//autonomous();
+
+			// for skills testing
+			skillsAuto();
 		}
 
 		// Run for 20 ms then update

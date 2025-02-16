@@ -17,3 +17,7 @@ void matchLeftMogoDropAuto();
 void matchLeftMogoKeepAuto();
 
 void skillsAuto();
+
+void lateralPIDTune();
+
+void angularPIDTune();
