@@ -4,7 +4,6 @@
 pros::Controller driverController(pros::E_CONTROLLER_MASTER);
 
 // Motors
-
     // Drivetrain
     okapi::Motor leftMotorA(18, true, okapi::AbstractMotor::gearset::blue, okapi::AbstractMotor::encoderUnits::rotations);
     okapi::Motor leftMotorB(19, false, okapi::AbstractMotor::gearset::blue, okapi::AbstractMotor::encoderUnits::rotations);
@@ -16,15 +15,16 @@ pros::Controller driverController(pros::E_CONTROLLER_MASTER);
     okapi::MotorGroup leftMotorGroup({-18, 19, -20});
     okapi::MotorGroup rightMotorGroup({14, 12, -13});
 
+    // Intake 
+    pros::Motor intakeA(15);
+    pros::Motor intakeB(16); 
+
+    pros::MotorGroup intakeGroup({15, -16});
+    
     // Lift
-    okapi::Motor lift(11, false, okapi::AbstractMotor::gearset::green, okapi::AbstractMotor::encoderUnits::rotations);
+    okapi::Motor lift(11, true, okapi::AbstractMotor::gearset::green, okapi::AbstractMotor::encoderUnits::rotations);
 
     // LadyBrown
-    // okapi::Motor ladybrownA(5, false, okapi::AbstractMotor::gearset::green, okapi::AbstractMotor::encoderUnits::rotations);
-    // okapi::Motor ladybrownB(6, true, okapi::AbstractMotor::gearset::green, okapi::AbstractMotor::encoderUnits::rotations);
-
-    // okapi::MotorGroup ladybrownGroup({5, -6});
-
     pros::Motor ladybrownA(5);
     pros::Motor ladybrownB(6); 
 
@@ -32,6 +32,7 @@ pros::Controller driverController(pros::E_CONTROLLER_MASTER);
 
 // Pneumatics
 pros::adi::Pneumatics mogoClamp = pros::adi::Pneumatics('A', false);
+pros::adi::Pneumatics mogoClaw = pros::adi::Pneumatics('B', false);
 
 // Sensors
 pros::IMU gyro(7);

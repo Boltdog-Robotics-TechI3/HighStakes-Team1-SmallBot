@@ -14,6 +14,15 @@ void liftInitialize() {
 
     lift.setCurrentLimit(2500);
 
+    intakeA.set_voltage_limit(7200);
+    intakeB.set_voltage_limit(7200);
+    intakeGroup.set_voltage_limit(7200);
+
+    intakeA.set_reversed(false);
+    intakeB.set_reversed(true);
+
+    intakeGroup.set_brake_mode(MOTOR_BRAKE_BRAKE);
+
     opticalSensor.set_led_pwm(50);
     opticalSensor.set_integration_time(10);
 
@@ -33,12 +42,19 @@ void liftPeriodic() {
 
     if (driverController.get_digital(DIGITAL_R1)) {
         setLiftSpeed(1);
+        setIntakeSpeed(1);
     } 
     else if (driverController.get_digital(DIGITAL_R2)) {
         setLiftSpeed(-1);
+        setIntakeSpeed(-1);
     }    
+    else if (driverController.get_digital(DIGITAL_L1)) {
+        setLiftSpeed(0);
+        setIntakeSpeed(1);
+    }
     else {
         setLiftSpeed(0);
+        setIntakeSpeed(0);
     }
     
 
@@ -62,6 +78,15 @@ void setLiftSpeed(double speed) {
     if (!isEjecting) {
         lift.controllerSet(speed);
     }
+}
+
+/**
+* Sets the speed of the intake.
+*
+* @param speed The speed to set the intake motors to, from -1 to 1.
+*/
+void setIntakeSpeed(double speed) {
+    intakeGroup.move(speed * 127.0);
 }
 
 /**

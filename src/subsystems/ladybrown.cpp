@@ -27,9 +27,9 @@ void ladybrownInitialize() {
     // ladybrownA.setVoltageLimit(7.2);
     // ladybrownB.setVoltageLimit(7.2);
 
-    ladybrownA.set_voltage_limit(7200);
     ladybrownB.set_voltage_limit(7200);
-
+    ladybrownA.set_voltage_limit(7200);
+    
     ladybrownA.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
     ladybrownB.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 

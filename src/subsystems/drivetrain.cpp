@@ -6,7 +6,7 @@ bool isFrontReversed = false;
 
 auto chassis = std::dynamic_pointer_cast<ChassisControllerPID>(ChassisControllerBuilder()
 	.withMotors(leftMotorGroup, rightMotorGroup)
-	.withDimensions({AbstractMotor::gearset::blue, (60.0/36.0)}, {{2.96_in, 11.5_in}, imev5BlueTPR})
+	.withDimensions({AbstractMotor::gearset::blue, (3.0/4.0)}, {{2.75_in, 11.5_in}, imev5BlueTPR})
     .withGains(
         {0.0045, 0, 0.00007},
         {3.0, 0.00, 0},
@@ -158,7 +158,6 @@ void moveTaskFunctionAgain2(void* param) {
 }
 
 /* ROUTINES */
-
 void testAuto() {
     // chassis->moveDistance(2_ft);
     chassis->setMaxVelocity((10.0/4.0)*chassis->getMaxVelocity());
@@ -312,6 +311,31 @@ void matchLeftMogoKeepAuto() {
     setLiftSpeed(0);
 }
 
+
+void goalRushAuto(){
+
+    // Set speed to max
+    chassis->setMaxVelocity((10.0/4.0)*chassis->getMaxVelocity());
+    chassis->setGains(       
+        {0.00095, 0, 0.00004},
+        {0.005, 0, 0.00012},
+        {0.000, 0, 0.0000}
+    );
+
+    // Lower acceleration to prevent it from hopping onto the red ring and getting stuck
+    setDriveMotorCurrentLimits(1000);
+
+    //drive to and grab mobile goal
+    chassis->turnAngle(225_deg);
+    chassis->moveDistance(5_ft);
+    toggleMogoClamp();
+
+    //pick up 1st ring
+    chassis->turnAngle(45_deg);
+    setLiftSpeed(1);
+
+}
+
 /**
 * Small bot's skills auto
 */
@@ -365,6 +389,23 @@ void skillsAuto() {
     chassis->moveDistance(-2_in);
     turnAngle(180);
     toggleMogoClamp();
+    pros::delay(500);
 
-    
+    // Bring mogo to corner
+    chassis->turnAngle(90_deg);
+    chassis->waitUntilSettled();
+    setLiftSpeed(1);
+    chassis->moveDistanceAsync(4_ft);
+    chassis->waitUntilSettled();
+    pros::delay(3000);
+    chassis->moveDistance(1.5_ft);
+    chassis->waitUntilSettled();
+    chassis->turnAngle(180_deg);
+    chassis->waitUntilSettled();  
+    chassis->moveDistance(5_ft);
+    chassis->waitUntilSettled();
+
+
+
+
 }

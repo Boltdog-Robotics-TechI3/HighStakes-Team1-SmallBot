@@ -16,15 +16,16 @@ extern pros::Controller driverController;
         extern okapi::MotorGroup leftMotorGroup;
         extern okapi::MotorGroup rightMotorGroup;
 
+    // Intake 
+        extern pros::Motor intakeA;
+        extern pros::Motor intakeB;
+        
+        extern pros::MotorGroup intakeGroup;
+
     // Lift
         extern okapi::Motor lift;
 
     // Ladybrown
-    //     extern okapi::Motor ladybrownA;
-    //     extern okapi::Motor ladybrownB;
-
-    //     extern okapi::MotorGroup ladybrownGroup;
-        
         extern pros::Motor ladybrownA;
         extern pros::Motor ladybrownB;
 
@@ -32,6 +33,7 @@ extern pros::Controller driverController;
 
 // Pneumatics
 extern pros::adi::Pneumatics mogoClamp;
+extern pros::adi::Pneumatics mogoClaw;
 
 // Sensor Initialization
 extern pros::IMU gyro;

@@ -4,9 +4,7 @@
 *  Runs once when the codebase is initialized. 
 *  Used to set the attributes of objects and other tasks that need to happen at the start.
 */
-void clamperInitialize() {
-
-}
+void clamperInitialize() {}
 
 /** 
 *  Runs every opcontrol cycle. 
@@ -20,6 +18,9 @@ void clamperPeriodic() {
     if (driverController.get_digital_new_press(DIGITAL_B)) {
         toggleMogoClamp();
     }
+    if (driverController.get_digital_new_press(DIGITAL_A)) {
+        toggleMogoClaw();
+    }
 }
 
 /**
@@ -27,4 +28,36 @@ void clamperPeriodic() {
  */
 void toggleMogoClamp() {
     mogoClamp.toggle();
+}
+
+/**
+ * Sets the state of the mogo clamper
+ * 
+ * @param state the state of the clamp: True for grab, False for release.
+ */
+void setMogoClamp(bool state) {
+    if (state) {
+        mogoClamp.extend();
+    }
+    else {
+        mogoClamp.retract();
+    }
+}
+
+void toggleMogoClaw() {
+    mogoClaw.toggle();
+}
+
+/**
+ * Sets the state of the mogo claw
+ * 
+ * @param state the state of the claw: True for down, False for up.
+ */
+void setMogoClaw(bool state) {
+    if (state) {
+        mogoClaw.extend();
+    }
+    else {
+        mogoClaw.retract();
+    }
 }
