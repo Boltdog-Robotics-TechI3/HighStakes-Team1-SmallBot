@@ -107,7 +107,7 @@ void opcontrol() {
 			goalRushWallStakeAuto();
 		}
 
-		else if(driverController.get_digital_new_press(DIGITAL_B)){
+		else if(driverController.get_digital_new_press(DIGITAL_A)){
 			skillsAuto();
 		}
 

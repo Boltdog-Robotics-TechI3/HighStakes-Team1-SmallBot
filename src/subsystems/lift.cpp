@@ -38,7 +38,7 @@ void liftInitialize() {
 *  will not work unless the robot is in manual control mode.
 */
 void liftPeriodic() {
-    driverController.set_text(0, 0,std::to_string(ejectionCount));
+    //driverController.set_text(0, 0,std::to_string(ejectionCount));
 
     if (driverController.get_digital(DIGITAL_R1)) {
         setLiftSpeed(1);
@@ -62,7 +62,7 @@ void liftPeriodic() {
         highestHueDetected = opticalSensor.get_hue();
     }
 
-    driverController.set_text(1, 1, std::to_string(highestHueDetected));
+    //driverController.set_text(1, 1, std::to_string(highestHueDetected));
 
 }
 

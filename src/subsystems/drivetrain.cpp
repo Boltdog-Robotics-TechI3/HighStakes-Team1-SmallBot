@@ -21,7 +21,7 @@ std::shared_ptr<ChassisModel> drivetrain = chassis->getModel();
 *  Used to set the attributes of objects and other tasks that need to happen at the start.
 */
 void drivetrainInitialize() {
-    driverController.set_text(0, 0, "");
+    //driverController.set_text(0, 0, "");
     drivetrain->setBrakeMode(okapi::AbstractMotor::brakeMode::coast);
     chassis->setMaxVelocity(0.4*chassis->getMaxVelocity());
 
@@ -39,9 +39,6 @@ void drivetrainInitialize() {
 void drivetrainPeriodic() {
     if (driverController.get_digital_new_press(DIGITAL_L2)) {
         isFrontReversed = !isFrontReversed;
-    }
-    if (driverController.get_digital(DIGITAL_B)) {
-        turnAngle(90);
     }
 
     arcadeDrive(isFrontReversed);
@@ -431,6 +428,7 @@ void skillsAuto() {
 
 
     // putting first ring on wall stake
+    driverController.set_text(0, 0, "AHHHHHHHHHHHHHHHHH");
     setLiftSpeed(-127);
     chassis->moveDistance(5_in);
     pros::delay(1000);
