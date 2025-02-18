@@ -18,6 +18,10 @@ void matchLeftMogoKeepAuto();
 
 void skillsAuto();
 
+void goalRushNoWallAuto();
+
+void goalRushWallStakeAuto();
+
 void lateralPIDTune();
 
 void angularPIDTune();

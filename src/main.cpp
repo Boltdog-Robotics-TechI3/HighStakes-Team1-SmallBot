@@ -63,6 +63,10 @@ void autonomous() {
 			break;
 		case 4:
 			skillsAuto();
+		case 5:
+			goalRushNoWallAuto();
+		case 6:
+			goalRushWallStakeAuto();
 	}
 
 	// testAuto();
@@ -95,6 +99,15 @@ void opcontrol() {
 			//autonomous();
 
 			// for skills testing
+			//autonomous();
+			goalRushNoWallAuto();
+		}
+
+		else if(driverController.get_digital_new_press(DIGITAL_X)){
+			goalRushWallStakeAuto();
+		}
+
+		else if(driverController.get_digital_new_press(DIGITAL_B)){
 			skillsAuto();
 		}
 

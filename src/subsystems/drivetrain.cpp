@@ -312,28 +312,115 @@ void matchLeftMogoKeepAuto() {
 }
 
 
-void goalRushAuto(){
+void goalRushWallStakeAuto(){
 
     // Set speed to max
-    chassis->setMaxVelocity((10.0/4.0)*chassis->getMaxVelocity());
-    chassis->setGains(       
-        {0.00095, 0, 0.00004},
-        {0.005, 0, 0.00012},
-        {0.000, 0, 0.0000}
-    );
+    chassis->setMaxVelocity((1.5)*chassis->getMaxVelocity());
 
     // Lower acceleration to prevent it from hopping onto the red ring and getting stuck
     setDriveMotorCurrentLimits(1000);
 
     //drive to and grab mobile goal
-    chassis->turnAngle(225_deg);
     chassis->moveDistance(5_ft);
-    toggleMogoClamp();
+    toggleMogoClaw();
+
+    //move mobile goal
+    chassis->moveDistance(1_ft);
 
     //pick up 1st ring
-    chassis->turnAngle(45_deg);
-    setLiftSpeed(1);
+    setDriveMotorCurrentLimits(2500);
 
+    turnAngle(45);
+    setLiftSpeed(-127);
+    pros::delay(1000);
+    setLiftSpeed(0);
+
+    //get second ring
+    chassis->moveDistance(2_ft);
+    setLiftSpeed(-127);
+    pros::delay(1000);
+    setLiftSpeed(0);
+
+    //get third ring
+    turnAngle(-90);
+    chassis->moveDistance(4_ft);
+    setLiftSpeed(-127);
+    pros::delay(1000);
+    setLiftSpeed(0);
+
+    //score on wall stake
+    turnAngle(180);
+    chassis->moveDistance(0.5_ft);
+    setLiftSpeed(-127);
+    pros::delay(1000);
+    setLiftSpeed(0);
+
+    //go elsewhere
+    turnAngle(30);
+    chassis->moveDistance(4.5_ft);
+
+}
+
+//Second goal rush auto that DOESNT score on wall stake
+void goalRushNoWallAuto(){
+    // Set speed to max
+    chassis->setMaxVelocity((1.5)*chassis->getMaxVelocity());
+
+    // Lower acceleration to prevent it from hopping onto the red ring and getting stuck
+    setDriveMotorCurrentLimits(1000);
+
+    //drive to and grab mobile goal
+    chassis->moveDistance(7_ft);
+    toggleMogoClaw();
+    chassis->moveDistance(-1_ft);
+    toggleMogoClaw();
+
+    setDriveMotorCurrentLimits(2500);
+
+    //grab mobile goal and turn toward ring
+    turnAngle(180);
+    toggleMogoClamp();
+    turnAngle(180);
+    chassis->moveDistance(1_ft);
+    
+    
+
+    //pick up 1st ring
+    turnAngle(45);
+    setLiftSpeed(127);
+    pros::delay(1000);
+    setLiftSpeed(0);
+
+    //get second ring
+    chassis->moveDistance(2_ft);
+    setLiftSpeed(127);
+    pros::delay(1000);
+    setLiftSpeed(0);
+
+    //get third ring
+    turnAngle(45);
+    chassis->moveDistance(2_ft);
+    setLiftSpeed(127);
+    pros::delay(1000);
+    setLiftSpeed(0);
+
+    //head toward corner
+    turnAngle(45);
+    chassis->moveDistance(2.82_ft);
+
+    //grab ring in corner
+    setLiftSpeed(127);
+    pros::delay(1000);
+    setLiftSpeed(0);
+
+    //turn around and drop mogo in corner
+    chassis->moveDistance(-2_ft);
+    turnAngle(180);
+    chassis->moveDistance(2_ft);
+    toggleMogoClamp();
+
+    //head toward center ladder
+    chassis->moveDistance(7_ft);
 }
 
 /**
