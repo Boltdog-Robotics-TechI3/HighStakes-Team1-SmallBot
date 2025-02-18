@@ -429,14 +429,16 @@ void skillsAuto() {
 
     // putting first ring on wall stake
     driverController.set_text(0, 0, "AHHHHHHHHHHHHHHHHH");
-    setLiftSpeed(-127);
-    chassis->moveDistance(5_in);
-    pros::delay(1000);
+    setIntakeSpeed(127);
+    setLiftSpeed(127);
+    chassis->moveDistance(15_in);
+    pros::delay(500);
     setLiftSpeed(0);
-    chassis->moveDistance(-7_in);
-    setLiftSpeed(-127);
     pros::delay(1000);
-    setLiftSpeed(0);
+    setIntakeSpeed(0);
+    turnAngle(180);
+
+    
 
     // going for next ring
     chassis->moveDistance(3_in);
