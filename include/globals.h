@@ -50,3 +50,10 @@ extern bool redAlliance;
 extern bool blueAlliance;
 extern bool match;
 extern int autoSelection;
+
+// Constants
+extern int ladybrownStartingAngle;
+extern int ladybrownReadiedAngle;
+extern int ladybrownScoringAngle;
+extern int ladybrownBaseFeedForward;
+extern int ladybrownKP;

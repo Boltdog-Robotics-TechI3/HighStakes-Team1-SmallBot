@@ -44,6 +44,7 @@
 #include "liblvgl/lvgl.h"
 #include <iostream>
 #include <chrono>
+#include <cmath>
 
 /**
  * If you find doing pros::Motor() to be tedious and you'd prefer just to do

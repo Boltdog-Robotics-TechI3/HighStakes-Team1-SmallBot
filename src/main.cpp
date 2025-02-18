@@ -93,7 +93,7 @@ void opcontrol() {
 		liftPeriodic();
 		clamperPeriodic();
 		ladybrownPeriodic();
-		drivetrainPeriodic();
+		// drivetrainPeriodic();
 
 		if (driverController.get_digital_new_press(DIGITAL_Y)) {
 			//autonomous();

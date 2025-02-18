@@ -37,9 +37,9 @@ pros::adi::Pneumatics mogoClaw = pros::adi::Pneumatics('B', false);
 // Sensors
 pros::IMU gyro(7);
 
-pros::Optical opticalSensor(10);
+pros::Optical opticalSensor(17);
 
-pros::Rotation rotationSensor(1);
+pros::Rotation rotationSensor(10);
 
 // Comp Specifications
 bool skills = false;
@@ -49,3 +49,10 @@ bool qual = true;
 bool redAlliance = true;
 bool blueAlliance = false;
 int autoSelection = 0; 
+
+// Constants
+int ladybrownStartingAngle = -15;
+int ladybrownReadiedAngle = 0;
+int ladybrownScoringAngle = 130;
+int ladybrownBaseFeedForward = 12;
+int ladybrownKP = 0.1;
