@@ -84,10 +84,19 @@ void opcontrol(void);
 // #include "okapi/api.hpp"
 #include "globals.h"
 #include "screen.h"
+
+// Subsystems
 #include "subsystemHeaders/lift.hpp"
 #include "subsystemHeaders/clamper.hpp"
 #include "subsystemHeaders/ladybrown.hpp"
 #include "subsystemHeaders/drivetrain.hpp"
+
+// Autos
+#include "autonomousHeaders/goalRushNoWallAuto.hpp"
+#include "autonomousHeaders/goalRushWallStakeAuto.hpp"
+#include "autonomousHeaders/skillsAuto.hpp"
+#include "autonomousHeaders/testAuto.hpp"
+
 
 #endif
 

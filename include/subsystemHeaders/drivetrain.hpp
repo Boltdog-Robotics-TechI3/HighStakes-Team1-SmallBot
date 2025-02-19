@@ -1,5 +1,9 @@
 #include "main.h"
 
+extern std::shared_ptr<okapi::ChassisControllerPID> chassis;
+
+extern std::shared_ptr<okapi::ChassisModel> drivetrain;
+
 void drivetrainInitialize();
 
 void drivetrainPeriodic();
@@ -15,12 +19,6 @@ void testAuto();
 void matchLeftMogoDropAuto();
 
 void matchLeftMogoKeepAuto();
-
-void skillsAuto();
-
-void goalRushNoWallAuto();
-
-void goalRushWallStakeAuto();
 
 void lateralPIDTune();
 
