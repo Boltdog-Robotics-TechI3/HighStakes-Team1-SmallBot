@@ -8,7 +8,7 @@ auto chassis = std::dynamic_pointer_cast<ChassisControllerPID>(ChassisController
 	.withMotors(leftMotorGroup, rightMotorGroup)
 	.withDimensions({AbstractMotor::gearset::blue, (3.0/4.0)}, {{2.75_in, 11.5_in}, imev5BlueTPR})
     .withGains(
-        {0.0045, 0, 0.00007},
+        {0.0045, 0, 0.0000},
         {3.0, 0.00, 0},
         {0.0, 0, 0.0000}
     )
@@ -24,9 +24,10 @@ void drivetrainInitialize() {
     //driverController.set_text(0, 0, "");
     drivetrain->setBrakeMode(okapi::AbstractMotor::brakeMode::coast);
     chassis->setMaxVelocity(0.4*chassis->getMaxVelocity());
-
     setDriveMotorCurrentLimits(2000);
 }
+
+
 
 /**
 *  Runs every opcontrol cycle. 
@@ -127,7 +128,17 @@ void turnAngle(float angle, int timeout) {
 }
 
 void lateralPIDTune(){
-    chassis->moveDistance(2_ft);
+    auto gains = get<1>(chassis->getGains());
+    chassis->setGains(
+        {0.001, 0, 0.0000},
+        {3.0, 0.00, 0},
+        {0.0, 0, 0.0000}
+    );
+    chassis->setGains(
+        gains,
+        {3.0, 0.00, 0},
+        {0.0, 0, 0.0000}
+    );
 
 }
 
@@ -361,13 +372,24 @@ void goalRushWallStakeAuto(){
 //Second goal rush auto that DOESNT score on wall stake
 void goalRushNoWallAuto(){
     // Set speed to max
-    chassis->setMaxVelocity((1.5)*chassis->getMaxVelocity());
+    chassis->setMaxVelocity((10.0/4.0)*chassis->getMaxVelocity());
 
     // Lower acceleration to prevent it from hopping onto the red ring and getting stuck
     setDriveMotorCurrentLimits(1000);
 
     //drive to and grab mobile goal
-    chassis->moveDistance(7_ft);
+
+    chassis->setGains(
+        {0.001, 0, 0.0000},
+        {3.0, 0.00, 0},
+        {0.0, 0, 0.0000}
+    );
+    chassis->moveDistance(7.5_ft);
+    chassis->setGains(
+        {0.0045, 0, 0.0000},
+        {3.0, 0.00, 0},
+        {0.0, 0, 0.0000}
+    );
     toggleMogoClaw();
     chassis->moveDistance(-1_ft);
     toggleMogoClaw();
