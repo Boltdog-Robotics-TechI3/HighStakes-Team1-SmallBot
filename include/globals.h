@@ -34,6 +34,7 @@ extern pros::Controller driverController;
 // Pneumatics
 extern pros::adi::Pneumatics mogoClamp;
 extern pros::adi::Pneumatics mogoClaw;
+extern pros::adi::Pneumatics mogoClawArm;
 
 // Sensor Initialization
 extern pros::IMU gyro;

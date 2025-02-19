@@ -10,4 +10,6 @@ void setMogoClamp(bool state);
 
 void toggleMogoClaw();
 
+void toggleMogoClawArm();
+
 void setMogoClaw(bool state);

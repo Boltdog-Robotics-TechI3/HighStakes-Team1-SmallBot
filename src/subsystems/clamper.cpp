@@ -44,6 +44,10 @@ void setMogoClamp(bool state) {
     }
 }
 
+void toggleMogoClawArm(){
+    mogoClawArm.toggle();
+}
+
 void toggleMogoClaw() {
     mogoClaw.toggle();
 }

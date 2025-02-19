@@ -101,16 +101,18 @@ void opcontrol() {
 			// for skills testing
 			//autonomous();
 			goalRushNoWallAuto();
+			//toggleMogoClawArm();
 		}
 
 		else if(driverController.get_digital_new_press(DIGITAL_X)){
 			//goalRushWallStakeAuto();
 			//skillsAuto();
-			lateralPIDTune();
+			toggleMogoClaw();
 		}
 
 		else if(driverController.get_digital_new_press(DIGITAL_A)){
 			skillsAuto();
+			
 		}
 
 		// Run for 20 ms then update

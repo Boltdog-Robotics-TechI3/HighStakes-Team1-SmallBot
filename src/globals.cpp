@@ -31,8 +31,9 @@ pros::Controller driverController(pros::E_CONTROLLER_MASTER);
     pros::MotorGroup ladybrownGroup({5, -6});
 
 // Pneumatics
-pros::adi::Pneumatics mogoClamp = pros::adi::Pneumatics('A', false);
-pros::adi::Pneumatics mogoClaw = pros::adi::Pneumatics('B', false);
+pros::adi::Pneumatics mogoClamp = pros::adi::Pneumatics('H', false);
+pros::adi::Pneumatics mogoClaw = pros::adi::Pneumatics('F', false);
+pros::adi::Pneumatics mogoClawArm = pros::adi::Pneumatics('G', false);
 
 // Sensors
 pros::IMU gyro(7);

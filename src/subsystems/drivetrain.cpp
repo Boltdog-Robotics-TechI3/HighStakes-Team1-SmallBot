@@ -12,6 +12,7 @@ std::shared_ptr<okapi::ChassisControllerPID> chassis = std::dynamic_pointer_cast
         {3.0, 0.00, 0},
         {0.0, 0, 0.0000}
     )
+    .withClosedLoopControllerTimeUtil()
     .build());
 
 std::shared_ptr<ChassisModel> drivetrain = chassis->getModel();
