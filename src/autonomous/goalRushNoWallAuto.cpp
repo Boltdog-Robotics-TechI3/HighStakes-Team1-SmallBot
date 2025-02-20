@@ -17,25 +17,24 @@ void goalRushNoWallAuto(){
         {0.0, 0, 0.0000}
     );
     toggleMogoClawArm();
-    chassis->moveDistanceAsync(6.55_ft);
-
+    chassis->moveDistanceAsync(6.8_ft);
+    pros::delay(1000);
+    toggleMogoClaw();
     chassis->setMaxVelocity((0.4)*chassis->getMaxVelocity());
     chassis->setGains(
         {0.0045, 0, 0.0000},
         {3.0, 0.00, 0},
         {0.0, 0, 0.0000}
     );
-    pros::delay(1000);
-    toggleMogoClaw();
     chassis->moveDistance(-1_ft);
     toggleMogoClaw();
 
 
-    // //grab mobile goal and turn toward ring
-    // turnAngle(180);
-    // toggleMogoClamp();
-    // turnAngle(180);
-    // chassis->moveDistance(1_ft);
+    //grab mobile goal and turn toward ring
+    turnAngle(180);
+    toggleMogoClamp();
+    turnAngle(180);
+    chassis->moveDistance(1_ft);
 
     // //pick up 1st ring
     // turnAngle(45);
