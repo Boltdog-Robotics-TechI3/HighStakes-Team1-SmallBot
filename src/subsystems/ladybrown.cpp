@@ -1,7 +1,7 @@
 #include "main.h"
 using namespace std;
 
-int setpoint = 0;
+int setpoint = ladybrownStartingAngle;
 
 bool manualOverride = false;
 
@@ -51,11 +51,11 @@ void ladybrownInitialize() {
 */
 void ladybrownPeriodic() {
     // driverController.set_text(0, 0, to_string(ladybrownA.get_position()));
-    driverController.set_text(0, 0, "Ladybrown" + std::to_string(getLadybrownAngle()));
+    // driverController.set_text(0, 0, "Ladybrown" + std::to_string(getLadybrownAngle()));
     // driverController.set_text(0, 0, "Analog" + std::to_string(driverController.get_analog(ANALOG_LEFT_Y))); 
 
 
-    setLadybrownPosition(setpoint);
+    setLadybrownPosition(setpoint, 50);
 
     if (driverController.get_digital_new_press(DIGITAL_LEFT)) {
         setManualOverride(!manualOverride);
@@ -68,16 +68,20 @@ void ladybrownPeriodic() {
             setLadybrownSetpoint(0);
         }
         else if (driverController.get_digital(DIGITAL_RIGHT)) {
-            setLadybrownSetpoint(ladybrownReadiedAngle);
+            setLadybrownSetpoint(100);
         }
         else if (driverController.get_digital_new_press(DIGITAL_UP)) {
-            setLadybrownSetpoint(ladybrownScoringAngle);
+            setLadybrownSetpoint(700);
         }
     }
  }
 
-double getLadybrownAngle() {
+double getLadybrownAngleDegrees() {
     return (rotationSensor.get_position() / 100) + ladybrownStartingAngle;
+}
+
+double getLadybrownAngleRadians() {
+    return getLadybrownAngleDegrees() * 3.14159 / 180;
 }
 
 /**
@@ -85,18 +89,36 @@ double getLadybrownAngle() {
 *
 * @param posValue The target position the ladybrown should go to, in [INSERT UNITS HERE]
 */
-void setLadybrownPosition(int posValue) {
-    // if (posValue < 0 || posValue > 800) {
-    //     ladybrownGroup.move_absolute(ladybrownGroup.get_position(), 100);
-    // }
-    // else {
-    //     ladybrownGroup.move_absolute(posValue, 100);
-    // }
+void setLadybrownPosition(int posValue, int velocity) {
+    if (posValue < 0 || posValue > 1000) {
+        ladybrownGroup.move_absolute(ladybrownGroup.get_position(), velocity);
+    }
+    else {
+        ladybrownGroup.move_absolute(posValue, velocity);
+    }
 
-    double error = posValue - rotationSensor.get_angle();
-    double output = (error * ladybrownKP) + (std::cos(getLadybrownAngle()) * ladybrownBaseFeedForward); 
+    // double error = posValue - getLadybrownAngleDegrees();
 
-    setLadybrownSpeed(output);
+    // double nominalOutput = (error * ladybrownKP);
+
+    // if (error > 1 &&  nominalOutput < 3) {
+    //     nominalOutput = 10;
+    // }
+    // if (error < 1 &&  nominalOutput > -3) {
+    //     nominalOutput = -10;
+    // }
+    
+    // double output = nominalOutput + (std::cos(getLadybrownAngleRadians()) * ladybrownBaseFeedForward); 
+
+    // driverController.set_text(0, 0, "Ladybrown: " + std::to_string(output));
+
+    // driverController.clear();
+
+    // driverController.set_text(0, 0, "Ladybrown: " + std::to_string(output));
+
+   
+
+    // setLadybrownSpeed(output);
 }
 
 /**
@@ -125,23 +147,23 @@ void setManualOverride(bool isOverride) {
 *  the lady brown with direct voltage inputs.
 */
 void manualControl() {
-    // if (driverController.get_digital(DIGITAL_UP)) {
-    //     setLadybrownSpeed(60);
-    // }
-    // else if (driverController.get_digital(DIGITAL_DOWN)) {
-    //     setLadybrownSpeed(-40);
-    // }
-    // else {
-    //     setLadybrownSetpoint(ladybrownA.get_position());
-    //     setLadybrownPosition(setpoint);
-    // }
-    if (driverController.get_analog(ANALOG_LEFT_Y) > 5 || driverController.get_analog(ANALOG_LEFT_Y) < -5) {
-        setLadybrownSpeed(driverController.get_analog(ANALOG_LEFT_Y) + ((std::cos(getLadybrownAngle()) * ladybrownBaseFeedForward)));
+    if (driverController.get_digital(DIGITAL_UP)) {
+        setLadybrownSpeed(60 + (std::cos(getLadybrownAngleDegrees()) * ladybrownBaseFeedForward));
+    }
+    else if (driverController.get_digital(DIGITAL_DOWN)) {
+        setLadybrownSpeed(-40 + (std::cos(getLadybrownAngleDegrees()) * ladybrownBaseFeedForward));
     }
     else {
-        driverController.clear();
-        setLadybrownSpeed(0);
+        setLadybrownSetpoint(ladybrownA.get_position());
+        setLadybrownPosition(setpoint, 50);
     }
+    // if (driverController.get_analog(ANALOG_LEFT_Y) > 5 || driverController.get_analog(ANALOG_LEFT_Y) < -5) {
+    //     setLadybrownSpeed(driverController.get_analog(ANALOG_LEFT_Y) + ((std::cos(getLadybrownAngle()) * ladybrownBaseFeedForward)));
+    // }
+    // else {
+    //     driverController.clear();
+    //     setLadybrownSpeed(0);
+    // }
 
 }
 
@@ -152,15 +174,15 @@ void manualControl() {
  * @param speed speed to set the ladybrown to, from -127 to 127
  */
 void setLadybrownSpeed(int speed) {
-    // if (getLadybrownAngle() > ladybrownScoringAngle && speed > 0) {
-    //     ladybrownGroup.move(0);
-    // }
-    // else if (getLadybrownAngle() <= ladybrownStartingAngle  && speed < 0) {
-    //     ladybrownGroup.move(0);
-    // }
-    // else {
+    if (getLadybrownAngleDegrees() > ladybrownScoringAngle && speed > 0) {
+        ladybrownGroup.move(0);
+    }
+    else if (getLadybrownAngleDegrees() <= ladybrownStartingAngle  && speed < 0) {
+        ladybrownGroup.move(0);
+    }
+    else {
         ladybrownGroup.move(speed);
-    // }
+    }
 }
 
 

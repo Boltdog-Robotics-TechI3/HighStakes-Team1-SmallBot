@@ -56,4 +56,4 @@ int ladybrownStartingAngle = -15;
 int ladybrownReadiedAngle = 0;
 int ladybrownScoringAngle = 130;
 int ladybrownBaseFeedForward = 12;
-int ladybrownKP = 0.1;
+double ladybrownKP = 1;

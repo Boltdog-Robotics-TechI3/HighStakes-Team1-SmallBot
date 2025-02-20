@@ -96,6 +96,8 @@ void opcontrol(void);
 #include "autonomousHeaders/goalRushWallStakeAuto.hpp"
 #include "autonomousHeaders/skillsAuto.hpp"
 #include "autonomousHeaders/testAuto.hpp"
+#include "autonomousHeaders/allianceMogoAuto.hpp"
+
 
 
 #endif

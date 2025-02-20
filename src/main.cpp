@@ -95,25 +95,23 @@ void opcontrol() {
 		ladybrownPeriodic();
 		drivetrainPeriodic();
 
-		if (driverController.get_digital_new_press(DIGITAL_Y)) {
+		// if (driverController.get_digital_new_press(DIGITAL_Y)) {
 			//autonomous();
 
 			// for skills testing
 			//autonomous();
-			goalRushNoWallAuto();
+		// 	goalRushNoWallAuto();
 			//toggleMogoClawArm();
+		// }
+
+		if(driverController.get_digital_new_press(DIGITAL_X)) {
+			allianceMogoAuto();
 		}
 
-		else if(driverController.get_digital_new_press(DIGITAL_X)){
-			//goalRushWallStakeAuto();
-			//skillsAuto();
-			toggleMogoClaw();
-		}
-
-		else if(driverController.get_digital_new_press(DIGITAL_A)){
-			skillsAuto();
+		// else if(driverController.get_digital_new_press(DIGITAL_A)){
+		// 	skillsAuto();
 			
-		}
+		// }
 
 		// Run for 20 ms then update
 		pros::delay(20);  

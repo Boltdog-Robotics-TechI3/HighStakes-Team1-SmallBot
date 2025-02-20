@@ -57,4 +57,4 @@ extern int ladybrownStartingAngle;
 extern int ladybrownReadiedAngle;
 extern int ladybrownScoringAngle;
 extern int ladybrownBaseFeedForward;
-extern int ladybrownKP;
+extern double ladybrownKP;

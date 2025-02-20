@@ -118,10 +118,13 @@ bool detectsBadColor() {
  */
 void eject() {
     lift.controllerSet(1);
-    pros::delay(145);
+    pros::delay(160);
+    lift.controllerSet(-1);
+    pros::delay(150);
     lift.controllerSet(0);
-    pros::delay(250);
+
 }
+
 
 /**
  *  Task that will run in the background of the project to

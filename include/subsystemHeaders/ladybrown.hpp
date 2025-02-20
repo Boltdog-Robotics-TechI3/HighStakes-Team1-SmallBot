@@ -4,9 +4,11 @@ void ladybrownInitialize();
 
 void ladybrownPeriodic();
 
-double getLadybrownAngle();
+double getLadybrownAngleDegrees();
 
-void setLadybrownPosition(int posValue);
+double getLadybrownAngleRadians();
+
+void setLadybrownPosition(int posValue, int velocity);
 
 void setLadybrownSetpoint(int point);
 
