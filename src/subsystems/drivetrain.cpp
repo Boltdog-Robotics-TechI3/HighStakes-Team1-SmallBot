@@ -1,4 +1,5 @@
 #include "main.h"
+#include <algorithm>
 using namespace std;
 using namespace okapi;
 
@@ -140,6 +141,13 @@ void turnAngle(float angle, int timeout) {
 	while (errorCounter < 100 && std::chrono::high_resolution_clock::now() < exitTime) {
 		integral += error;
 		float velocity = setMinAbs((gains.kP * error + (error - previousError) * gains.kD + gains.kI * integral), 5);
+        // Code to easily set max and min velocity:
+        //double velocity = gains.kP * error + (error - previousError) * gains.kD + gains.kI * integral;
+        /*if (velocity > 0) {
+            velocity = std::clamp(velocity, 5.0, 127.0);
+        } else if (velocity < 0) {
+            velocity = std::clamp(velocity, -127.0, -5.0);
+        }*/
 		rightMotorGroup.moveVelocity(-velocity);
 		leftMotorGroup.moveVelocity(velocity);
 		pros::delay(10);
