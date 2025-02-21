@@ -1,5 +1,4 @@
 #include "main.h"
-#include <algorithm>
 using namespace std;
 using namespace okapi;
 
@@ -121,6 +120,20 @@ void turnToHeading(float heading, int timeout) {
 	//master.print(0, 0, "%f", error);
 	turnAngle(error, timeout);
 }
+/*
+void turnToHeading(double heading, int timeout, double maxVelocity) {
+	double currentHeading = gyro.get_heading();
+	double error = heading - currentHeading;
+	
+	if (error > 180) {
+		error = error - 360;
+	} else if (error < -180) {
+		error = 360 + error;
+	}
+	//master.print(0, 0, "%f", error);
+	turnAngle(error, timeout, maxVelocity);
+}
+*/
 
 /** 
 * @brief Custom Turnangle Function
@@ -141,13 +154,6 @@ void turnAngle(float angle, int timeout) {
 	while (errorCounter < 100 && std::chrono::high_resolution_clock::now() < exitTime) {
 		integral += error;
 		float velocity = setMinAbs((gains.kP * error + (error - previousError) * gains.kD + gains.kI * integral), 5);
-        // Code to easily set max and min velocity:
-        //double velocity = gains.kP * error + (error - previousError) * gains.kD + gains.kI * integral;
-        /*if (velocity > 0) {
-            velocity = std::clamp(velocity, 5.0, 127.0);
-        } else if (velocity < 0) {
-            velocity = std::clamp(velocity, -127.0, -5.0);
-        }*/
 		rightMotorGroup.moveVelocity(-velocity);
 		leftMotorGroup.moveVelocity(velocity);
 		pros::delay(10);
@@ -164,7 +170,43 @@ void turnAngle(float angle, int timeout) {
 	rightMotorGroup.moveVelocity(0);
 	leftMotorGroup.moveVelocity(0);
 }
+/* turnAngle but you can set the max velocity, commented out because it's untested
+ * uncomment in the header file as well if you want to use it
+void turnAngle(double angle, int timeout, double maxVelocity) {
+    auto gains = get<1>(chassis->getGains());
 
+    double target = angle + gyro.get_rotation();
+    double error = angle;
+	double previousError = 0;
+	double integral = 0;
+	double errorCounter = 0;
+	double precision = 0.75;
+    double minVelocity = 5.0;
+	
+	auto exitTime = std::chrono::high_resolution_clock::now() + std::chrono::seconds(timeout);
+	while (errorCounter < 100 && std::chrono::high_resolution_clock::now() < exitTime) {
+		integral += error;
+        //double velocity = gains.kP * error + (error - previousError) * gains.kD + gains.kI * integral;
+        if (velocity > 0) {
+            velocity = std::clamp(velocity, minVelocity, maxVelocity);
+        } else if (velocity < 0) {
+            velocity = std::clamp(velocity, -maxVelocity, -minVelocity);
+        }
+		rightMotorGroup.moveVelocity(-velocity);
+		leftMotorGroup.moveVelocity(velocity);
+		pros::delay(10);
+		previousError = error;
+		error = target - gyro.get_rotation();
+		if (abs(error) < precision) {
+			errorCounter++;
+		}
+		else {
+			errorCounter = 0;
+		}
+	}
+	rightMotorGroup.moveVelocity(0);
+	leftMotorGroup.moveVelocity(0);
+}*/
 void lateralPIDTune(){
     auto gains = get<1>(chassis->getGains());
     chassis->setGains(
