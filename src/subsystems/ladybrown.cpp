@@ -90,7 +90,7 @@ double getLadybrownAngleRadians() {
 * @param posValue The target position the ladybrown should go to, in [INSERT UNITS HERE]
 */
 void setLadybrownPosition(int posValue, int velocity) {
-    if (posValue < 0 || posValue > 1000) {
+    if (posValue < 0 || posValue > 1500) {
         ladybrownGroup.move_absolute(ladybrownGroup.get_position(), velocity);
     }
     else {

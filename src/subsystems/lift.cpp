@@ -97,7 +97,7 @@ void setIntakeSpeed(double speed) {
  */
 bool detectsBadColor() {
     if (redAlliance) {
-        if (opticalSensor.get_hue() >= 130 && opticalSensor.get_hue() <= 230) {
+        if (opticalSensor.get_hue() >= 170 && opticalSensor.get_hue() <= 230) {
             return true;
         }
     }
@@ -150,7 +150,7 @@ void intakeUntilColor(void* param) {
             setLiftSpeed(0);
             break;
         }
-        else if (blueAlliance && opticalSensor.get_hue() >= 130 && opticalSensor.get_hue() <= 230) {
+        else if (blueAlliance && opticalSensor.get_hue() >= 160 && opticalSensor.get_hue() <= 230) {
             setLiftSpeed(0);
             break;
         }

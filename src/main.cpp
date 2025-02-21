@@ -49,28 +49,27 @@ void competition_initialize() {}
 void autonomous() {
 	switch (autoSelection) {
 		case 0:
-			// match Left Side Keep
-			matchLeftMogoKeepAuto();
+			allianceMogoRedAuto();
 			break;
 		case 1:
-			matchLeftMogoDropAuto();
+			allianceMogoBlueAuto();
 			break;
 		case 2: 
-			// match Climb Keep 
+			goalRushNoWallAuto();
 			break;
 		case 3:
-			// match climb drop
+			goalRushWallStakeAuto();
 			break;
 		case 4:
 			skillsAuto();
+			break;
 		case 5:
-			goalRushNoWallAuto();
+			testAuto();
+			break;
 		case 6:
-			goalRushWallStakeAuto();
+			// Do Nothing :)
+			break;
 	}
-
-	// testAuto();
-
 }
 
 /**
@@ -90,8 +89,8 @@ void opcontrol() {
 	while (true) {
 
 		// Run each subsystem's periodic function
-		liftPeriodic();
 		clamperPeriodic();
+		liftPeriodic();
 		ladybrownPeriodic();
 		drivetrainPeriodic();
 
@@ -104,8 +103,9 @@ void opcontrol() {
 			//toggleMogoClawArm();
 		// }
 
-		if(driverController.get_digital_new_press(DIGITAL_X)) {
-			allianceMogoAuto();
+		if(driverController.get_digital_new_press(DIGITAL_Y)) {
+			// allianceMogoBlueAuto();
+			skillsAuto();
 		}
 
 		// else if(driverController.get_digital_new_press(DIGITAL_A)){

@@ -8,7 +8,7 @@ std::shared_ptr<okapi::ChassisControllerPID> chassis = std::dynamic_pointer_cast
 	.withMotors(leftMotorGroup, rightMotorGroup)
 	.withDimensions({AbstractMotor::gearset::blue, (3.0/4.0)}, {{2.75_in, 11.5_in}, imev5BlueTPR})
     .withGains(
-        {0.0045, 0, 0.0000},
+        {0.0045, 0, 0.0001},
         {3.0, 0.00, 0},
         {0.0, 0, 0.0000}
     )
@@ -42,6 +42,19 @@ void drivetrainPeriodic() {
     }
 
     arcadeDrive(isFrontReversed);
+
+    // if (driverController.get_digital_new_press(DIGITAL_RIGHT)) {
+    //     turnToHeading(90);
+    // }
+    // if (driverController.get_digital_new_press(DIGITAL_LEFT)) {
+    //     turnToHeading(270);
+    // }
+    // if (driverController.get_digital_new_press(DIGITAL_UP)) {
+    //     turnToHeading(0);
+    // }
+    // if (driverController.get_digital_new_press(DIGITAL_DOWN)) {
+    //     turnToHeading(180);
+    // }
 }
 
 /**
@@ -90,6 +103,24 @@ void setDriveMotorCurrentLimits(int mAmps) {
     rightMotorGroup.setCurrentLimit(mAmps);
 }
 
+/**
+* @brief Turns the robot to an absolute heading using PID control
+* @param heading The heading to turn to in degrees: [0,360)
+* @param timeout Timeout before the robot gives up in seconds, default to 10
+*/
+void turnToHeading(float heading, int timeout) {
+	float currentHeading = gyro.get_heading();
+	float error = heading - currentHeading;
+	
+	if (error > 180) {
+		error = error - 360;
+	} else if (error < -180) {
+		error = 360 + error;
+	}
+	//master.print(0, 0, "%f", error);
+	turnAngle(error, timeout);
+}
+
 /** 
 * @brief Custom Turnangle Function
 * @param angle angle in degrees
@@ -103,12 +134,12 @@ void turnAngle(float angle, int timeout) {
 	float previousError = 0;
 	float integral = 0;
 	float errorCounter = 0;
-	float precision = 1;
+	float precision = 0.75;
 	
 	auto exitTime = std::chrono::high_resolution_clock::now() + std::chrono::seconds(timeout);
-	while (errorCounter < 50 && std::chrono::high_resolution_clock::now() < exitTime) {
+	while (errorCounter < 100 && std::chrono::high_resolution_clock::now() < exitTime) {
 		integral += error;
-		float velocity = setMinAbs((gains.kP * error + (error - previousError) * gains.kD + gains.kI * integral), 1);
+		float velocity = setMinAbs((gains.kP * error + (error - previousError) * gains.kD + gains.kI * integral), 5);
 		rightMotorGroup.moveVelocity(-velocity);
 		leftMotorGroup.moveVelocity(velocity);
 		pros::delay(10);

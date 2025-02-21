@@ -18,8 +18,11 @@ void clamperPeriodic() {
     if (driverController.get_digital_new_press(DIGITAL_B)) {
         toggleMogoClamp();
     }
-    if (driverController.get_digital_new_press(DIGITAL_A)) {
+    if (driverController.get_digital_new_press(DIGITAL_X)) {
         toggleMogoClaw();
+    }
+    if (driverController.get_digital_new_press(DIGITAL_A)) {
+        toggleMogoClawArm();
     }
 }
 
@@ -63,5 +66,19 @@ void setMogoClaw(bool state) {
     }
     else {
         mogoClaw.retract();
+    }
+}
+
+/**
+ * Sets the state of the mogo claw
+ * 
+ * @param state the state of the claw: True for down, False for up.
+ */
+void setMogoClawArm(bool state) {
+    if (state) {
+        mogoClawArm.extend();
+    }
+    else {
+        mogoClawArm.retract();
     }
 }
