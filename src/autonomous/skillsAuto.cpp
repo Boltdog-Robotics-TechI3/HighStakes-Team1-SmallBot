@@ -41,12 +41,14 @@ void skillsAuto() {
     chassis->waitUntilSettled();
     chassis->moveDistance(-3.6_ft);
     chassis->waitUntilSettled();
+    setIntakeSpeed(0);
     
     //getting mogo
     turnToHeading(90);
     chassis->moveDistance(-3.5_ft);
     chassis->waitUntilSettled();
     toggleMogoClamp();
+    setIntakeSpeed(127);
     setLiftSpeed(127);
 
     // getting the ring by corner
@@ -88,7 +90,7 @@ void skillsAuto() {
         {3.0, 0.00, 0},
         {0.0, 0, 0.0000}
     );
-    chassis->moveDistance(3.6_ft);
+    chassis->moveDistance(3.8_ft);
     chassis->waitUntilSettled();
     turnToHeading(270);
     chassis->moveDistance(-4.2_ft);
@@ -109,14 +111,14 @@ void skillsAuto() {
     // chassis->waitUntilSettled();
 
     // Drive into Corner
-    turnToHeading(135);
+    turnToHeading(140);
     chassis->setMaxVelocity(3*chassis->getMaxVelocity());
     chassis->setGains(       
         {0.0015, 0, 0.00004},
         {3.0, 0, 0.00},
         {0.0005, 0, 0.0000}
     );
-    chassis->moveDistanceAsync(-6_ft);
+    chassis->moveDistanceAsync(-7_ft);
     pros::delay(2000);
     toggleMogoClamp();
     pros::delay(500);
