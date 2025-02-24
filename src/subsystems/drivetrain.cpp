@@ -8,7 +8,7 @@ std::shared_ptr<okapi::ChassisControllerPID> chassis = std::dynamic_pointer_cast
 	.withMotors(leftMotorGroup, rightMotorGroup)
 	.withDimensions({AbstractMotor::gearset::blue, (3.0/4.0)}, {{2.75_in, 11.5_in}, imev5BlueTPR})
     .withGains(
-        {0.0045, 0, 0.0001},
+        {0.004, 0, 0.0001},
         {3.0, 0.00, 0},
         {0.0, 0, 0.0000}
     )
@@ -142,7 +142,6 @@ void turnToHeading(double heading, int timeout, double maxVelocity) {
 */
 void turnAngle(float angle, int timeout) {
     auto gains = get<1>(chassis->getGains());
-
     float target = angle + gyro.get_rotation();
     float error = angle;
 	float previousError = 0;
@@ -207,6 +206,16 @@ void turnAngle(double angle, int timeout, double maxVelocity) {
 	rightMotorGroup.moveVelocity(0);
 	leftMotorGroup.moveVelocity(0);
 }*/
+
+void moveDistanceWithTimeout(QLength itarget, int timeout) {
+    chassis->moveDistanceAsync(itarget);
+
+    auto exitTime = std::chrono::high_resolution_clock::now() + std::chrono::seconds(timeout);
+
+    while (!chassis->isSettled() && std::chrono::high_resolution_clock::now() < exitTime) {};
+}
+
+
 void lateralPIDTune(){
     auto gains = get<1>(chassis->getGains());
     chassis->setGains(

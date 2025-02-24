@@ -1,4 +1,5 @@
 #include "main.h"
+using namespace okapi;
 
 extern std::shared_ptr<okapi::ChassisControllerPID> chassis;
 
@@ -17,6 +18,8 @@ void turnToHeading(float heading, int timeout = 10);
 
 void turnAngle(float angle, int timeout = 10);
 //void turnAngle(float angle, int timeout=10, double maxVelocity=127);
+
+void moveDistanceWithTimeout(QLength itarget, int timeout);
 
 void lateralPIDTune();
 

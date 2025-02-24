@@ -2,6 +2,7 @@
 using namespace std;
 
 int setpoint = ladybrownStartingAngle;
+int speed = 50;
 
 bool manualOverride = false;
 
@@ -55,7 +56,7 @@ void ladybrownPeriodic() {
     // driverController.set_text(0, 0, "Analog" + std::to_string(driverController.get_analog(ANALOG_LEFT_Y))); 
 
 
-    setLadybrownPosition(setpoint, 50);
+    setLadybrownPosition(setpoint, speed);
 
     if (driverController.get_digital_new_press(DIGITAL_LEFT)) {
         setManualOverride(!manualOverride);
@@ -65,13 +66,13 @@ void ladybrownPeriodic() {
     }
     else {
         if (driverController.get_digital(DIGITAL_DOWN)) {
-            setLadybrownSetpoint(0);
+            setLadybrownSetpoint(0, 50);
         }
         else if (driverController.get_digital(DIGITAL_RIGHT)) {
-            setLadybrownSetpoint(100);
+            setLadybrownSetpoint(130, 50);
         }
         else if (driverController.get_digital_new_press(DIGITAL_UP)) {
-            setLadybrownSetpoint(700);
+            setLadybrownSetpoint(700, 100);
         }
     }
  }
@@ -125,9 +126,11 @@ void setLadybrownPosition(int posValue, int velocity) {
  * Sets the target position of the ladybrown.
  * 
  * @param point the target position in encoder units.
+ * @param fast the speed the ladybrown will move at.
  */
-void setLadybrownSetpoint(int point) {
+void setLadybrownSetpoint(int point, int fast) {
     setpoint = point;
+    speed = fast;
 }
 
 /**
@@ -154,7 +157,7 @@ void manualControl() {
         setLadybrownSpeed(-40 + (std::cos(getLadybrownAngleDegrees()) * ladybrownBaseFeedForward));
     }
     else {
-        setLadybrownSetpoint(ladybrownA.get_position());
+        setLadybrownSetpoint(ladybrownA.get_position(), 50);
         setLadybrownPosition(setpoint, 50);
     }
     // if (driverController.get_analog(ANALOG_LEFT_Y) > 5 || driverController.get_analog(ANALOG_LEFT_Y) < -5) {

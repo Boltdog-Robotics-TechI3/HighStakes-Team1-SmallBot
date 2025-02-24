@@ -7,6 +7,8 @@ using namespace okapi;
 void skillsAuto() {
     // putting first ring on wall stake
     chassis->setMaxVelocity(0.7*chassis->getMaxVelocity());
+    gyro.set_heading(0);
+    setDriveMotorCurrentLimits(1400);
     setLadybrownPosition(200, 50);
     pros::delay(500);
     setLadybrownPosition(140, 50);
@@ -39,7 +41,7 @@ void skillsAuto() {
     turnToHeading(45);
     chassis->moveDistance(3.6_ft);
     chassis->waitUntilSettled();
-    chassis->moveDistance(-3.6_ft);
+    chassis->moveDistance(-3.4_ft);
     chassis->waitUntilSettled();
     setIntakeSpeed(0);
     
@@ -68,10 +70,12 @@ void skillsAuto() {
     chassis->moveDistance(-10_in);
     chassis->waitUntilSettled();
     toggleMogoClamp();
-    pros::delay(500);
+    pros::delay(750);
 
     // Drive to other side of field
-    chassis->moveDistance(1.5_ft);
+    chassis->moveDistance(1_ft);
+    chassis->waitUntilSettled();
+    chassis->moveDistance(0.5_ft);
     chassis->waitUntilSettled();
     turnToHeading(0);
     setIntakeSpeed(127);
@@ -118,7 +122,7 @@ void skillsAuto() {
         {3.0, 0, 0.00},
         {0.0005, 0, 0.0000}
     );
-    chassis->moveDistanceAsync(-7_ft);
+    chassis->moveDistanceAsync(-9_ft);
     pros::delay(2000);
     toggleMogoClamp();
     pros::delay(500);

@@ -14,7 +14,8 @@ void initialize() {
 	liftInitialize();
 	clamperInitialize();
 	ladybrownInitialize();
-	gyro.reset(true);
+	gyro.reset();
+	while (gyro.is_calibrating());
 }
 
 /**
@@ -86,6 +87,8 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
+	chassis->stop();
+	drivetrain->stop();
 	while (true) {
 
 		// Run each subsystem's periodic function
@@ -103,9 +106,10 @@ void opcontrol() {
 			//toggleMogoClawArm();
 		// }
 
-		if(driverController.get_digital_new_press(DIGITAL_Y)) {
-			// allianceMogoBlueAuto();
-			skillsAuto();
+		if(driverController.get_digital_new_press(DIGITAL_Y) &&
+		   driverController.get_digital(DIGITAL_L2) &&
+		   driverController.get_digital(DIGITAL_R2)) {
+			autonomous();			
 		}
 
 		// else if(driverController.get_digital_new_press(DIGITAL_A)){

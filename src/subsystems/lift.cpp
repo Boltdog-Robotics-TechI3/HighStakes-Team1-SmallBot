@@ -10,7 +10,8 @@ bool isEjecting = false;
 *  Used to set the attributes of objects and other tasks that need to happen at the start.
 */
 void liftInitialize() {
-    lift.setBrakeMode(okapi::AbstractMotor::brakeMode::brake);
+    lift.setBrakeMode(okapi::AbstractMotor::brakeMode::coast);
+    intakeGroup.set_brake_mode(pros::MotorBrake::coast);
 
     lift.setCurrentLimit(2500);
 
@@ -23,7 +24,7 @@ void liftInitialize() {
 
     intakeGroup.set_brake_mode(MOTOR_BRAKE_BRAKE);
 
-    opticalSensor.set_led_pwm(50);
+    opticalSensor.set_led_pwm(75);
     opticalSensor.set_integration_time(10);
 
     pros::Task task(colorDetectionTask);
@@ -118,10 +119,11 @@ bool detectsBadColor() {
  */
 void eject() {
     lift.controllerSet(1);
-    pros::delay(160);
+    pros::delay(150);
     lift.controllerSet(-1);
     pros::delay(150);
     lift.controllerSet(0);
+    pros::delay(150);
 
 }
 

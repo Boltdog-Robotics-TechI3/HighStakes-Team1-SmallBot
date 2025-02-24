@@ -10,7 +10,7 @@ double getLadybrownAngleRadians();
 
 void setLadybrownPosition(int posValue, int velocity);
 
-void setLadybrownSetpoint(int point);
+void setLadybrownSetpoint(int point, int fast);
 
 void setManualOverride(bool isOverride);
 
