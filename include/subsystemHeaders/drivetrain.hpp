@@ -13,11 +13,9 @@ void arcadeDrive(bool reverse);
 
 void setDriveMotorCurrentLimits(int mAmps);
 
-void turnToHeading(float heading, int timeout = 10);
-//void turnToHeading(double heading, int timeout=10, double maxVelocity=127);
+void turnToHeading(double heading, double maxVelocity=1.0, int timeout=5);
 
-void turnAngle(float angle, int timeout = 10);
-//void turnAngle(float angle, int timeout=10, double maxVelocity=127);
+void turnAngle(double angle, double maxVelocity=1.0, int timeout=5);
 
 void moveDistanceWithTimeout(QLength itarget, int timeout);
 
