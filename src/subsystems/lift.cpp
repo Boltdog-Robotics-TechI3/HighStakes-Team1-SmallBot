@@ -15,10 +15,6 @@ void liftInitialize() {
 
     lift.setCurrentLimit(2500);
 
-    intakeA.set_voltage_limit(7200);
-    intakeB.set_voltage_limit(7200);
-    intakeGroup.set_voltage_limit(7200);
-
     intakeA.set_reversed(false);
     intakeB.set_reversed(true);
 
