@@ -1,4 +1,7 @@
 #include "main.h"
+#include "okapi/api/chassis/controller/chassisControllerPid.hpp"
+#include "okapi/api/device/motor/abstractMotor.hpp"
+#include <string>
 using namespace std;
 using namespace okapi;
 
@@ -9,12 +12,11 @@ std::shared_ptr<okapi::ChassisControllerPID> chassis = std::dynamic_pointer_cast
 	.withDimensions({AbstractMotor::gearset::blue, (3.0/4.0)}, {{2.75_in, 11.5_in}, imev5BlueTPR})
     .withGains(
         {0.004, 0, 0.0001},
-        {3.0, 0.00, 0},
+        {2.5, 0, 0},
         {0.0, 0, 0.0000}
     )
-    .withClosedLoopControllerTimeUtil()
     .build());
-
+// Turn gains: 3.0, 0.00, 1.5
 std::shared_ptr<ChassisModel> drivetrain = chassis->getModel();
 
 /**
@@ -89,8 +91,8 @@ void arcadeDrive(bool reverse) {
     }
 
     // Applies the speeds to the drivetrain
-    drivetrain->arcade(fwdSpeed, rotSpeed);
-    // drivetrain->arcade(leftY, rightX);
+    //drivetrain->arcade(fwdSpeed, rotSpeed);
+    drivetrain->arcade(leftY, rightX);
 }
 
 /** 
@@ -107,21 +109,9 @@ void setDriveMotorCurrentLimits(int mAmps) {
 * @brief Turns the robot to an absolute heading using PID control
 * @param heading The heading to turn to in degrees: [0,360)
 * @param timeout Timeout before the robot gives up in seconds, default to 10
+* @param maxVelocity The maximum velocity of the robot in the range [0,1], default to 1
 */
-void turnToHeading(float heading, int timeout) {
-	float currentHeading = gyro.get_heading();
-	float error = heading - currentHeading;
-	
-	if (error > 180) {
-		error = error - 360;
-	} else if (error < -180) {
-		error = 360 + error;
-	}
-	//master.print(0, 0, "%f", error);
-	turnAngle(error, timeout);
-}
-/*
-void turnToHeading(double heading, int timeout, double maxVelocity) {
+void turnToHeading(double heading, double maxVelocity, int timeout) {
 	double currentHeading = gyro.get_heading();
 	double error = heading - currentHeading;
 	
@@ -130,82 +120,76 @@ void turnToHeading(double heading, int timeout, double maxVelocity) {
 	} else if (error < -180) {
 		error = 360 + error;
 	}
-	//master.print(0, 0, "%f", error);
-	turnAngle(error, timeout, maxVelocity);
+	turnAngle(error, maxVelocity, timeout);
 }
-*/
 
 /** 
 * @brief Custom Turnangle Function
 * @param angle angle in degrees
 * @param timeout timeout before the robot gives up in seconds
 */
-void turnAngle(float angle, int timeout) {
-    auto gains = get<1>(chassis->getGains());
-    float target = angle + gyro.get_rotation();
-    float error = angle;
-	float previousError = 0;
-	float integral = 0;
-	float errorCounter = 0;
-	float precision = 0.75;
-	
-	auto exitTime = std::chrono::high_resolution_clock::now() + std::chrono::seconds(timeout);
-	while (errorCounter < 100 && std::chrono::high_resolution_clock::now() < exitTime) {
-		integral += error;
-		float velocity = setMinAbs((gains.kP * error + (error - previousError) * gains.kD + gains.kI * integral), 5);
-		rightMotorGroup.moveVelocity(-velocity);
-		leftMotorGroup.moveVelocity(velocity);
-		pros::delay(10);
-		//driverController.print(0,0,"%f", velocity);
-		previousError = error;
-		error = target - gyro.get_rotation();
-		if (abs(error) < precision) {
-			errorCounter++;
-		}
-		else {
-			errorCounter = 0;
-		}
-	}
-	rightMotorGroup.moveVelocity(0);
-	leftMotorGroup.moveVelocity(0);
-}
-/* turnAngle but you can set the max velocity, commented out because it's untested
- * uncomment in the header file as well if you want to use it
-void turnAngle(double angle, int timeout, double maxVelocity) {
-    auto gains = get<1>(chassis->getGains());
 
+void turnAngle(double angle, double maxVelocity, int timeout) {
+    auto gains = get<1>(chassis->getGains());
     double target = angle + gyro.get_rotation();
     double error = angle;
 	double previousError = 0;
 	double integral = 0;
-	double errorCounter = 0;
-	double precision = 0.75;
-    double minVelocity = 5.0;
-	
+    double smallErrorRange = 0.4;
+    double smallErrorTimeout = 100;
+    double largeErrorRange = 0.75;
+    double largeErrorTimeout = 500;
+    double minVelocity = 3.0;
+	int startTime = pros::millis();
 	auto exitTime = std::chrono::high_resolution_clock::now() + std::chrono::seconds(timeout);
-	while (errorCounter < 100 && std::chrono::high_resolution_clock::now() < exitTime) {
-		integral += error;
-        //double velocity = gains.kP * error + (error - previousError) * gains.kD + gains.kI * integral;
+    bool targetReached = false;
+    double smallErrorEntryTime = 0;
+    double largeErrorEntryTime = 0;
+	while (!targetReached && std::chrono::high_resolution_clock::now() < exitTime) {
+		integral = integral * 0.8 + error;
+		double velocity = gains.kP * error + (error - previousError) * gains.kD + gains.kI * integral;
         if (velocity > 0) {
-            velocity = std::clamp(velocity, minVelocity, maxVelocity);
+            velocity = std::clamp(velocity+minVelocity, 0.0, 600.0*maxVelocity);
         } else if (velocity < 0) {
-            velocity = std::clamp(velocity, -maxVelocity, -minVelocity);
+            velocity = std::clamp(velocity-minVelocity, -600.0*maxVelocity, 0.0);
         }
 		rightMotorGroup.moveVelocity(-velocity);
 		leftMotorGroup.moveVelocity(velocity);
-		pros::delay(10);
+		pros::delay(5);
+        if (abs(error) < smallErrorRange) {
+            if (smallErrorEntryTime == 0) {
+                smallErrorEntryTime = pros::millis();
+            }
+            if (smallErrorEntryTime + smallErrorTimeout < pros::millis()) {
+                print(2, 0, "Small Error");
+                targetReached = true;
+                break;
+            }
+        } else {
+            smallErrorEntryTime = 0;
+        }
+        if (abs(error) < largeErrorRange) {
+            if (largeErrorEntryTime == 0) {
+                largeErrorEntryTime = pros::millis();
+            }
+            if (largeErrorEntryTime + largeErrorTimeout < pros::millis()) {
+                print(2, 0, "Large Error");
+                targetReached = true;
+                break;
+            }
+        } else {
+            largeErrorEntryTime = 0;
+        }
 		previousError = error;
 		error = target - gyro.get_rotation();
-		if (abs(error) < precision) {
-			errorCounter++;
-		}
-		else {
-			errorCounter = 0;
-		}
 	}
-	rightMotorGroup.moveVelocity(0);
-	leftMotorGroup.moveVelocity(0);
-}*/
+    drivetrain->stop();
+    print(0, 0, "Heading: " + std::to_string(gyro.get_heading()));
+    if (!targetReached) {
+        print(2, 0, "Timeout");
+    }
+    pros::delay(5000);
+}
 
 void moveDistanceWithTimeout(QLength itarget, int timeout) {
     chassis->moveDistanceAsync(itarget);
@@ -214,26 +198,3 @@ void moveDistanceWithTimeout(QLength itarget, int timeout) {
 
     while (!chassis->isSettled() && std::chrono::high_resolution_clock::now() < exitTime) {};
 }
-
-
-void lateralPIDTune(){
-    auto gains = get<1>(chassis->getGains());
-    chassis->setGains(
-        {0.001, 0, 0.0000},
-        {3.0, 0.00, 0},
-        {0.0, 0, 0.0000}
-    );
-    chassis->setGains(
-        gains,
-        {3.0, 0.00, 0},
-        {0.0, 0, 0.0000}
-    );
-
-}
-
-void angularPIDTune(){
-    turnAngle(90);
-}
-
-
-
