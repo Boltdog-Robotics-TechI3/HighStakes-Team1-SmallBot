@@ -1,4 +1,6 @@
 #include "main.h"
+#include <queue>
+#include <string>
 
 // Controllers
 pros::Controller driverController(pros::E_CONTROLLER_MASTER);
@@ -57,3 +59,30 @@ int ladybrownReadiedAngle = 0;
 int ladybrownScoringAngle = 130;
 int ladybrownBaseFeedForward = 12;
 double ladybrownKP = 1;
+
+struct PrintMessage {
+    int line;
+    int col;
+    std::string text;
+};
+std::queue<PrintMessage> printQueue;
+
+void printTask(void* param) {
+    while (true) {
+        if (!printQueue.empty()) {
+            PrintMessage message = printQueue.front();
+            driverController.set_text(message.line, message.col, message.text);
+            printQueue.pop();
+        }
+        pros::delay(50);
+    }
+}
+void print(int line, int col, std::string text) {
+    if (!printQueue.empty() && printQueue.back().text.compare(text) == 0) {
+        return;
+    }
+    if (printQueue.size() > 200) {
+        printQueue.pop();
+    }
+    printQueue.push({line, col, text});
+}
