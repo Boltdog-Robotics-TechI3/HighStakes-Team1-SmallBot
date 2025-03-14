@@ -1,4 +1,5 @@
 #include "main.h"
+#include <string>
 
 double highestHueDetected = 0;
 double ejectionCount = 0;
@@ -20,10 +21,10 @@ void liftInitialize() {
 
     intakeGroup.set_brake_mode(MOTOR_BRAKE_BRAKE);
 
-    opticalSensor.set_led_pwm(75);
+    opticalSensor.set_led_pwm(50);
     opticalSensor.set_integration_time(10);
 
-    pros::Task task(colorDetectionTask);
+    //pros::Task task(colorDetectionTask);
 }
 
 /**
@@ -120,7 +121,6 @@ void eject() {
     pros::delay(150);
     lift.controllerSet(0);
     pros::delay(150);
-
 }
 
 
@@ -136,21 +136,68 @@ void colorDetectionTask(void* param) {
             eject();
             isEjecting = false;
         }
-        pros::delay(20);
+        pros::delay(5);
     }
     
 }
 
 void intakeUntilColor(void* param) {
+    pros::Task::notify_take(true, TIMEOUT_MAX);
     while (true) {
         setLiftSpeed(1);
-        if (redAlliance && opticalSensor.get_hue() >= 1 && opticalSensor.get_hue() <= 25) {
+        setIntakeSpeed(1);
+        double hue = opticalSensor.get_hue();
+        double distance = opticalSensor.get_proximity();
+        if (redAlliance && hue >= 1 && hue <= 25 && distance > 100) {
             setLiftSpeed(0);
-            break;
+            setIntakeSpeed(0);
+            intakeTask.suspend();
         }
-        else if (blueAlliance && opticalSensor.get_hue() >= 160 && opticalSensor.get_hue() <= 230) {
+        else if (blueAlliance && hue >= 160 && hue <= 230 && distance > 100) {
             setLiftSpeed(0);
-            break;
+            setIntakeSpeed(0);
+            intakeTask.suspend();
+        }
+        pros::delay(20);
+    }
+}
+
+void intakeJamHandler(void* param) {
+    pros::Task::notify_take(true, TIMEOUT_MAX);
+    int stallTime = -1;
+    while (true) {
+        if (intakeGroup.get_actual_velocity() == 0 && intakeGroup.get_target_velocity() > 0) {
+            if (stallTime == -1) {
+                stallTime = pros::millis();
+            } else if (pros::millis() - stallTime >= 150) {
+                print(1, 0, "Intake Jammed");
+                setIntakeSpeed(-1);
+                pros::delay(50);
+                setIntakeSpeed(1);
+            }
+        } else {
+            stallTime = -1;
+        }
+        pros::delay(20);
+    }
+}
+
+void liftStallHandler(void* param) {
+    pros::Task::notify_take(true, TIMEOUT_MAX);
+    int stallTime = -1;
+    while (true) {
+        bool ladyBrownReadied = ladybrownGroup.get_position() > 100 && ladybrownGroup.get_position() < 200;
+        if (lift.getActualVelocity() == 0 && lift.getTargetVelocity() > 0 && !ladyBrownReadied) {
+            if (stallTime == -1) {
+                stallTime = pros::millis();
+            } else if (pros::millis() - stallTime >= 250) {
+                print(0, 0, "Lift Stalled");
+                setLiftSpeed(-1);
+                pros::delay(200);
+                setLiftSpeed(1);
+            }
+        } else {
+            stallTime = -1;
         }
         pros::delay(20);
     }
