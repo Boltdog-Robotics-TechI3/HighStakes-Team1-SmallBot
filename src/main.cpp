@@ -1,5 +1,4 @@
 #include "main.h"
-
 /**
  * Runs initialization code. This occurs as soon as the program is started.
  *
@@ -14,8 +13,24 @@ void initialize() {
 	liftInitialize();
 	clamperInitialize();
 	ladybrownInitialize();
-	gyro.reset();
+
+	// Initialize the gyro
+	gyro.reset(true);
 	while (gyro.is_calibrating());
+	gyro.set_data_rate(5);
+
+	debug = false;
+
+	// Initialize Tasks
+	intakeTask.suspend();
+	intakeTask.notify();
+	/*if (!pros::competition::is_connected()) {
+		intakeJamTask.notify();
+		liftStallTask.notify();
+		printTask.notify();
+	} else {
+		printTask.suspend();
+	}*/
 }
 
 /**
@@ -23,7 +38,13 @@ void initialize() {
  * the VEX Competition Switch, following either autonomous or opcontrol. When
  * the robot is enabled, this task will exit.
  */
-void disabled() {}
+void disabled() {
+	/*chassis->stop();
+	drivetrain->stop();
+	lift.moveVelocity(0);
+	ladybrownGroup.brake();
+	intakeGroup.brake();*/
+}
 
 /**
  * Runs after initialize(), and before autonomous when connected to the Field
@@ -34,7 +55,9 @@ void disabled() {}
  * This task will exit when the robot is enabled and autonomous or opcontrol
  * starts.
  */
-void competition_initialize() {}
+void competition_initialize() {
+	// Disable debug mode if connected to the competition switch
+}
 
 /**
  * Runs the user autonomous code. This function will be started in its own task
@@ -48,7 +71,8 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	switch (autoSelection) {
+	skillsAuto();
+	/*switch (autoSelection) {
 		case 0:
 			allianceMogoRedAuto();
 			break;
@@ -70,7 +94,7 @@ void autonomous() {
 		case 6:
 			// Do Nothing :)
 			break;
-	}
+	}*/
 }
 
 /**
@@ -87,35 +111,23 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-	chassis->stop();
-	drivetrain->stop();
 	while (true) {
-
 		// Run each subsystem's periodic function
 		clamperPeriodic();
 		liftPeriodic();
 		ladybrownPeriodic();
 		drivetrainPeriodic();
 
-		// if (driverController.get_digital_new_press(DIGITAL_Y)) {
-			//autonomous();
-
-			// for skills testing
-			//autonomous();
-		// 	goalRushNoWallAuto();
-			//toggleMogoClawArm();
-		// }
-
-		if(driverController.get_digital_new_press(DIGITAL_Y) &&
-		   driverController.get_digital(DIGITAL_L2) &&
-		   driverController.get_digital(DIGITAL_R2)) {
-			autonomous();			
+		if (driverController.get_digital(DIGITAL_L2) && driverController.get_digital(DIGITAL_Y)) {
+			scoreOnRedStake();
 		}
 
-		// else if(driverController.get_digital_new_press(DIGITAL_A)){
-		// 	skillsAuto();
-			
-		// }
+		// Debugging code
+		/*if (debug) {
+			if (driverController.get_digital_new_press(DIGITAL_Y)) {
+				skillsAuto();
+			}
+		}*/
 
 		// Run for 20 ms then update
 		pros::delay(20);  
