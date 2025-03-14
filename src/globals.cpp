@@ -44,6 +44,11 @@ pros::Optical opticalSensor(17);
 
 pros::Rotation rotationSensor(10);
 
+pros::Task printTask(printMessages);
+pros::Task intakeTask(intakeUntilColor);
+pros::Task intakeJamTask(intakeJamHandler);
+pros::Task liftStallTask(liftStallHandler);
+
 // Comp Specifications
 bool skills = false;
 bool match = true;
@@ -60,6 +65,8 @@ int ladybrownScoringAngle = 130;
 int ladybrownBaseFeedForward = 12;
 double ladybrownKP = 1;
 
+bool debug = true;
+
 struct PrintMessage {
     int line;
     int col;
@@ -67,7 +74,12 @@ struct PrintMessage {
 };
 std::queue<PrintMessage> printQueue;
 
-void printTask(void* param) {
+/**
+* Task that prints messages to the controller screen. 
+*/
+void printMessages(void* param) {
+    pros::Task::notify_take(true, TIMEOUT_MAX);
+    driverController.clear();
     while (true) {
         if (!printQueue.empty()) {
             PrintMessage message = printQueue.front();
@@ -77,10 +89,21 @@ void printTask(void* param) {
         pros::delay(50);
     }
 }
+
+/**
+* Sends a message to the print queue to be printed on the controller screen.
+*
+* @param line the line to print the message on
+* @param col the column to print the message on
+* @param text the message to print 
+*/
 void print(int line, int col, std::string text) {
+    // If the message is the same as the last message, don't print it
     if (!printQueue.empty() && printQueue.back().text.compare(text) == 0) {
         return;
     }
+
+    // If the queue is too long, pop the oldest message
     if (printQueue.size() > 200) {
         printQueue.pop();
     }

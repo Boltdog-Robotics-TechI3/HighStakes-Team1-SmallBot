@@ -1,5 +1,4 @@
 #include "main.h"
-#define setMinAbs(num, bound) ((num > -(bound) && num < bound) ? ((num >= 0) ? bound : -(bound)) : num)
 
 // Controller Setup
 extern pros::Controller driverController;
@@ -59,5 +58,12 @@ extern int ladybrownScoringAngle;
 extern int ladybrownBaseFeedForward;
 extern double ladybrownKP;
 
-void printTask(void* param);
+extern bool debug;
+
+extern pros::Task printTask;
+extern pros::Task intakeTask;
+extern pros::Task intakeJamTask;
+extern pros::Task liftStallTask;
+
+void printMessages(void* param);
 void print(int line, int col, std::string text);
