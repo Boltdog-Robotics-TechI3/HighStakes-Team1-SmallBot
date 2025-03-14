@@ -6,15 +6,6 @@ int speed = 50;
 
 bool manualOverride = false;
 
-// std::shared_ptr<AsyncPositionController<double, double>> ladybrownController = AsyncPosControllerBuilder()
-//     .withMotor(ladybrownGroup)
-//     .withSensor(1)
-//     .withGains(
-//         {0, 0, 0}
-//     )
-//     .build();
-
-
 /**
 *  Runs once when the codebase is initialized. 
 *  Used to set the attributes of objects and other tasks that need to happen at the start.
