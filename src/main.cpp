@@ -71,15 +71,15 @@ void competition_initialize() {
  * from where it left off.
  */
 void autonomous() {
-	skillsAuto();
-	/*switch (autoSelection) {
+	// skillsAuto();
+	switch (autoSelection) {
 		case 0:
 			allianceMogoRedAuto();
 			break;
 		case 1:
 			allianceMogoBlueAuto();
 			break;
-		case 2: 
+	    case 2: 
 			goalRushNoWallAuto();
 			break;
 		case 3:
@@ -94,7 +94,7 @@ void autonomous() {
 		case 6:
 			// Do Nothing :)
 			break;
-	}*/
+	}
 }
 
 /**
@@ -123,11 +123,11 @@ void opcontrol() {
 		}
 
 		// Debugging code
-		/*if (debug) {
+		if (debug) {
 			if (driverController.get_digital_new_press(DIGITAL_Y)) {
 				skillsAuto();
 			}
-		}*/
+		}
 
 		// Run for 20 ms then update
 		pros::delay(20);  

@@ -24,7 +24,7 @@ void liftInitialize() {
     opticalSensor.set_led_pwm(50);
     opticalSensor.set_integration_time(10);
 
-    //pros::Task task(colorDetectionTask);
+    pros::Task task(colorDetectionTask);
 }
 
 /**
@@ -116,11 +116,15 @@ bool detectsBadColor() {
  */
 void eject() {
     lift.controllerSet(1);
-    pros::delay(150);
+    pros::delay(160);
     lift.controllerSet(-1);
     pros::delay(150);
+    // setLadybrownSetpoint(500, 100);
+    // pros::delay(20);
     lift.controllerSet(0);
     pros::delay(150);
+    // pros::delay(200);
+    // setLadybrownSetpoint(0, 100);
 }
 
 
