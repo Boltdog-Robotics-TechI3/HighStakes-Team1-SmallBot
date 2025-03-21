@@ -112,6 +112,7 @@ void autonomous() {
  */
 void opcontrol() {
 	while (true) {
+	
 		// Run each subsystem's periodic function
 		clamperPeriodic();
 		liftPeriodic();

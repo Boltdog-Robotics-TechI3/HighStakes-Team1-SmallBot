@@ -45,11 +45,26 @@ public:
                         (kI * accumulatedError * elapsedTime) +       // I term
                         ((error - previousError) * kD / elapsedTime); // D term
 
+        // Clamp the output
+        if (minOutput != 0.0 && std::abs(output) < minOutput) {
+            output = minOutput;
+        } else if (maxOutput != 0.0 && std::abs(output) > maxOutput) {
+            output = maxOutput;
+        }
+
         previousError = error;
         accumulatedError += error;
         previousTime = currentTime;
         currentTime = pros::millis();
 
         return output;
+    }
+
+    bool isInSmallErrorRange() {
+        return std::abs(error) < smallErrorRange;
+    }
+
+    bool isInLargeErrorRange() {
+        return std::abs(error) < largeErrorRange;
     }
 };
