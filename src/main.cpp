@@ -21,6 +21,8 @@ void initialize() {
 
 	debug = false;
 
+	auto test = 24_degs;
+
 	// Initialize Tasks
 	intakeTask.suspend();
 	intakeTask.notify();
@@ -120,7 +122,7 @@ void opcontrol() {
 		drivetrainPeriodic();
 
 		if (driverController.get_digital(DIGITAL_L2) && driverController.get_digital(DIGITAL_Y)) {
-			turnToHeading(90, 0.3);
+			turnToHeading(90, 8000);
 		}
 
 		// Debugging code

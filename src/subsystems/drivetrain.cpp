@@ -5,7 +5,7 @@ using namespace okapi;
 bool isFrontReversed = false;
 
 std::shared_ptr<okapi::ChassisControllerPID> chassis = std::dynamic_pointer_cast<ChassisControllerPID>(ChassisControllerBuilder()
-	.withMotors(leftMotorGroup, rightMotorGroup)
+	.withMotors(BADLeftMotorGroup, BADRightMotorGroup)
 	.withDimensions({AbstractMotor::gearset::blue, (3.0/4.0)}, {{2.75_in, 11.5_in}, imev5BlueTPR})
     .withGains(
         {0.00045, 0.0005, 0.00000},
@@ -29,7 +29,7 @@ PID turnPID = {
     .minVelocity = 3.0
 };
 
-PIDController testPIDController = PIDController(2.5, 0.0, 0.0);
+PIDController testPIDController = PIDController(2500, 0.0, 0.0);
 
 /**
 *  Runs once when the codebase is initialized. 
@@ -44,6 +44,8 @@ void drivetrainInitialize() {
     testPIDController.setOutputLimits(3.0, 127);
     testPIDController.setSmallErrorRange(0.4);
     testPIDController.setLargeErrorRange(0.75);
+
+
 }
 
 /**
@@ -104,8 +106,8 @@ void arcadeDrive(bool reverse) {
  * @param mAmps the max amount of current the drivetrain should attain in milliamperes.
  */
 void setDriveMotorCurrentLimits(int mAmps) {
-    leftMotorGroup.setCurrentLimit(mAmps);
-    rightMotorGroup.setCurrentLimit(mAmps);
+    BADLeftMotorGroup.setCurrentLimit(mAmps);
+    BADRightMotorGroup.setCurrentLimit(mAmps);
 }
 
 /**
@@ -147,6 +149,8 @@ void turnToHeading(double heading, double maxVelocity, int timeout, enum TurnBeh
 * @param timeout timeout before the robot gives up in milliseconds, default to 5000
 */
 void turnAngle(double angle, double maxVelocity, int timeout) {
+    testPIDController.setOutputLimits(0, maxVelocity);
+
     // Calculate the target angle
     double target = angle + gyro.get_rotation();
 
@@ -167,9 +171,11 @@ void turnAngle(double angle, double maxVelocity, int timeout) {
         // Calculate the velocity
 		double velocity = testPIDController.calculate(gyro.get_rotation(), target);
 
+        driverController.set_text(0, 0, to_string(velocity));
+
         // Set the motor velocities
-		rightMotorGroup.moveVoltage(-velocity);
-		leftMotorGroup.moveVoltage(velocity);
+		BADRightMotorGroup.moveVoltage(-velocity);
+		BADLeftMotorGroup.moveVoltage(velocity);
 		pros::delay(5);
 
         // Determine if within small error range

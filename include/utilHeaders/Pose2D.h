@@ -16,7 +16,7 @@ class Pose2D {
          * 
          * @param x the x coordinate of the robot in inches
          * @param y the y coordinate of the robot in inches
-         * @param heading the heading of the robot in degrees
+         * @param heading the heading of the robot in radians
          */
         Pose2D(double x, double y, double heading);
 
@@ -36,7 +36,7 @@ class Pose2D {
          * 
          * @param x the new x coordinate of the robot in inches
          * @param y the new y coordinate of the robot in inches
-         * @param heading the new heading of the robot in degrees
+         * @param heading the new heading of the robot in radians
          */
         void setPose(double x, double y, double heading);
 
@@ -64,7 +64,7 @@ class Pose2D {
         /**
          * @brief Get the heading
          * 
-         * @return the heading in degrees
+         * @return the heading in radians
          */
         double getHeading();
 
@@ -76,4 +76,6 @@ class Pose2D {
          * @return the distance between the poses in inches.
          */
         double getDistance(Pose2D pose);
+
+        void trackPose(void *param);
 };

@@ -9,7 +9,7 @@
  * 
  * @param x the x coordinate of the robot in inches
  * @param y the y coordinate of the robot in inches
- * @param heading the heading of the robot in degrees
+ * @param heading the heading of the robot in radians
  */
 Pose2D::Pose2D(double x, double y, double heading) {
     setPose(x, y, heading);
@@ -35,7 +35,7 @@ void Pose2D::reset() {
  * 
  * @param x the new x coordinate of the robot in inches
  * @param y the new y coordinate of the robot in inches
- * @param heading the new heading of the robot in degrees
+ * @param heading the new heading of the robot in radians
  */
 void Pose2D::setPose(double x, double y, double heading) {
     this->x = x;
@@ -44,7 +44,9 @@ void Pose2D::setPose(double x, double y, double heading) {
 
     std::clamp(this->x, -72.0, 72.0);
     std::clamp(this->y, -72.0, 72.0);
-    std::clamp(this->heading, 0.0, 360.0);
+    std::clamp(this->heading, 0.0, 2 * M_PI);
+
+    pros::Task::notify();
 }
 
 /**
@@ -62,6 +64,7 @@ void Pose2D::setPose(Pose2D pose) {
  * @return the x coordinate in inches
  */
 double Pose2D::getX() {
+    while (pros::Task::notify_take(true, 500));
     return x;
 } 
 
@@ -71,15 +74,17 @@ double Pose2D::getX() {
  * @return the y coordinate in inches
  */
 double Pose2D::getY() {
+    while (pros::Task::notify_take(true, 500));
     return y;
 }
 
 /**
  * @brief Get the heading
  * 
- * @return the heading in degrees
+ * @return the heading in radians
  */
 double Pose2D::getHeading() {
+    while (pros::Task::notify_take(true, 500)):
     return heading;
 }
 
@@ -94,5 +99,13 @@ double Pose2D::getDistance(Pose2D pose) {
     double xDistance = this->x - pose.x;
     double yDistance = this->y - pose.y;
 
-    return sqrt(xDistance*xDistance + yDistance*yDistance);      
+    return sqrt(xDistance*xDistance + yDistance*yDistance);  
+    
+
+}
+
+void Pose2D::trackPose(void *param){
+    while(pros::Task::notify){
+        
+    }
 }

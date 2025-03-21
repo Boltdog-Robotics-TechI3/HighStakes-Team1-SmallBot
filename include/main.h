@@ -101,6 +101,7 @@ void opcontrol(void);
 
 // Utils
 #include "utilHeaders/Pose2D.h"
+#include "utilHeaders/Angle.hpp"
 #include "utilHeaders/PIDController.h"
 
 
