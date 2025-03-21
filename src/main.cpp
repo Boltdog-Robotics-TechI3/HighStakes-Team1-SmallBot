@@ -120,7 +120,7 @@ void opcontrol() {
 		drivetrainPeriodic();
 
 		if (driverController.get_digital(DIGITAL_L2) && driverController.get_digital(DIGITAL_Y)) {
-			scoreOnRedStake();
+			turnToHeading(90, 0.3);
 		}
 
 		// Debugging code

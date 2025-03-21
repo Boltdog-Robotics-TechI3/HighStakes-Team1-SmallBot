@@ -29,6 +29,8 @@ PID turnPID = {
     .minVelocity = 3.0
 };
 
+PIDController testPIDController = PIDController(2.5, 0.0, 0.0);
+
 /**
 *  Runs once when the codebase is initialized. 
 *  Used to set the attributes of objects and other tasks that need to happen at the start.
@@ -38,6 +40,10 @@ void drivetrainInitialize() {
     drivetrain->setBrakeMode(okapi::AbstractMotor::brakeMode::coast);
     //chassis->setMaxVelocity(0.4*chassis->getMaxVelocity());
     setDriveMotorCurrentLimits(2000);
+
+    testPIDController.setOutputLimits(3.0, 127);
+    testPIDController.setSmallErrorRange(0.4);
+    testPIDController.setLargeErrorRange(0.75);
 }
 
 /**
@@ -49,6 +55,7 @@ void drivetrainInitialize() {
 *  will not work unless the robot is in manual control mode.
 */
 void drivetrainPeriodic() {
+
     /*if (driverController.get_digital_new_press(DIGITAL_L2)) {
         isFrontReversed = !isFrontReversed;
     }*/
@@ -142,9 +149,6 @@ void turnToHeading(double heading, double maxVelocity, int timeout, enum TurnBeh
 void turnAngle(double angle, double maxVelocity, int timeout) {
     // Calculate the target angle
     double target = angle + gyro.get_rotation();
-    double error = angle;
-	double previousError = 0;
-	double integral = 0;
 
     // Set the start time and exit time
 	int startTime = pros::millis();
@@ -161,20 +165,15 @@ void turnAngle(double angle, double maxVelocity, int timeout) {
         int timeChange = currentTime - previousTime;
 
         // Calculate the velocity
-		double velocity = turnPID.kP * error + ((error - previousError) * turnPID.kD / timeChange) + (turnPID.kI * integral * timeChange);
-        if (velocity > 0) {
-            velocity = std::clamp(velocity+turnPID.minVelocity, 0.0, 600.0*maxVelocity);
-        } else if (velocity < 0) {
-            velocity = std::clamp(velocity-turnPID.minVelocity, -600.0*maxVelocity, 0.0);
-        }
+		double velocity = testPIDController.calculate(gyro.get_rotation(), target);
 
         // Set the motor velocities
-		rightMotorGroup.moveVelocity(-velocity);
-		leftMotorGroup.moveVelocity(velocity);
+		rightMotorGroup.moveVoltage(-velocity);
+		leftMotorGroup.moveVoltage(velocity);
 		pros::delay(5);
 
         // Determine if within small error range
-        if (abs(error) < turnPID.smallErrorRange) {
+        if (testPIDController.isInSmallErrorRange()) {
             // Set the entry time if not already set
             if (smallErrorEntryTime == -1) {
                 smallErrorEntryTime = pros::millis();
@@ -189,7 +188,7 @@ void turnAngle(double angle, double maxVelocity, int timeout) {
             smallErrorEntryTime = -1;
         }
         // Determine if within large error range
-        if (abs(error) < turnPID.largeErrorRange) {
+        if (testPIDController.isInLargeErrorRange()) {
             // Set the entry time if not already set
             if (largeErrorEntryTime == -1) {
                 largeErrorEntryTime = pros::millis();
@@ -203,11 +202,6 @@ void turnAngle(double angle, double maxVelocity, int timeout) {
             // Reset the entry time
             largeErrorEntryTime = -1;
         }
-
-        // Update the error values
-		previousError = error;
-		error = target - gyro.get_rotation();
-        integral = integral * 0.8 + error;
 
         // Update the time values
         previousTime = currentTime;

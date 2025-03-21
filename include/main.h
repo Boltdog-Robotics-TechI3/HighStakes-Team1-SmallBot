@@ -99,6 +99,10 @@ void opcontrol(void);
 #include "autonomousHeaders/allianceMogoRedAuto.hpp"
 #include "autonomousHeaders/allianceMogoBlueAuto.hpp"
 
+// Utils
+#include "utilHeaders/Pose2D.h"
+#include "utilHeaders/PIDController.h"
+
 
 
 #endif
