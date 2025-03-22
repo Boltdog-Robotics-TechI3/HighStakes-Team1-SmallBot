@@ -21,8 +21,6 @@ void initialize() {
 
 	debug = false;
 
-	auto test = 24_degs;
-
 	// Initialize Tasks
 	intakeTask.suspend();
 	intakeTask.notify();

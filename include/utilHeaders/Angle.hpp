@@ -4,7 +4,7 @@ class Angle {
         Angle(double degrees);
     public:
     /** Create an angle from a degree value */
-        static Angle fromDegrees(double degrees);
+        static Angle fromDeg(double degrees);
     /** Create an angle from a radian value */
         static Angle fromRad(double radians);
     /** Get Angle as Degrees */
@@ -13,10 +13,16 @@ class Angle {
         double asRad();
 };
 
-Angle operator "" _degs(double degrees) {
-    return Angle::fromDegrees(degrees);
+inline Angle operator "" _degs(long double degrees) {
+    return Angle::fromDeg(degrees);
+}
+inline Angle operator "" _rads(long double rad) {
+    return Angle::fromRad(rad);
 }
 
-Angle operator "" _rads(double rad) {
+inline Angle operator "" _degs(unsigned long long degrees) {
+    return Angle::fromDeg(degrees);
+}
+inline Angle operator "" _rads(unsigned long long rad) {
     return Angle::fromRad(rad);
 }
