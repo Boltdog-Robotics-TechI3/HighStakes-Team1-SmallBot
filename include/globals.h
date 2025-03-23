@@ -5,15 +5,15 @@ extern pros::Controller driverController;
 
 // Motor Initialization
     // Drivetrain
-        extern okapi::Motor leftMotorA;
-        extern okapi::Motor leftMotorB;
-        extern okapi::Motor leftMotorC;
-        extern okapi::Motor rightMotorA;
-        extern okapi::Motor rightMotorB;
-        extern okapi::Motor rightMotorC;
+        extern pros::Motor leftMotorA;
+        extern pros::Motor leftMotorB;
+        extern pros::Motor leftMotorC;
+        extern pros::Motor rightMotorA;
+        extern pros::Motor rightMotorB;
+        extern pros::Motor rightMotorC;
 
-        extern okapi::MotorGroup leftMotorGroup;
-        extern okapi::MotorGroup rightMotorGroup;
+        extern pros::MotorGroup leftMotorGroup;
+        extern pros::MotorGroup rightMotorGroup;
 
     // Intake 
         extern pros::Motor intakeA;
@@ -22,7 +22,7 @@ extern pros::Controller driverController;
         extern pros::MotorGroup intakeGroup;
 
     // Lift
-        extern okapi::Motor lift;
+        extern pros::Motor lift;
 
     // Ladybrown
         extern pros::Motor ladybrownA;

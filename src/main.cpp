@@ -19,18 +19,18 @@ void initialize() {
 	while (gyro.is_calibrating());
 	gyro.set_data_rate(5);
 
-	debug = false;
+	debug = true;
 
 	// Initialize Tasks
 	intakeTask.suspend();
 	intakeTask.notify();
-	/*if (!pros::competition::is_connected()) {
+	if (!pros::competition::is_connected()) {
 		intakeJamTask.notify();
 		liftStallTask.notify();
 		printTask.notify();
 	} else {
 		printTask.suspend();
-	}*/
+	}
 }
 
 /**
@@ -72,29 +72,29 @@ void competition_initialize() {
  */
 void autonomous() {
 	// skillsAuto();
-	switch (autoSelection) {
-		case 0:
-			allianceMogoRedAuto();
-			break;
-		case 1:
-			allianceMogoBlueAuto();
-			break;
-	    case 2: 
-			goalRushNoWallAuto();
-			break;
-		case 3:
-			goalRushWallStakeAuto();
-			break;
-		case 4:
-			skillsAuto();
-			break;
-		case 5:
-			testAuto();
-			break;
-		case 6:
-			// Do Nothing :)
-			break;
-	}
+	// switch (autoSelection) {
+	// 	case 0:
+	// 		allianceMogoRedAuto();
+	// 		break;
+	// 	case 1:
+	// 		allianceMogoBlueAuto();
+	// 		break;
+	//     case 2: 
+	// 		goalRushNoWallAuto();
+	// 		break;
+	// 	case 3:
+	// 		goalRushWallStakeAuto();
+	// 		break;
+	// 	case 4:
+	// 		skillsAuto();
+	// 		break;
+	// 	case 5:
+	// 		testAuto();
+	// 		break;
+	// 	case 6:
+	// 		// Do Nothing :)
+	// 		break;
+	// }
 }
 
 /**
@@ -126,7 +126,8 @@ void opcontrol() {
 		// Debugging code
 		if (debug) {
 			if (driverController.get_digital_new_press(DIGITAL_Y)) {
-				skillsAuto();
+				//skillsAuto();
+				testAuto();
 			}
 		}
 

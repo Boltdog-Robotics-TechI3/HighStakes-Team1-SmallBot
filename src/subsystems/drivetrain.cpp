@@ -1,25 +1,13 @@
 #include "main.h"
+#include <deque>
 using namespace std;
 using namespace okapi;
 
 bool isFrontReversed = false;
 
-std::shared_ptr<okapi::ChassisControllerPID> chassis = std::dynamic_pointer_cast<ChassisControllerPID>(ChassisControllerBuilder()
-	.withMotors(leftMotorGroup, rightMotorGroup)
-	.withDimensions({AbstractMotor::gearset::blue, (3.0/4.0)}, {{2.75_in, 11.5_in}, imev5BlueTPR})
-    .withGains(
-        {0.00045, 0.0005, 0.00000},
-        {2.5, 0, 0},
-        {0.0, 0, 0.0000}
-    )
-    .build());
-
-// Turn gains: 3.0, 0.00, 1.5
-std::shared_ptr<ChassisModel> drivetrain = chassis->getModel();
-
 // PID constants for turning
 PID turnPID = {
-    .kP = 2.5,
+    .kP = 1.0,
     .kI = 0.0,
     .kD = 0.0,
     .smallErrorRange = 0.4, // degrees
@@ -29,7 +17,7 @@ PID turnPID = {
     .minVelocity = 3.0
 };
 
-PIDController testPIDController = PIDController(2.5, 0.0, 0.0);
+PIDController testPIDController = PIDController(1.0, 0.0, 0.0);
 
 /**
 *  Runs once when the codebase is initialized. 
@@ -37,10 +25,11 @@ PIDController testPIDController = PIDController(2.5, 0.0, 0.0);
 */
 void drivetrainInitialize() {
     //driverController.set_text(0, 0, "");
-    drivetrain->setBrakeMode(okapi::AbstractMotor::brakeMode::coast);
+    leftMotorGroup.set_brake_mode(pros::MotorBrake::coast);
+    rightMotorGroup.set_brake_mode(pros::MotorBrake::coast);
     //chassis->setMaxVelocity(0.4*chassis->getMaxVelocity());
     setDriveMotorCurrentLimits(2000);
-
+    testPIDController.reset();
     testPIDController.setOutputLimits(3.0, 127);
     testPIDController.setSmallErrorRange(0.4);
     testPIDController.setLargeErrorRange(0.75);
@@ -95,7 +84,8 @@ void arcadeDrive(bool reverse) {
     }
 
     // Applies the speeds to the drivetrain
-    drivetrain->arcade(fwdSpeed, rotSpeed);
+    leftMotorGroup.move_voltage(fwdSpeed+rotSpeed);
+    rightMotorGroup.move_voltage(fwdSpeed-rotSpeed);
 }
 
 /** 
@@ -104,8 +94,8 @@ void arcadeDrive(bool reverse) {
  * @param mAmps the max amount of current the drivetrain should attain in milliamperes.
  */
 void setDriveMotorCurrentLimits(int mAmps) {
-    leftMotorGroup.setCurrentLimit(mAmps);
-    rightMotorGroup.setCurrentLimit(mAmps);
+    leftMotorGroup.set_current_limit_all(mAmps);
+    rightMotorGroup.set_current_limit_all(mAmps);
 }
 
 /**
@@ -140,6 +130,36 @@ void turnToHeading(double heading, double maxVelocity, int timeout, enum TurnBeh
 	turnAngle(error, maxVelocity, timeout);
 }
 
+/**
+ * @brief Calculate the median value of a vector to reduce compounding errors of the D values
+ * @param vector the vector for which the median will be calculated
+ */
+double calcMedian(std::deque<double> dvalues)
+{
+  size_t size = dvalues.size();
+  if (size == 0)
+  {
+    return 0;  // Undefined, really.
+  }
+  else if (size>5){
+    dvalues.resize(5);
+    size = dvalues.size();
+  }
+  else
+  {
+    sort(dvalues.begin(), dvalues.end());
+    if (size % 2 == 0)
+    {
+      return (dvalues[size / 2 - 1] + dvalues[size / 2]) / 2;
+    }
+    else 
+    {
+      return dvalues[size / 2];
+    }
+  }
+}
+
+
 /** 
 * @brief Turn the robot by the specified angle using PID control
 * @param angle angle in degrees
@@ -151,25 +171,29 @@ void turnAngle(double angle, double maxVelocity, int timeout) {
     double target = angle + gyro.get_rotation();
 
     // Set the start time and exit time
-	int startTime = pros::millis();
 	int exitTime = pros::millis() + timeout;
+
+    //initalize vector
+    std::deque<double> dvalues = {};
 
     int smallErrorEntryTime = -1; // Time when the robot entered the small error range
     int largeErrorEntryTime = -1; // Time when the robot entered the large error range
 
     // Loop until the target is reached or the timeout is reached
     bool targetReached = false;
-    int currentTime = pros::millis();
-    int previousTime = currentTime;
-	while (!targetReached && currentTime < exitTime) {
-        int timeChange = currentTime - previousTime;
+	while (!targetReached && pros::millis() < exitTime) {
+        //add current value to dvalues vector
+        double currentGyro = gyro.get_rotation();
+        dvalues.push_back(currentGyro);
+        double averageD = calcMedian(dvalues);
 
         // Calculate the velocity
-		double velocity = testPIDController.calculate(gyro.get_rotation(), target);
-
+		double velocity = testPIDController.calculate(averageD, target);
+        //driverController.print(0,0,"Vel:%d",velocity);
         // Set the motor velocities
-		rightMotorGroup.moveVoltage(-velocity);
-		leftMotorGroup.moveVoltage(velocity);
+		rightMotorGroup.move(-velocity);
+		leftMotorGroup.move(velocity);
+        
 		pros::delay(5);
 
         // Determine if within small error range
@@ -202,12 +226,14 @@ void turnAngle(double angle, double maxVelocity, int timeout) {
             // Reset the entry time
             largeErrorEntryTime = -1;
         }
-
-        // Update the time values
-        previousTime = currentTime;
-        currentTime = pros::millis();
 	}
-    drivetrain->stop();
+    print(0,0,"Avg:" + std::to_string(calcMedian(dvalues)));
+    leftMotorGroup.move_voltage(0);
+    rightMotorGroup.move_voltage(0);
+    if(exitTime<=pros::millis()){
+        //driverController.print(0,0,"CCCCCCCCCCCCc");
+    }
+
     pros::delay(50);
 }
 

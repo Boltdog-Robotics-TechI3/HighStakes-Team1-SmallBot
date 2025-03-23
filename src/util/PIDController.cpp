@@ -20,9 +20,6 @@ PIDController::PIDController(double kP, double kI, double kD) {
     this->kP = kP;
     this->kI = kI;
     this->kD = kD;
-
-    currentTime = pros::millis();
-    previousTime = pros::millis();
 }
 
 /**
@@ -202,37 +199,18 @@ double PIDController::calculate(double measurement, double setpoint) {
     // Update the error
     error = setpoint - measurement;
 
-    // Calculate the elapsed time of this current feedback loop
-    int elapsedTime = currentTime - previousTime;
-
     // Calculate the output of the PID controller
-    double output = kP * error +                                  // P term
-                    (kI * accumulatedError * elapsedTime) +       // I term
-                    ((error - previousError) * kD / elapsedTime); // D term
-
-    // Clamp the output
-    if (minOutput != 0.0) {
-        if (output > 0) {
-            output = std::max(output, minOutput);
-        } else {
-            output = std::min(output, -minOutput);
-        }
-    }
-    if (maxOutput != 0.0 ) {
-        if (output > 0) {
-            output = std::min(output, maxOutput);
-        } else {
-            output = std::max(output, -maxOutput);
-        }
-    }
+    double output = kP * error +                    // P term
+                    (kI * accumulatedError) +       // I term
+                    ((error - previousError) * kD); // D term  
 
     // Update values
     previousError = error;
-    previousTime = currentTime;
-    currentTime = pros::millis();
 
     // Only accumulate the error if it is within the IZone (or if IZone is disabled)
     accumulatedError += (IZone != 0 && std::abs(error) > IZone) ? 0 : error;
+
+    //driverController.print(2,0,"Output:%d",output);
 
     return output;
 }

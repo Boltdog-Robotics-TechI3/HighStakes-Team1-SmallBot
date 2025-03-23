@@ -7,15 +7,15 @@ pros::Controller driverController(pros::E_CONTROLLER_MASTER);
 
 // Motors
     // Drivetrain
-    okapi::Motor leftMotorA(18, true, okapi::AbstractMotor::gearset::blue, okapi::AbstractMotor::encoderUnits::rotations);
-    okapi::Motor leftMotorB(19, false, okapi::AbstractMotor::gearset::blue, okapi::AbstractMotor::encoderUnits::rotations);
-    okapi::Motor leftMotorC(20, true, okapi::AbstractMotor::gearset::blue, okapi::AbstractMotor::encoderUnits::rotations);
-    okapi::Motor rightMotorA(14, false, okapi::AbstractMotor::gearset::blue, okapi::AbstractMotor::encoderUnits::rotations);
-    okapi::Motor rightMotorB(12, false, okapi::AbstractMotor::gearset::blue, okapi::AbstractMotor::encoderUnits::rotations);
-    okapi::Motor rightMotorC(13, true, okapi::AbstractMotor::gearset::blue, okapi::AbstractMotor::encoderUnits::rotations);
+    pros::Motor leftMotorA(-18);
+    pros::Motor leftMotorB(19);
+    pros::Motor leftMotorC(-20);
+    pros::Motor rightMotorA(14);
+    pros::Motor rightMotorB(12);
+    pros::Motor rightMotorC(-13);
 
-    okapi::MotorGroup leftMotorGroup({-18, 19, -20});
-    okapi::MotorGroup rightMotorGroup({14, 12, -13});
+    pros::MotorGroup leftMotorGroup({-18, 19, -20});
+    pros::MotorGroup rightMotorGroup({14, 12, -13});
 
     // Intake 
     pros::Motor intakeA(15);
@@ -24,11 +24,11 @@ pros::Controller driverController(pros::E_CONTROLLER_MASTER);
     pros::MotorGroup intakeGroup({15, -16});
     
     // Lift
-    okapi::Motor lift(11, true, okapi::AbstractMotor::gearset::green, okapi::AbstractMotor::encoderUnits::rotations);
+    pros::Motor lift(11);
 
     // LadyBrown
     pros::Motor ladybrownA(5);
-    pros::Motor ladybrownB(6); 
+    pros::Motor ladybrownB(-6); 
 
     pros::MotorGroup ladybrownGroup({5, -6});
 

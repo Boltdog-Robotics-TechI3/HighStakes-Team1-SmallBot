@@ -11,10 +11,10 @@ bool isEjecting = false;
 *  Used to set the attributes of objects and other tasks that need to happen at the start.
 */
 void liftInitialize() {
-    lift.setBrakeMode(okapi::AbstractMotor::brakeMode::coast);
+    lift.set_brake_mode(pros::MotorBrake::coast);
     intakeGroup.set_brake_mode(pros::MotorBrake::coast);
 
-    lift.setCurrentLimit(2500);
+    lift.set_current_limit(2500);
 
     intakeA.set_reversed(false);
     intakeB.set_reversed(true);
@@ -70,21 +70,21 @@ void liftPeriodic() {
 * to ensure that the ejection isnt interrupted by some other method calling the 
 * setLiftSpeed() function.
 *
-* @param speed The speed to set the lift motor to, from -1 to 1.
+* @param speed The speed to set the lift motor to, from -127 to 127.
 */
 void setLiftSpeed(double speed) {
     if (!isEjecting) {
-        lift.controllerSet(speed);
+        lift.move(speed);
     }
 }
 
 /**
 * Sets the speed of the intake.
 *
-* @param speed The speed to set the intake motors to, from -1 to 1.
+* @param speed The speed to set the intake motors to, from -127 to 127.
 */
 void setIntakeSpeed(double speed) {
-    intakeGroup.move(speed * 127.0);
+    intakeGroup.move(speed);
 }
 
 /**
@@ -115,13 +115,13 @@ bool detectsBadColor() {
  * of the setLiftSpeed() function.
  */
 void eject() {
-    lift.controllerSet(1);
+    lift.move_voltage(127);
     pros::delay(160);
-    lift.controllerSet(-1);
+    lift.move_voltage(-127);
     pros::delay(150);
     // setLadybrownSetpoint(500, 100);
     // pros::delay(20);
-    lift.controllerSet(0);
+    lift.move_voltage(0);
     pros::delay(150);
     // pros::delay(200);
     // setLadybrownSetpoint(0, 100);
@@ -191,7 +191,7 @@ void liftStallHandler(void* param) {
     int stallTime = -1;
     while (true) {
         bool ladyBrownReadied = ladybrownGroup.get_position() > 100 && ladybrownGroup.get_position() < 200;
-        if (lift.getActualVelocity() == 0 && lift.getTargetVelocity() > 0 && !ladyBrownReadied) {
+        if (lift.get_actual_velocity() == 0 && lift.get_target_velocity() > 0 && !ladyBrownReadied) {
             if (stallTime == -1) {
                 stallTime = pros::millis();
             } else if (pros::millis() - stallTime >= 250) {
