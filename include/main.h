@@ -103,6 +103,7 @@ void opcontrol(void);
 #include "utilHeaders/Pose2D.h"
 #include "utilHeaders/Angle.hpp"
 #include "utilHeaders/PIDController.h"
+#include "utilHeaders/Distance.hpp"
 
 
 

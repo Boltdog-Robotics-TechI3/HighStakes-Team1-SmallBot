@@ -6,11 +6,11 @@ Angle::Angle(double degrees) {
 }
 
 Angle Angle::fromDeg(double degrees) {
-    Angle(degrees * 1);
+    return Angle(degrees * 1);
 }
 
 Angle Angle::fromRad(double radians) {
-    Angle(toDeg(radians));
+    return Angle(toDeg(radians));
 }
 
 double Angle::asRad() {
