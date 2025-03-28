@@ -12,7 +12,7 @@ pros::Controller driverController(pros::E_CONTROLLER_MASTER);
     pros::Motor rightMotorC(20);
     pros::Motor leftMotorA(-14);
     pros::Motor leftMotorB(-12);
-    pros::Motor leftMotorC(-13);
+    pros::Motor leftMotorC(13);
 
     pros::MotorGroup rightMotorGroup({18, -19, 20});
     pros::MotorGroup leftMotorGroup({-14, -12, 13});
