@@ -1,5 +1,7 @@
 #include "main.h"
 #include <deque>
+#include <iostream>
+#include <fstream>
 using namespace std;
 using namespace okapi;
 
@@ -172,6 +174,7 @@ void turnAngle(double angle, double maxVelocity, int timeout) {
 
     // Set the start time and exit time
 	int exitTime = pros::millis() + timeout;
+    int startTime = pros::millis();
 
     //initalize vector
     std::deque<double> dvalues = {};
@@ -184,11 +187,17 @@ void turnAngle(double angle, double maxVelocity, int timeout) {
 	while (!targetReached && pros::millis() < exitTime) {
         //add current value to dvalues vector
         double currentGyro = gyro.get_rotation();
+
         dvalues.push_back(currentGyro);
         double averageD = calcMedian(dvalues);
 
         // Calculate the velocity
-		double velocity = testPIDController.calculate(averageD, target);
+		double velocity = testPIDController.calculate(currentGyro, target);
+        std::ofstream myfile;
+        myfile.open("output.csv");
+        myfile << "Current X Gyro Value, Y Gyro Value, median value, and velocity at %d after start:\n",(startTime-pros::millis());
+        myfile << "%f,%f,%f\n", (currentGyro,averageD,velocity);
+        myfile.close();
         //driverController.print(0,0,"Vel:%d",velocity);
         // Set the motor velocities
 		rightMotorGroup.move(-velocity);

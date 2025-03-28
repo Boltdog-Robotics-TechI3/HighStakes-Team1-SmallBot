@@ -7,15 +7,15 @@ pros::Controller driverController(pros::E_CONTROLLER_MASTER);
 
 // Motors
     // Drivetrain
-    pros::Motor leftMotorA(-18);
-    pros::Motor leftMotorB(19);
-    pros::Motor leftMotorC(-20);
-    pros::Motor rightMotorA(14);
-    pros::Motor rightMotorB(12);
-    pros::Motor rightMotorC(-13);
+    pros::Motor rightMotorA(18);
+    pros::Motor rightMotorB(-19);
+    pros::Motor rightMotorC(20);
+    pros::Motor leftMotorA(-14);
+    pros::Motor leftMotorB(-12);
+    pros::Motor leftMotorC(-13);
 
-    pros::MotorGroup leftMotorGroup({-18, 19, -20});
-    pros::MotorGroup rightMotorGroup({14, 12, -13});
+    pros::MotorGroup rightMotorGroup({18, -19, 20});
+    pros::MotorGroup leftMotorGroup({-14, -12, 13});
 
     // Intake 
     pros::Motor intakeA(15);
@@ -79,7 +79,6 @@ std::queue<PrintMessage> printQueue;
 */
 void printMessages(void* param) {
     pros::Task::notify_take(true, TIMEOUT_MAX);
-    driverController.clear();
     while (true) {
         if (!printQueue.empty()) {
             PrintMessage message = printQueue.front();
