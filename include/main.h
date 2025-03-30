@@ -104,6 +104,8 @@ void opcontrol(void);
 #include "utilHeaders/Angle.hpp"
 #include "utilHeaders/PIDController.h"
 #include "utilHeaders/Distance.hpp"
+#include "utilHeaders/Chassis.hpp"
+#include "utilHeaders/Odometry.h"
 
 
 

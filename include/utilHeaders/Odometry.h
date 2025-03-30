@@ -5,4 +5,6 @@ class Odometry {
         Pose2D pose;
 
     public:
-}
+        Odometry(Chassis chassis);
+    
+};
