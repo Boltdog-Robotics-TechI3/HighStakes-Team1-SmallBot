@@ -82,6 +82,17 @@ void opcontrol(void);
  */
 //#include <iostream>
 // #include "okapi/api.hpp"
+
+// Utils
+#include "utilHeaders/TrackingWheel.h"
+#include "utilHeaders/Pose2D.h"
+#include "utilHeaders/Angle.hpp"
+#include "utilHeaders/PIDController.h"
+#include "utilHeaders/Distance.hpp"
+#include "utilHeaders/Chassis.hpp"
+#include "utilHeaders/Odometry.h"
+
+// Misc
 #include "globals.h"
 #include "screen.h"
 
@@ -99,13 +110,8 @@ void opcontrol(void);
 #include "autonomousHeaders/allianceMogoRedAuto.hpp"
 #include "autonomousHeaders/allianceMogoBlueAuto.hpp"
 
-// Utils
-#include "utilHeaders/Pose2D.h"
-#include "utilHeaders/Angle.hpp"
-#include "utilHeaders/PIDController.h"
-#include "utilHeaders/Distance.hpp"
-#include "utilHeaders/Chassis.hpp"
-#include "utilHeaders/Odometry.h"
+
+
 
 
 

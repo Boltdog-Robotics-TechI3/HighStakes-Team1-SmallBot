@@ -46,7 +46,7 @@ void Pose2D::setPose(double x, double y, double heading) {
     std::clamp(this->y, -72.0, 72.0);
     std::clamp(this->heading, 0.0, 2 * M_PI);
 
-    pros::Task::notify();
+    // pros::Task::notify();
 }
 
 /**
@@ -64,7 +64,7 @@ void Pose2D::setPose(Pose2D pose) {
  * @return the x coordinate in inches
  */
 double Pose2D::getX() {
-    while (pros::Task::notify_take(true, 500));
+    // while (pros::Task::notify_take(true, 500));
     return x;
 } 
 
@@ -74,7 +74,7 @@ double Pose2D::getX() {
  * @return the y coordinate in inches
  */
 double Pose2D::getY() {
-    while (pros::Task::notify_take(true, 500));
+    // while (pros::Task::notify_take(true, 500));
     return y;
 }
 
@@ -84,7 +84,7 @@ double Pose2D::getY() {
  * @return the heading in radians
  */
 double Pose2D::getHeading() {
-    while (pros::Task::notify_take(true, 500)):
+    // while (pros::Task::notify_take(true, 500)):
     return heading;
 }
 

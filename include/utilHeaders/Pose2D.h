@@ -2,7 +2,7 @@
 
 /**
  * Class representing a 2D pose of the robot. It contains the x, y coordinates and the heading of the robot. 
- * x and y are constrained by the field size (-6ft to 6ft), and heading is constrained to be between 0 and 360 degrees.
+ * x and y are constrained by the field size (-6ft to 6ft), and heading is constrained to be between 0 to 2π radians (0 to 360 degrees).
  */
 class Pose2D {
     private: 
