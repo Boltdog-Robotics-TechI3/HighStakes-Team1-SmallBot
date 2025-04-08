@@ -1,4 +1,6 @@
-#include "main.h"
+#pragma once
+#include "api.h"
+#include "utilHeaders/TrackingWheel.hpp"
 
 class Chassis {
     private: 
@@ -64,7 +66,5 @@ class Chassis {
 
         double getWheelTrack();
         void setWheelTrack(double wheelTrack);
-
-    
 
 };

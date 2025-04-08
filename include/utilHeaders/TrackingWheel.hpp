@@ -1,10 +1,6 @@
-#include "main.h"
+#include "pros/rotation.hpp"
+#include "utilHeaders/Pose2D.hpp"
 
-enum WheelOrientation {
-    HORIZONTAL = 0,
-    VERTICAL = 1,
-    DIAGONAL = 2
-};
 /** 
  *  A class representation of a tracking wheel. 
  */
@@ -12,7 +8,7 @@ enum WheelOrientation {
 class TrackingWheel {
     private:
         double wheelDiameter; // inches
-        WheelOrientation wheelOrientation; // The orientation of the wheel (horizontal, vertical, or diagonal)
+        double wheelOrientation; // 0 radians is horizontal, π/2 radians is vertical, and any other angle is diagonal
         pros::Rotation encoder; // The rotation sensor object representing the encoder for the wheel
         Pose2D offset; // A pose2D object representing the offset of the wheel from the tracking center of the robot
 
@@ -28,7 +24,7 @@ class TrackingWheel {
             int rotationSensorPort, 
             Pose2D offset, 
             double wheelDiameter,
-            WheelOrientation wheelOrientation
+            double wheelOrientation = 0
         );
 
         /**

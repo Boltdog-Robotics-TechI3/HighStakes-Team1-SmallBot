@@ -1,4 +1,5 @@
-#include "main.h"
+#include "utilHeaders/Angle.hpp"
+#include "utilHeaders/Distance.hpp"
 
 /**
  * Class representing a 2D pose of the robot. It contains the x, y coordinates and the heading of the robot. 

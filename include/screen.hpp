@@ -1,4 +1,4 @@
-#include "main.h"
+#include "liblvgl/lvgl.h"
 
 void initializeScreen();
 

@@ -1,6 +1,10 @@
-#include "main.h"
+#include <math.h>
+
+#include "utilHeaders/Angle.hpp"
+
 #define toRad(angle) angle * (M_PI/180)
 #define toDeg(angle) angle * (180/M_PI)
+
 Angle::Angle(double degrees) {
     this->angleDeg = degrees;
 }
@@ -24,4 +28,3 @@ double Angle::asRad() {
 double Angle::asDeg() {
     return this->angleDeg;
 }
-
