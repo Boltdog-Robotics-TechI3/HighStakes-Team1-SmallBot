@@ -1,4 +1,4 @@
-#include "main.h"
+#include "utilHeaders/Distance.hpp"
 
 Distance::Distance(double in) {
     this->distIN = in;

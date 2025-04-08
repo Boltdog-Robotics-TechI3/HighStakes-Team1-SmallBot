@@ -86,11 +86,11 @@ void opcontrol(void);
 // Utils
 #include "utilHeaders/Distance.hpp"
 #include "utilHeaders/Angle.hpp"
-#include "utilHeaders/Pose2D.h"
-#include "utilHeaders/PIDController.h"
-#include "utilHeaders/TrackingWheel.h"
+#include "utilHeaders/Pose2D.hpp"
+#include "utilHeaders/PIDController.hpp"
+#include "utilHeaders/TrackingWheel.hpp"
 #include "utilHeaders/Chassis.hpp"
-#include "utilHeaders/Odometry.h"
+#include "utilHeaders/Odometry.hpp"
 #include "utilHeaders/ChassisModel.hpp"
 
 

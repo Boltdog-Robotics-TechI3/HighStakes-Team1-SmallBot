@@ -1,3 +1,5 @@
+#pragma once
+
 /**
  * Class representing a PID controller.
  * It contains the PID gains, setpoint, measurement, and other variables needed for PID control.

@@ -1,3 +1,5 @@
+#pragma once
+
 #include "pros/rotation.hpp"
 #include "utilHeaders/Pose2D.hpp"
 

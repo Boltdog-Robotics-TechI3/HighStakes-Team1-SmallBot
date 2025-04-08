@@ -1,3 +1,5 @@
+#pragma once
+
 class Distance {
     private:
         double distIN;

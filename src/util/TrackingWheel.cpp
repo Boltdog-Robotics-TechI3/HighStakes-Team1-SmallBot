@@ -1,7 +1,9 @@
-#include "main.h"
+#include <math.h>
 
-TrackingWheel::TrackingWheel(int rotationSensorPort, Pose2D offset, double wheelDiameter)
-    : encoder(rotationSensorPort), offset(offset), wheelDiameter(wheelDiameter) {
+#include "utilHeaders/TrackingWheel.hpp"
+
+TrackingWheel::TrackingWheel(int rotationSensorPort, Pose2D offset, double wheelDiameter, double wheelOrientation)
+    : encoder(rotationSensorPort), offset(offset), wheelDiameter(wheelDiameter), wheelOrientation(wheelOrientation) {
     
     if (offset.getHeading() == 0) {
         wheelOrientation = 0; // horizontal wheel

@@ -1,4 +1,7 @@
+#pragma once
+
 #include "utilHeaders/Pose2D.hpp"
+#include "utilHeaders/Chassis.hpp"
 
 class Odometry {
     private:

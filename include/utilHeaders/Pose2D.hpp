@@ -1,3 +1,5 @@
+#pragma once
+
 #include "utilHeaders/Angle.hpp"
 #include "utilHeaders/Distance.hpp"
 

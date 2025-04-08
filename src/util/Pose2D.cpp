@@ -1,9 +1,11 @@
-#include "main.h"
+#include <algorithm>
+#include <cmath>
+
+#include "utilHeaders/Pose2D.hpp"
 
 /**
  * Method Definitions for the Pose2D class. C++ is really stupid.
  */
-
 /**
  * @brief Constructor for Pose2D.
  * 
