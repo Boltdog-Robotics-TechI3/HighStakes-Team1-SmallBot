@@ -226,13 +226,31 @@ double PIDController::calculate(double measurement, double setpoint) {
         }
     }
 
+    //Slew Rate
+    auto lastDifference = output - previousOutput;
+    auto maxDifference = maxSlewRate * (elapsedTime * 1000);
+    if (std::abs(lastDifference) > maxSlewRate) {
+        // If output is decreasing
+        if (lastDistance < 0) {
+            output = previousOutput - maxDifference;
+            previousOutput = 
+            return ;
+        }
+        // If output is increasing
+        else {
+            return previousOutput + maxDifference;
+        }
+    }
+
     // Update values
     previousError = error;
     previousTime = currentTime;
     currentTime = pros::millis();
+    previousOutput = output;
 
     // Only accumulate the error if it is within the IZone (or if IZone is disabled)
     accumulatedError += (IZone != 0 && std::abs(error) > IZone) ? 0 : error;
+
 
     return output;
 }

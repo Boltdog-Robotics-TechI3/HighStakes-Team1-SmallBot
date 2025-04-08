@@ -1,5 +1,10 @@
 #include "main.h"
 
+enum WheelOrientation {
+    HORIZONTAL = 0,
+    VERTICAL = 1,
+    DIAGONAL = 2
+};
 /** 
  *  A class representation of a tracking wheel. 
  */
@@ -7,7 +12,7 @@
 class TrackingWheel {
     private:
         double wheelDiameter; // inches
-        int wheelOrientation; // 0 for horizontal, 1 for vertical, 2 for diagonal
+        WheelOrientation wheelOrientation; // The orientation of the wheel (horizontal, vertical, or diagonal)
         pros::Rotation encoder; // The rotation sensor object representing the encoder for the wheel
         Pose2D offset; // A pose2D object representing the offset of the wheel from the tracking center of the robot
 
@@ -19,7 +24,12 @@ class TrackingWheel {
          * @param offset the offset of the wheel from the tracking center of the robot as a Pose2D object. Left/Backwards is negative, Forwards/Right is positive. 0 radians is a horizontal wheel, π/2 radians is a vertical wheel, and any other angle is a diagonal wheel.
          * @param wheelDiameter the diameter of the wheel in inches
          */
-        TrackingWheel(int rotationSensorPort, Pose2D offset, double wheelDiameter);
+        TrackingWheel(
+            int rotationSensorPort, 
+            Pose2D offset, 
+            double wheelDiameter,
+            WheelOrientation wheelOrientation
+        );
 
         /**
          * Gets the distance the wheel has turned from its starting position in wheel rotations
@@ -55,8 +65,4 @@ class TrackingWheel {
          * @return the angle of the wheel offset in radians
          */
         double getWheelOffsetAngle(); // radians
-
-
-
-
 };

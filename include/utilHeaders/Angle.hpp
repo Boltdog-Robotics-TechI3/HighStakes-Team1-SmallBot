@@ -1,8 +1,11 @@
 class Angle {
     private:
         double angleDeg;
-        Angle(double degrees);
     public:
+    /** Do not use */
+        Angle(double degrees);
+    /** Do not use */
+        Angle();
     /** Create an angle from a degree value */
         static Angle fromDeg(double degrees);
     /** Create an angle from a radian value */
@@ -11,18 +14,34 @@ class Angle {
         double asDeg();
     /** Get Angle as Radians */
         double asRad();
+        //Additive Stuff
+        Angle operator+(Angle const& other) {
+            return Angle(angleDeg + other.angleDeg);
+        }
+        Angle operator-(Angle const& other) {
+            return Angle(angleDeg + other.angleDeg);
+        }
+        Angle operator*(Angle const& other) {
+            return Angle(angleDeg * other.angleDeg);
+        }
+        Angle operator/(Angle const& other) {
+            return Angle(angleDeg / other.angleDeg);
+        }
+        Angle operator==(Angle const& other) {
+            return angleDeg == other.angleDeg;
+        }
 };
 
-inline Angle operator "" _degs(long double degrees) {
+inline Angle operator "" _deg(long double degrees) {
     return Angle::fromDeg(degrees);
 }
-inline Angle operator "" _rads(long double rad) {
+inline Angle operator "" _rad(long double rad) {
     return Angle::fromRad(rad);
 }
 
-inline Angle operator "" _degs(unsigned long long degrees) {
+inline Angle operator "" _deg(unsigned long long degrees) {
     return Angle::fromDeg(degrees);
 }
-inline Angle operator "" _rads(unsigned long long rad) {
+inline Angle operator "" _rad(unsigned long long rad) {
     return Angle::fromRad(rad);
 }

@@ -39,7 +39,7 @@
 /**
  * You should add more #includes here
  */
-#include "okapi/api.hpp"
+// #include "okapi/api.hpp"
 #include "pros/apix.h"
 #include "liblvgl/lvgl.h"
 #include <iostream>
@@ -84,13 +84,15 @@ void opcontrol(void);
 // #include "okapi/api.hpp"
 
 // Utils
-#include "utilHeaders/TrackingWheel.h"
-#include "utilHeaders/Pose2D.h"
-#include "utilHeaders/Angle.hpp"
-#include "utilHeaders/PIDController.h"
 #include "utilHeaders/Distance.hpp"
+#include "utilHeaders/Angle.hpp"
+#include "utilHeaders/Pose2D.h"
+#include "utilHeaders/PIDController.h"
+#include "utilHeaders/TrackingWheel.h"
 #include "utilHeaders/Chassis.hpp"
 #include "utilHeaders/Odometry.h"
+#include "utilHeaders/ChassisModel.hpp"
+
 
 // Misc
 #include "globals.h"
@@ -101,14 +103,6 @@ void opcontrol(void);
 #include "subsystemHeaders/clamper.hpp"
 #include "subsystemHeaders/ladybrown.hpp"
 #include "subsystemHeaders/drivetrain.hpp"
-
-// Autos
-#include "autonomousHeaders/goalRushNoWallAuto.hpp"
-#include "autonomousHeaders/goalRushWallStakeAuto.hpp"
-#include "autonomousHeaders/skillsAuto.hpp"
-#include "autonomousHeaders/testAuto.hpp"
-#include "autonomousHeaders/allianceMogoRedAuto.hpp"
-#include "autonomousHeaders/allianceMogoBlueAuto.hpp"
 
 
 

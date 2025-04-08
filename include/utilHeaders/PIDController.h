@@ -20,6 +20,7 @@ class PIDController {
         double minOutput = 0;
         double maxOutput = 0;
         double IZone = 0;
+        double maxSlewRate = 0;
 
         // Other variables
         double setpoint;
@@ -29,6 +30,7 @@ class PIDController {
         double error;
         double previousError;
         double accumulatedError;
+        double previousOutput;
 
     public:
         /**

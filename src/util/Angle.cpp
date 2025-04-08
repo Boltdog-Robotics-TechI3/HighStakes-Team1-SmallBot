@@ -5,6 +5,10 @@ Angle::Angle(double degrees) {
     this->angleDeg = degrees;
 }
 
+Angle::Angle() {
+    this->angleDeg = 0;
+}
+
 Angle Angle::fromDeg(double degrees) {
     return Angle(degrees * 1);
 }

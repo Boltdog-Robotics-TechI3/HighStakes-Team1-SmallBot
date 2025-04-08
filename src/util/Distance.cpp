@@ -4,6 +4,10 @@ Distance::Distance(double in) {
     this->distIN = in;
 }
 
+Distance::Distance() {
+    this->distIN = 0;
+}
+
 Distance Distance::fromIN(double inches) {
     return Distance(inches);
 }
