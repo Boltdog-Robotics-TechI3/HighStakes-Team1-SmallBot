@@ -1,13 +1,17 @@
 #pragma once
 
-#include "utilHeaders/Pose2D.hpp"
 #include "utilHeaders/Chassis.hpp"
+#include "utilHeaders/TrackingWheel.hpp"
 
 class Odometry {
     private:
-        Pose2D pose;
+        friend class Chassis;
+        TrackingWheel *leftWheel;
+        TrackingWheel *rightWheel;
+        TrackingWheel *backWheel;
+        pros::IMU *imu;
 
     public:
-        Odometry(Chassis chassis);
+        Odometry(TrackingWheel *leftWheel, TrackingWheel *rightWheel, TrackingWheel *backWheel, pros::IMU *imu);
     
 };
