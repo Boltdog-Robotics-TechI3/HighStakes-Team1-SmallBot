@@ -16,6 +16,8 @@ class Angle {
         double asDeg();
     /** Get Angle as Radians */
         double asRad();
+    /** To String Function */
+        string to_string();
         //Additive Stuff
         Angle operator+(Angle const& other) {
             return Angle(angleDeg + other.angleDeg);

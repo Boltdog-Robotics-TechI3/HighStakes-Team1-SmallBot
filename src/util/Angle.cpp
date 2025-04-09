@@ -25,6 +25,10 @@ double Angle::asRad() {
     return toRad(this->angleDeg);
 }
 
+string Angle::to_string() {
+    return std::format("{} Degrees", angleDeg);
+}
+
 double Angle::asDeg() {
     return this->angleDeg;
 }

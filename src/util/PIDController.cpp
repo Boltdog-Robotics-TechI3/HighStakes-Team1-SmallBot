@@ -1,5 +1,4 @@
-#include "utilHeaders/PIDController.hpp"
-#include "api.h"
+#include "main.h"
 
 /**
  * Class representing a PID controller.
@@ -227,19 +226,17 @@ double PIDController::calculate(double measurement, double setpoint) {
         }
     }
 
-    //Slew Rate
+    //Slew Rate (Max rate of change)
     auto lastDifference = output - previousOutput;
-    auto maxDifference = maxSlewRate * (elapsedTime * 1000);
-    if (std::abs(lastDifference) > maxSlewRate) {
+    auto maxDifference = maxSlewRate * (elapsedTime / 1000);
+    if (maxSlewRate != 0 && std::abs(lastDifference) > maxDifference) {
         // If output is decreasing
-        if (lastDistance < 0) {
+        if (lastDifference < 0) {
             output = previousOutput - maxDifference;
-            previousOutput = 
-            return ;
         }
         // If output is increasing
         else {
-            return previousOutput + maxDifference;
+            output = previousOutput + maxDifference;
         }
     }
 

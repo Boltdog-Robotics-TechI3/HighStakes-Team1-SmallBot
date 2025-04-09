@@ -1,12 +1,17 @@
 #pragma once
 
-#include "utilHeaders/Chassis.hpp"
 #include "utilHeaders/Distance.hpp"
 #include "utilHeaders/Angle.hpp"
-class ChassisModel{
+#include "utilHeaders/Pose2D.hpp"
+#include "utilHeaders/TrackingWheel.hpp"
+#include "utilHeaders/Drivetrain.hpp"
+#include "utilHeaders/Odometry.hpp"
+
+class ChassisController{
 
     private:
-        Chassis *chassis;
+        Drivetrain drivetrain;
+        Odometry odometry;
 
         int leftY;
         int rightX;
@@ -15,7 +20,7 @@ class ChassisModel{
 
         /**
          */
-        ChassisModel(Chassis &chassis);
+        ChassisController(Drivetrain &drivetrain, Odometry &odometry);
 
         /**
          * @brief Move the robot in arcade mode. The left joystick controls the forward/backward movement, and the right joystick controls the rotation.

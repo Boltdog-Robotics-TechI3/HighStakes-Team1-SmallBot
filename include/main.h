@@ -39,7 +39,7 @@
 /**
  * You should add more #includes here
  */
-// #include "okapi/api.hpp"
+#include "okapi/api.hpp"
 #include "pros/apix.h"
 #include "liblvgl/lvgl.h"
 #include <iostream>
@@ -89,13 +89,13 @@ void opcontrol(void);
 #include "utilHeaders/Pose2D.hpp"
 #include "utilHeaders/PIDController.hpp"
 #include "utilHeaders/TrackingWheel.hpp"
-#include "utilHeaders/Chassis.hpp"
 #include "utilHeaders/Odometry.hpp"
-#include "utilHeaders/ChassisModel.hpp"
+#include "utilHeaders/Drivetrain.hpp"
+#include "utilHeaders/ChassisController.hpp"
 
 
 // Misc
-#include "globals.h"
+#include "globals.hpp"
 #include "screen.h"
 
 // Subsystems

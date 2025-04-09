@@ -1,4 +1,5 @@
 #include "main.h"
+
 using namespace std;
 using namespace okapi;
 
@@ -15,7 +16,7 @@ std::shared_ptr<okapi::ChassisControllerPID> chassis = std::dynamic_pointer_cast
     .build());
 
 // Turn gains: 3.0, 0.00, 1.5
-std::shared_ptr<ChassisModel> drivetrain = chassis->getModel();
+std::shared_ptr<okapi::ChassisModel> drivetrain = chassis->getModel();
 
 // PID constants for turning
 PID turnPID = {

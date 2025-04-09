@@ -31,3 +31,7 @@ double Distance::asFT() {
 double Distance::asYD() {
     return this->distIN / 36;
 }
+
+string Distance::to_string() {
+    return std::format("{} Inches", distIN);
+}
