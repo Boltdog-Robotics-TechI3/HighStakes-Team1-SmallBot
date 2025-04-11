@@ -1,6 +1,7 @@
 #include <math.h>
 
 #include "utilHeaders/Angle.hpp"
+#include <format>
 
 #define toRad(angle) angle * (M_PI/180)
 #define toDeg(angle) angle * (180/M_PI)
@@ -25,7 +26,7 @@ double Angle::asRad() {
     return toRad(this->angleDeg);
 }
 
-string Angle::to_string() {
+std::string Angle::to_string() {
     return std::format("{} Degrees", angleDeg);
 }
 

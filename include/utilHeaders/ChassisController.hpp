@@ -2,16 +2,14 @@
 
 #include "utilHeaders/Distance.hpp"
 #include "utilHeaders/Angle.hpp"
-#include "utilHeaders/Pose2D.hpp"
-#include "utilHeaders/TrackingWheel.hpp"
 #include "utilHeaders/Drivetrain.hpp"
 #include "utilHeaders/Odometry.hpp"
 
 class ChassisController{
 
     private:
-        Drivetrain drivetrain;
-        Odometry odometry;
+        Drivetrain *drivetrain;
+        Odometry *odometry;
 
         int leftY;
         int rightX;

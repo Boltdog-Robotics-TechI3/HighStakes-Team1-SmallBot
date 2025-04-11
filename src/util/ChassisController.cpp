@@ -2,8 +2,9 @@
 
 // ChassisController::arcade
 
-ChassisController::ChassisController(Chassis &chassis){
-    this->chassis = &chassis;
+ChassisController::ChassisController(Drivetrain &drivetrain, Odometry &odometry) {
+    this->drivetrain = &drivetrain;
+    this->odometry = &odometry;
 }
 
 
@@ -17,8 +18,8 @@ void ChassisController::arcade(int leftY, int rightX) {
     rightSpeed = std::clamp(rightSpeed, -127, 127); 
 
     // Set the motor speeds
-    chassis->setLeftSideSpeed(leftSpeed);
-    chassis->setRightSideSpeed(rightSpeed); 
+    drivetrain->setLeftSideSpeed(leftSpeed);
+    drivetrain->setRightSideSpeed(rightSpeed); 
 }
 
 void ChassisController::tank(int leftY, int rightY) {
@@ -27,14 +28,14 @@ void ChassisController::tank(int leftY, int rightY) {
     rightY = std::clamp(rightY, -127, 127); 
 
     // Set the motor speeds for tank drive
-    chassis->setLeftSideSpeed(leftY);
-    chassis->setRightSideSpeed(rightY); 
+    drivetrain->setLeftSideSpeed(leftY);
+    drivetrain->setRightSideSpeed(rightY); 
 }
 
 void ChassisController::stop() {
     // Stop the motors by setting their speeds to 0
-    chassis->setLeftSideSpeed(0);
-    chassis->setRightSideSpeed(0); 
+    drivetrain->setLeftSideSpeed(0);
+    drivetrain->setRightSideSpeed(0); 
 }
 
 void ChassisController::moveForwardRelative(Distance distance) {

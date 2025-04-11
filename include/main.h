@@ -39,7 +39,7 @@
 /**
  * You should add more #includes here
  */
-#include "okapi/api.hpp"
+// #include "okapi/api.hpp"
 #include "pros/apix.h"
 #include "liblvgl/lvgl.h"
 #include <iostream>
@@ -96,15 +96,7 @@ void opcontrol(void);
 
 // Misc
 #include "globals.hpp"
-#include "screen.h"
-
-// Subsystems
-#include "subsystemHeaders/lift.hpp"
-#include "subsystemHeaders/clamper.hpp"
-#include "subsystemHeaders/ladybrown.hpp"
-#include "subsystemHeaders/drivetrain.hpp"
-
-
+#include "screen.hpp"
 
 
 

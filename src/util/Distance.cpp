@@ -1,4 +1,5 @@
 #include "utilHeaders/Distance.hpp"
+#include <format>
 
 Distance::Distance(double in) {
     this->distIN = in;
@@ -32,6 +33,6 @@ double Distance::asYD() {
     return this->distIN / 36;
 }
 
-string Distance::to_string() {
+std::string Distance::to_string() {
     return std::format("{} Inches", distIN);
 }

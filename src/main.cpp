@@ -1,5 +1,4 @@
 #include "main.h"
-#include <cmath>
 /**
  * Runs initialization code. This occurs as soon as the program is started.
  *
@@ -10,28 +9,6 @@ void initialize() {
 	initializeScreen();
 
 	// Call the subsystems' initialize functions
-	drivetrainInitialize();
-	liftInitialize();
-	clamperInitialize();
-	ladybrownInitialize();
-
-	// Initialize the gyro
-	gyro.reset(true);
-	while (gyro.is_calibrating());
-	gyro.set_data_rate(5);
-
-	debug = false;
-
-	// Initialize Tasks
-	intakeTask.suspend();
-	intakeTask.notify();
-	/*if (!pros::competition::is_connected()) {
-		intakeJamTask.notify();
-		liftStallTask.notify();
-		printTask.notify();
-	} else {
-		printTask.suspend();
-	}*/
 }
 
 /**
@@ -40,11 +17,7 @@ void initialize() {
  * the robot is enabled, this task will exit.
  */
 void disabled() {
-	/*chassis->stop();
-	drivetrain->stop();
-	lift.moveVelocity(0);
-	ladybrownGroup.brake();
-	intakeGroup.brake();*/
+	
 }
 
 /**
@@ -72,30 +45,11 @@ void competition_initialize() {
  * from where it left off.
  */
 void autonomous() {
-	// skillsAuto();
-	switch (autoSelection) {
-		case 0:
-			allianceMogoRedAuto();
-			break;
-		case 1:
-			allianceMogoBlueAuto();
-			break;
-	    case 2: 
-			goalRushNoWallAuto();
-			break;
-		case 3:
-			goalRushWallStakeAuto();
-			break;
-		case 4:
-			skillsAuto();
-			break;
-		case 5:
-			testAuto();
-			break;
-		case 6:
-			// Do Nothing :)
-			break;
-	}
+	// switch (autoSelection) {
+	// 	default:
+	// 		// Do Nothing :)
+	// 		break;
+	// }
 }
 
 /**
@@ -113,24 +67,6 @@ void autonomous() {
  */
 void opcontrol() {
 	while (true) {
-	
-		// Run each subsystem's periodic function
-		clamperPeriodic();
-		liftPeriodic();
-		ladybrownPeriodic();
-		drivetrainPeriodic();
-
-		if (driverController.get_digital(DIGITAL_L2) && driverController.get_digital(DIGITAL_Y)) {
-			turnToHeading(90, 8000);
-		}
-
-		// Debugging code
-		if (debug) {
-			if (driverController.get_digital_new_press(DIGITAL_Y)) {
-				skillsAuto();
-			}
-		}
-
 		// Run for 20 ms then update
 		pros::delay(20);  
 	}

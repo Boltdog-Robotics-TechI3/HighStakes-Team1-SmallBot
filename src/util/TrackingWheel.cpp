@@ -24,14 +24,14 @@ double TrackingWheel::getWheelDistance() {
     return getWheelRotations() * wheelDiameter * M_PI;
 }
 
-double TrackingWheel::getWheelOffsetX() {
+Distance TrackingWheel::getWheelOffsetX() {
     return offset.getX();
 }
 
-double TrackingWheel::getWheelOffsetY() {
+Distance TrackingWheel::getWheelOffsetY() {
     return offset.getY();
 }
 
-double TrackingWheel::getWheelOffsetAngle() {
+Angle TrackingWheel::getWheelOffsetAngle() {
     return offset.getHeading();
 }

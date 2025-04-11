@@ -111,12 +111,9 @@ void onCenterButton() {
 	pressed = !pressed;
 	if (pressed) {
 		updateTextBox(textBox2, "Skills Run Selected");
-		skills = true;
-		match = false;
+	
 	} else {
 		updateTextBox(textBox2, "Match Selected");
-		skills = false;
-		match = true;
 	}
 }
 
@@ -131,39 +128,39 @@ void onCenterButton() {
  */
 void onRightButton() {
 	
-	autoSelection++;
+	// autoSelection++;
 
-	if (autoSelection >= 7) {
-		autoSelection = 0;
-	}
+	// if (autoSelection >= 7) {
+	// 	autoSelection = 0;
+	// }
 	
-	switch (autoSelection) {
-		case 0: 
-			// Auto where we rush for the plus side goal, grab it, 
-			// then score rings on it and drop it off in the corner.
-			updateTextBox(textBox3, "0 - Alliance Mogo Red Auto");
-			break;
-		case 1: 
-			// Auto where we rush for the plus side goal, grab it, 
-			// then drop it off and go for the alliance side goal instead.
-			updateTextBox(textBox3, "0 - Alliance Mogo Blue Auto");
-			break;
-		case 2: 
-			updateTextBox(textBox3, "2 - Goal Rush No Wall Auto");
-			break;
-		case 3: 
-			updateTextBox(textBox3, "3 - Goal Rush Wall Stake Auto");
-			break;
-		case 4: 
-			updateTextBox(textBox3, "4 - Skills Auto");
-			break;
-        case 5:
-            updateTextBox(textBox3, "5 - Test Auto");
-            break;   
-        case 6:
- 			updateTextBox(textBox3, "5 - Do Nothing");
-			break;           
-	}
+	// switch (autoSelection) {
+	// 	case 0: 
+	// 		// Auto where we rush for the plus side goal, grab it, 
+	// 		// then score rings on it and drop it off in the corner.
+	// 		updateTextBox(textBox3, "0 - Alliance Mogo Red Auto");
+	// 		break;
+	// 	case 1: 
+	// 		// Auto where we rush for the plus side goal, grab it, 
+	// 		// then drop it off and go for the alliance side goal instead.
+	// 		updateTextBox(textBox3, "0 - Alliance Mogo Blue Auto");
+	// 		break;
+	// 	case 2: 
+	// 		updateTextBox(textBox3, "2 - Goal Rush No Wall Auto");
+	// 		break;
+	// 	case 3: 
+	// 		updateTextBox(textBox3, "3 - Goal Rush Wall Stake Auto");
+	// 		break;
+	// 	case 4: 
+	// 		updateTextBox(textBox3, "4 - Skills Auto");
+	// 		break;
+    //     case 5:
+    //         updateTextBox(textBox3, "5 - Test Auto");
+    //         break;   
+    //     case 6:
+ 	// 		updateTextBox(textBox3, "5 - Do Nothing");
+	// 		break;           
+	// }
 }
 
 
@@ -177,14 +174,9 @@ void onLeftButton() {
 	if (pressed) {
 		updateTextBox(textBox1, "Blue side is selected");
         styleTextBox(textBox1, lv_palette_main(LV_PALETTE_BLUE)); 
-		redAlliance = false;
-		blueAlliance = true;
-
 	} else {
 		updateTextBox(textBox1, "Red side is selected");
         styleTextBox(textBox1, lv_palette_main(LV_PALETTE_RED)); 
 
-		blueAlliance = false;
-		redAlliance = true;
 	}
 }

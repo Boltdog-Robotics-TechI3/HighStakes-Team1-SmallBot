@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 
 class Angle {
     private:
@@ -17,7 +18,7 @@ class Angle {
     /** Get Angle as Radians */
         double asRad();
     /** To String Function */
-        string to_string();
+        std::string to_string();
         //Additive Stuff
         Angle operator+(Angle const& other) {
             return Angle(angleDeg + other.angleDeg);
@@ -31,7 +32,7 @@ class Angle {
         Angle operator/(Angle const& other) {
             return Angle(angleDeg / other.angleDeg);
         }
-        Angle operator==(Angle const& other) {
+        bool operator==(Angle const& other) {
             return angleDeg == other.angleDeg;
         }
 };

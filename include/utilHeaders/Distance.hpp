@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 class Distance {
     private:
         double distIN;
@@ -19,7 +21,8 @@ class Distance {
         double asFT();
         double asYD();
 
-        string to_string();
+        std::string to_string();
+
         //Additive Stuff
         Distance operator+(Distance const& other) {
             return Distance(distIN + other.distIN);

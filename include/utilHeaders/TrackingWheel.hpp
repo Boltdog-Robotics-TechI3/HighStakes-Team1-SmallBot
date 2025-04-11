@@ -48,19 +48,19 @@ class TrackingWheel {
          * 
          * @return the x coordinate of the wheel offset in inches
          */
-        double getWheelOffsetX(); // inches
+        Distance getWheelOffsetX(); // inches
 
         /**
          * Get the y coordinate of the wheel offset from the tracking center of the robot in inches (positive is forwards, negative is backwards)
          * 
          * @return the y coordinate of the wheel offset in inches
          */
-        double getWheelOffsetY(); // inches
+        Distance getWheelOffsetY(); // inches
 
         /**
          * Get the angle of the tracking wheel in radians (0 radians is horizontal, π/2 radians is vertical, and any other angle is diagonal)
          * 
          * @return the angle of the wheel offset in radians
          */
-        double getWheelOffsetAngle(); // radians
+        Angle getWheelOffsetAngle(); // radians
 };
