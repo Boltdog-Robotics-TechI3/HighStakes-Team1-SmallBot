@@ -1,4 +1,18 @@
 #include "main.h"
+
+pros::MotorGroup leftMotors({-7, -8, 9, 10});
+pros::MotorGroup rightMotors({-1, -2, 3, 4});
+double wheelDiameter = 3.25;
+double trackWidth = 10.875;
+double gearRatio = 1.0; // 1:1
+
+TrackingWheel backWheel();
+
+Drivetrain drivetrain = Drivetrain(leftMotors, rightMotors, wheelDiameter, trackWidth, gearRatio);
+Odometry odometry = Odometry();
+
+ChassisController chassisController = ChassisController(drivetrain, odometry);
+
 /**
  * Runs initialization code. This occurs as soon as the program is started.
  *
@@ -7,6 +21,7 @@
  */
 void initialize() {
 	initializeScreen();
+	drivetrain.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
 
 	// Call the subsystems' initialize functions
 }
@@ -68,6 +83,8 @@ void autonomous() {
 void opcontrol() {
 	while (true) {
 		// Run for 20 ms then update
+		chassisController.arcade(driverController.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y), 
+								 driverController.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X));
 		pros::delay(20);  
 	}
 }
