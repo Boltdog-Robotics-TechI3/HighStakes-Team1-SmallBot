@@ -1,4 +1,5 @@
 #include "main.h"
+#include "api.h"
 
 pros::MotorGroup leftMotors({-7, -8, 9, 10});
 pros::MotorGroup rightMotors({-1, -2, 3, 4});
@@ -8,8 +9,10 @@ double gearRatio = 1.0; // 1:1
 
 TrackingWheel backWheel();
 
+MotionProfileController profileController(2, 10);
+
 Drivetrain drivetrain = Drivetrain(leftMotors, rightMotors, wheelDiameter, trackWidth, gearRatio);
-Odometry odometry = Odometry();
+OdomSensors odometry = OdomSensors();
 
 ChassisController chassisController = ChassisController(drivetrain, odometry);
 
@@ -65,6 +68,21 @@ void autonomous() {
 	// 		// Do Nothing :)
 	// 		break;
 	// }
+	moveDistanceProfile();
+}
+
+void moveDistanceProfile(){
+	profileController.reset(50);
+    int localtime = 0;
+    int starttime = pros::millis();
+	double totalTime = profileController.getTotalTime();
+	while(localtime < totalTime){
+		int currenttime = pros::millis();
+		localtime = currenttime - starttime;
+		double velocity = profileController.calculate(currenttime, drivetrain.getLeftSideSpeed());
+		drivetrain.setLeftSideSpeed(velocity);
+		drivetrain.setRightSideSpeed(velocity);
+	}
 }
 
 /**

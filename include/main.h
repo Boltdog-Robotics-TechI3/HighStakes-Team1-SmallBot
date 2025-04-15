@@ -71,6 +71,7 @@ void initialize(void);
 void disabled(void);
 void competition_initialize(void);
 void opcontrol(void);
+void moveDistanceProfile();
 #ifdef __cplusplus
 }
 #endif
@@ -89,9 +90,10 @@ void opcontrol(void);
 #include "utilHeaders/Pose2D.hpp"
 #include "utilHeaders/PIDController.hpp"
 #include "utilHeaders/TrackingWheel.hpp"
-#include "utilHeaders/Odometry.hpp"
+#include "utilHeaders/OdomSensors.hpp"
 #include "utilHeaders/Drivetrain.hpp"
 #include "utilHeaders/ChassisController.hpp"
+#include "utilHeaders/motionProfileController.hpp"
 
 
 // Misc
