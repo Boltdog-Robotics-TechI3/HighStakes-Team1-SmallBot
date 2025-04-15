@@ -3,13 +3,13 @@
 #include "utilHeaders/Distance.hpp"
 #include "utilHeaders/Angle.hpp"
 #include "utilHeaders/Drivetrain.hpp"
-#include "utilHeaders/Odometry.hpp"
+#include "utilHeaders/OdomSensors.hpp"
 
 class ChassisController{
 
     private:
         Drivetrain *drivetrain;
-        Odometry *odometry;
+        OdomSensors *odomSensors;
 
         int leftY;
         int rightX;
@@ -18,7 +18,9 @@ class ChassisController{
 
         /**
          */
-        ChassisController(Drivetrain &drivetrain, Odometry &odometry);
+        ChassisController(Drivetrain &drivetrain, OdomSensors &odomSensors);
+
+        ChassisController(Drivetrain &drivetrain);
 
         /**
          * @brief Move the robot in arcade mode. The left joystick controls the forward/backward movement, and the right joystick controls the rotation.

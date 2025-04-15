@@ -4,28 +4,32 @@
 #include "utilHeaders/Pose2D.hpp"
 #include "api.h"
 
-class Odometry {
+class OdomSensors {
     private:
         TrackingWheel *leftWheel;
         TrackingWheel *rightWheel;
         TrackingWheel *backWheel;
         pros::IMU *imu;
 
-        Pose2D pose; // The current pose of the robot (x, y, heading)
         double leftWheelOffset; // The horizontal distance of the left wheel from the center of the bot (in inches)
         double rightWheelOffset; // The horizontal distance of the right wheel from the center of the bot (in inches)
 
     public:
-        Odometry(TrackingWheel *leftWheel, TrackingWheel *rightWheel, TrackingWheel *backWheel, pros::IMU *imu);
+        OdomSensors(TrackingWheel *leftWheel, TrackingWheel *rightWheel, TrackingWheel *backWheel, pros::IMU *imu);
 
-        Odometry(pros::IMU *imu);
+        OdomSensors(TrackingWheel *leftWheel, TrackingWheel *rightWheel, TrackingWheel *backWheel);
 
-        Odometry();
+        OdomSensors(pros::IMU *imu);
 
-        void setPose(Pose2D pose);
+        OdomSensors();
 
-        Pose2D getPose();
+        int getLeftTrackingDistance() {
+            return leftWheel->getWheelDistance();
+        };
 
+        int getRightTrackingDistance() {
+            return rightWheel->getWheelDistance();
+        };
         
 
 };

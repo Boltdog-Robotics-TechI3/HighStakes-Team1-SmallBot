@@ -2,9 +2,9 @@
 
 // ChassisController::arcade
 
-ChassisController::ChassisController(Drivetrain &drivetrain, Odometry &odometry) {
+ChassisController::ChassisController(Drivetrain &drivetrain, OdomSensors &odomSensors) {
     this->drivetrain = &drivetrain;
-    this->odometry = &odometry;
+    this->odomSensors = &odomSensors;
 }
 
 
