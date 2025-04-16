@@ -17,7 +17,7 @@ TrackingWheel::TrackingWheel(int rotationSensorPort, Pose2D offset, double wheel
 double TrackingWheel::getWheelRotations() {
     // the tracking wheel getPostion() method returns the distance in centidegrees.
     // 1 rotation = 360 degrees = 36000 centidegrees
-    return encoder.get_position() / 100.0 / 360.0;
+    return (encoder.get_position() / 100.0) / 360.0; //in rotations
 }
 
 double TrackingWheel::getWheelDistance() {

@@ -38,6 +38,54 @@ void ChassisController::stop() {
     drivetrain->setRightSideSpeed(0); 
 }
 
+//https://thepilons.ca/wp-content/uploads/2018/10/Tracking.pdf 
+void ChassisController::calculate() {
+    Pose2D updatedPosition;
+
+    //this is step one
+    auto currentLeft = this->getLeftWheelDistance();
+    auto currentRight = this->getRightWheelDistance();
+    auto currentBack = this->getBackWheelDistance();
+
+    //need to get old positions to compare
+    auto formerPosition = this->getCurrentPosition();
+
+    //3. idk
+
+    //4 this is cumulative so add to that
+
+    //5. maybe do this with gyro idk
+
+
+
+    this->update(updatedPosition);
+}
+
+void ChassisController::update(Pose2D newPos) {
+    this->currentPosition = newPos;
+}
+
+Pose2D ChassisController::getCurrentPosition() {
+    return this->currentPosition;
+}
+
+double ChassisController::getLeftWheelDistance() {
+    return odomSensors->getLeftTrackingDistance();
+}
+
+double ChassisController::getRightWheelDistance(){
+    return odomSensors->getRightTrackingDistance();
+}
+
+double ChassisController::getBackWheelDistance(){
+    return odomSensors->getBackTrackingDistance();
+}
+
+
+
+
+
+/*
 void ChassisController::moveForwardRelative(Distance distance) {
     
 }
@@ -45,3 +93,8 @@ void ChassisController::moveForwardRelative(Distance distance) {
 void ChassisController::turnToHeading(Angle heading){
 
 }
+
+void ChassisController::moveToPoint(Pose2D pose) {
+    
+}
+*/

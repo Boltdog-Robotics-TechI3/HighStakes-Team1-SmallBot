@@ -7,6 +7,7 @@ class Drivetrain {
         pros::MotorGroup *rightMotorGroup;
         double wheelDiameter;
         double wheelTrack;
+        double wheelBase;
         double gearRatio;
 
     public:

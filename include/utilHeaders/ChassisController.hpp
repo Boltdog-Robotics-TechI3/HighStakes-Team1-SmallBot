@@ -14,6 +14,8 @@ class ChassisController{
         int leftY;
         int rightX;
 
+        Pose2D currentPosition;
+
     public:
 
         /**
@@ -41,18 +43,29 @@ class ChassisController{
         */
         void stop();
 
-        /**
-         * @brief Move the robot forward a specified distance.
-         * @param distance The distance to move forward.
-         */
-        void moveForwardRelative(Distance distance);
+        void calculate();
 
-        /**
-         * @brief Turn the robot to a specified heading.
-         * @param heading The heading to turn to.
-         */
-        void turnToHeading(Angle heading);
+        void update(Pose2D newPose);
 
+        Pose2D getCurrentPosition();
+
+        double getLeftWheelDistance();
+        double getRightWheelDistance();
+        double getBackWheelDistance();
+
+        // /**
+        //  * @brief Move the robot forward a specified distance.
+        //  * @param distance The distance to move forward.
+        //  */
+        // void moveForwardRelative(Distance distance);
+
+        // /**
+        //  * @brief Turn the robot to a specified heading.
+        //  * @param heading The heading to turn to.
+        //  */
+        // void turnToHeading(Angle heading);
+
+        // /** Basic Move function (Turn towards the desired position and drive there) */
         // void moveToPoint(Pose2d pose);
 
 };

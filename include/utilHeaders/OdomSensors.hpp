@@ -23,12 +23,16 @@ class OdomSensors {
 
         OdomSensors();
 
-        int getLeftTrackingDistance() {
+        double getLeftTrackingDistance() {
             return leftWheel->getWheelDistance();
         };
 
-        int getRightTrackingDistance() {
+        double getRightTrackingDistance() {
             return rightWheel->getWheelDistance();
+        };
+
+        double getBackTrackingDistance() {
+            return backWheel->getWheelDistance();
         };
         
 
