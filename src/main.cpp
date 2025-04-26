@@ -1,5 +1,6 @@
 #include "main.h"
 #include "api.h"
+#include <iostream>
 
 pros::MotorGroup leftMotors({-7, -8, 9, 10});
 pros::MotorGroup rightMotors({-1, -2, 3, 4});
@@ -76,10 +77,14 @@ void moveDistanceProfile(){
     int localtime = 0;
     int starttime = pros::millis();
 	double totalTime = profileController.getTotalTime();
+	//driverController.set_text(0,0,"outside the loop");
 	while(localtime < totalTime){
+		//driverController.set_text(0,0,"inside the loop");
 		int currenttime = pros::millis();
 		localtime = currenttime - starttime;
 		double velocity = profileController.calculate(currenttime, drivetrain.getLeftSideSpeed());
+		//pros::delay(50);
+		//driverController.set_text(0,0, std::to_string(velocity));
 		drivetrain.setLeftSideSpeed(velocity);
 		drivetrain.setRightSideSpeed(velocity);
 	}
@@ -103,7 +108,12 @@ void opcontrol() {
 		// Run for 20 ms then update
 		chassisController.arcade(driverController.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y), 
 								 driverController.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X));
-		pros::delay(20);  
+		pros::delay(20);
+
+		//driverController.set_text(0,0, std::to_string(pros::E_CONTROLLER_DIGITAL_RIGHT));
+		if(driverController.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)){
+			autonomous();
+		}
 	}
 }
 

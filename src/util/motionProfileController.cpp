@@ -1,5 +1,6 @@
 #include "api.h"
 #include "utilHeaders/motionProfileController.hpp"
+#include "globals.hpp"
 
 MotionProfileController::MotionProfileController(double maxAcceleration, double maxVelocity){
 this->maxAcceleration = maxAcceleration;
@@ -28,7 +29,10 @@ double MotionProfileController::calculate(int currentTime, double currentVelocit
     else if(localTime < totalTime){
         velocity = maxVelocity * (1 - (localTime - (timeAcceleration + timeAtMaxVelocity)) / timeAcceleration);
     }
+driverController.set_text(0,0, std::to_string(velocity));
 velocity = this->PIDcontroller.calculate(currentVelocity, velocity);
+pros::delay(50);
+driverController.set_text(1,0, std::to_string(velocity));
 return velocity;
 }
 

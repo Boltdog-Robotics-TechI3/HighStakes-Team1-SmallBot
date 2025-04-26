@@ -1,4 +1,6 @@
+#pragma once
 #include "utilHeaders/PIDController.hpp"
+#include "globals.hpp"
 class MotionProfileController{
     private:
         double setpoint;
