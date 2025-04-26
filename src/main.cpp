@@ -6,10 +6,16 @@ double wheelDiameter = 3.25;
 double trackWidth = 10.875;
 double gearRatio = 1.0; // 1:1
 
-TrackingWheel backWheel();
+pros::IMU imu(20); // IMU on port 20
+
+pros::Rotation leftRotSensor(18);
+pros::Rotation backRotSensor(19);
+
+TrackingWheel backWheel(backRotSensor, Pose2D(), 2.125); // Back wheel on port 19
+TrackingWheel leftWheel(leftRotSensor, Pose2D(), 2.125); // Left wheel on ports 18
 
 Drivetrain drivetrain = Drivetrain(leftMotors, rightMotors, wheelDiameter, trackWidth, gearRatio);
-Odometry odometry = Odometry();
+OdomSensors odometry = OdomSensors(&leftWheel, NULL, &backWheel, &imu); // OdomSensors with left and back wheels
 
 ChassisController chassisController = ChassisController(drivetrain, odometry);
 
@@ -85,6 +91,9 @@ void opcontrol() {
 		// Run for 20 ms then update
 		chassisController.arcade(driverController.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y), 
 								 driverController.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X));
+
+		driverController.set_text(0, 0, "Left: " + std::to_string(odometry.getLeftTrackingDistance()));
+		driverController.set_text(1, 0, "Back: " + std::to_string(odometry.getBackTrackingDistance()));
 		pros::delay(20);  
 	}
 }

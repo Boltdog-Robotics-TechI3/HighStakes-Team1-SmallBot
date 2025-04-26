@@ -6,12 +6,11 @@
 /** 
  *  A class representation of a tracking wheel. 
  */
-
 class TrackingWheel {
     private:
         double wheelDiameter; // inches
         double wheelOrientation; // 0 radians is horizontal, π/2 radians is vertical, and any other angle is diagonal
-        pros::Rotation encoder; // The rotation sensor object representing the encoder for the wheel
+        pros::Rotation *encoder; // The rotation sensor object representing the encoder for the wheel
         Pose2D offset; // A pose2D object representing the offset of the wheel from the tracking center of the robot
         double previousPosition;
         double totalChange; // The total change in the wheel position since the last update
@@ -20,17 +19,14 @@ class TrackingWheel {
         /**
          * Creates a new tracking wheel object.
          * 
-         * @param rotationSensorPort the port ID of the rotation sensor representing the encoder for the wheel
+         * @param rotationSensor a pros Rotation object representing the encoder for the wheel
          * @param offset the offset of the wheel from the tracking center of the robot as a Pose2D object. Left/Backwards is negative, Forwards/Right is positive. 0 radians is a horizontal wheel, π/2 radians is a vertical wheel, and any other angle is a diagonal wheel.
          * @param wheelDiameter the diameter of the wheel in inches
          */
         TrackingWheel(
-            int rotationSensorPort, 
+            pros::Rotation &rotationSensor, 
             Pose2D offset, 
-            double wheelDiameter,
-            double wheelOrientation = 0,
-            double previousPosition = 0,
-            double totalChange = 0
+            double wheelDiameter
         );
 
         /**
