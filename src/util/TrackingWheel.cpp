@@ -2,7 +2,7 @@
 
 #include "utilHeaders/TrackingWheel.hpp"
 
-TrackingWheel::TrackingWheel(int rotationSensorPort, Pose2D offset, double wheelDiameter, double wheelOrientation)
+TrackingWheel::TrackingWheel(int rotationSensorPort, Pose2D offset, double wheelDiameter, double wheelOrientation, double previousPosition, double totalChange)
     : encoder(rotationSensorPort), offset(offset), wheelDiameter(wheelDiameter), wheelOrientation(wheelOrientation) {
     
     if (offset.getHeading() == 0) {
@@ -35,3 +35,12 @@ Distance TrackingWheel::getWheelOffsetY() {
 Angle TrackingWheel::getWheelOffsetAngle() {
     return offset.getHeading();
 }
+
+void TrackingWheel::updatePreviousPosition(){
+    previousPosition = ((encoder.get_position() / 100.0) / 360.0) * wheelDiameter * M_PI;
+}
+
+double TrackingWheel::getPreviousPositionDistance() {
+    return previousPosition; 
+}
+

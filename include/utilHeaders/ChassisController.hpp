@@ -39,18 +39,43 @@ class ChassisController{
         void tank(int leftY, int rightY);
 
         /**
-        *@brief Forcefully stop the robot's motors.
+        * @brief Forcefully stop the robot's motors.
         */
         void stop();
 
+        /**
+        *  @brief Calculate the robot's current position based on the odometry sensors.
+        */
         void calculate();
 
-        void update(Pose2D newPose);
+        /**
+         * @brief Set the robot's pose to a new position.
+         * @param newPose The new pose to set as a Pose2D.
+         */
+        void setPose(Pose2D newPose);
 
+        /**
+         * @brief Get the robot's current position.
+         * @return The current position of the robot as a Pose2D. 
+         */
         Pose2D getCurrentPosition();
 
+        /**
+         * @brief Get the distance traveled by the left tracking wheel.
+         * @return The distance traveled by the left tracking wheel.
+         */
         double getLeftWheelDistance();
+
+        /**
+         * @brief Get the distance traveled by the right tracking wheel.
+         * @return The distance traveled by the right tracking wheel.
+         */
         double getRightWheelDistance();
+
+        /**
+         * @brief Get the distance traveled by the horizontal tracking wheel.
+         * @return The distance traveled by the horizontal tracking wheel.
+         */
         double getBackWheelDistance();
 
         // /**

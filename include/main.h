@@ -89,7 +89,7 @@ void opcontrol(void);
 #include "utilHeaders/Pose2D.hpp"
 #include "utilHeaders/PIDController.hpp"
 #include "utilHeaders/TrackingWheel.hpp"
-#include "utilHeaders/Odometry.hpp"
+#include "utilHeaders/OdomSensors.hpp"
 #include "utilHeaders/Drivetrain.hpp"
 #include "utilHeaders/ChassisController.hpp"
 

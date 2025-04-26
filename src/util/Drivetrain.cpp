@@ -16,11 +16,11 @@ Drivetrain::Drivetrain() {
     this->gearRatio = 1.0;
 }
 
-double Drivetrain::getLeftMotorEncoder() {
+double Drivetrain::getLeftIME() {
     return leftMotorGroup->get_position(); 
   };
   
-  double Drivetrain::getRightMotorEncoder() {
+  double Drivetrain::getRightIME() {
     return rightMotorGroup->get_position(); 
   };
   
@@ -57,4 +57,3 @@ double Drivetrain::getLeftMotorEncoder() {
   void Drivetrain::setRightSideSpeed(double rightSpeed) {
     rightMotorGroup->move(rightSpeed);
   };
-  

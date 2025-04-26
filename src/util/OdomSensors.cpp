@@ -52,3 +52,85 @@ OdomSensors::OdomSensors() {
     this->backWheel = NULL;
     this->imu = NULL;
 }
+
+double OdomSensors::getLeftTrackingDistance() {
+    if (leftWheel != NULL) {
+        return leftWheel->getWheelDistance();
+    } else {
+        return -1;
+    }
+};
+
+double OdomSensors::getRightTrackingDistance() {
+    if (rightWheel != NULL) {
+        return rightWheel->getWheelDistance();
+    } else {
+        return -1;
+    }
+};
+
+double OdomSensors::getBackTrackingDistance() {
+    if (backWheel != NULL) {
+        return backWheel->getWheelDistance();
+    } else {
+        return -1;
+    }
+};
+
+void OdomSensors::updatePreviousTrackingDistances() {
+    if (leftWheel != NULL) {
+        leftWheel->updatePreviousDistance();
+    }
+    if (rightWheel != NULL) {
+        rightWheel->updatePreviousDistance();
+    }
+    if (backWheel != NULL) {
+        backWheel->updatePreviousDistance();
+    }
+}
+
+double OdomSensors::getPreviousLeftDistance() {
+    if (leftWheel != NULL) {
+        return leftWheel->getPreviousDistance();
+    } else {
+        return -1;
+    }
+}
+
+double OdomSensors::getPreviousRightDistance() {
+    if (leftWheel != NULL) {
+        return rightWheel->getPreviousDistance();
+    } else {
+        return -1;
+    }
+}
+
+double OdomSensors::getPreviousBackDistance() {
+    if (leftWheel != NULL) {
+        return backWheel->getPreviousDistance();
+    } else {
+        return -1;
+    }
+}
+
+double OdomSensors::getLeftWheelOffset() {
+    return leftWheelOffset;
+}
+
+double OdomSensors::getRightWheelOffset() {
+    return rightWheelOffset;
+}
+
+double OdomSensors::getBackWheelOffset() {
+    return backWheelOffset;
+}
+
+Angle OdomSensors::getCurrentHeading() {
+    return imu->get_heading();
+}
+
+void OdomSensors::addToTotalChanges(double leftChange, double rightChange, double backChange) {
+    leftWheel->addToTotalChange(leftChange);
+    rightWheel->addToTotalChange(rightChange);
+    backWheel->addToTotalChange(backChange);
+};

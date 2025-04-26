@@ -13,6 +13,8 @@ class TrackingWheel {
         double wheelOrientation; // 0 radians is horizontal, π/2 radians is vertical, and any other angle is diagonal
         pros::Rotation encoder; // The rotation sensor object representing the encoder for the wheel
         Pose2D offset; // A pose2D object representing the offset of the wheel from the tracking center of the robot
+        double previousPosition;
+        double totalChange; // The total change in the wheel position since the last update
 
     public:
         /**
@@ -26,7 +28,9 @@ class TrackingWheel {
             int rotationSensorPort, 
             Pose2D offset, 
             double wheelDiameter,
-            double wheelOrientation = 0
+            double wheelOrientation = 0,
+            double previousPosition = 0,
+            double totalChange = 0
         );
 
         /**
@@ -63,4 +67,19 @@ class TrackingWheel {
          * @return the angle of the wheel offset in radians
          */
         Angle getWheelOffsetAngle(); // radians
+
+        /**
+         * Update the previous position of the wheel (inches) to use for calculating the distance the wheel has turned
+         */
+        void updatePreviousDistance();
+
+        /** 
+         * Return the previous position of the wheel in inches
+         *
+         * @return the previous position of the wheel in inches
+         */
+        double getPreviousDistance();
+
+        void addToTotalChange(double change) { totalChange += change; };
+        double getTotalChange() { return totalChange; };
 };

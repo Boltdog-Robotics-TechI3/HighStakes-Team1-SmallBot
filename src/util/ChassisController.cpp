@@ -38,30 +38,57 @@ void ChassisController::stop() {
     drivetrain->setRightSideSpeed(0); 
 }
 
+Angle delTheta;
+
 //https://thepilons.ca/wp-content/uploads/2018/10/Tracking.pdf 
 void ChassisController::calculate() {
     Pose2D updatedPosition;
 
     //this is step one
-    auto currentLeft = this->getLeftWheelDistance();
-    auto currentRight = this->getRightWheelDistance();
-    auto currentBack = this->getBackWheelDistance();
+    double currentLeft = this->getLeftWheelDistance();
+    // auto currentRight = this->getRightWheelDistance();
+    double currentBack = this->getBackWheelDistance();
 
-    //need to get old positions to compare
-    auto formerPosition = this->getCurrentPosition();
+    //2. the change in the encoder conveted to wheel travel
+    double previousLeft = odomSensors->getPreviousLeftDistance();
+    // auto previousRight = odomSensors->getPreviousRightDistance();
+    double previousBack = odomSensors->getPreviousBackDistance();
 
-    //3. idk
+    double leftChange = currentLeft - previousLeft;
+    // auto rightChange = currentRight - previousRight;
+    double backChange = currentBack - previousBack;
+    
+    //3. update previous positions
+    odomSensors->updatePreviousTrackingDistances();
 
     //4 this is cumulative so add to that
+    auto formerPosition = this->getCurrentPosition();
+    
+    odomSensors->addToTotalChanges(leftChange, 0, backChange);
 
-    //5. maybe do this with gyro idk
+    //5-6. update the heading
+    delTheta = odomSensors->getCurrentHeading() - formerPosition.getHeading();
+    
+    //7-8. 
+    double deld[2]; 
+    if(delTheta == 0){
+        deld[0] = backChange;
+        deld[1] = leftChange;
+    } else {
+        deld[0] = (2 * sin(delTheta.asRad() / 2)) * ((backChange / delTheta.asRad()) + (odomSensors->getBackWheelOffset()));
+        deld[1] = (2 * sin(delTheta.asRad() / 2)) * ((leftChange / delTheta.asRad()) + (odomSensors->getLeftWheelOffset()));
+    }
+    
+    //9. get theta m 
+    double thetaM = formerPosition.getHeading().asRad() + (delTheta.asRad() / 2);
+
+    //10. 
 
 
-
-    this->update(updatedPosition);
+    this->setPose(updatedPosition);
 }
 
-void ChassisController::update(Pose2D newPos) {
+void ChassisController::setPose(Pose2D newPos) {
     this->currentPosition = newPos;
 }
 
