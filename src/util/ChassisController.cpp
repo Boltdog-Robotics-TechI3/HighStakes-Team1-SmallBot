@@ -112,16 +112,30 @@ double ChassisController::getBackWheelDistance(){
 
 
 
-/*
+/**
+ * @brief Move the robot forward a specified distance.
+ * @param distance The distance to move forward.
+*/
 void ChassisController::moveForwardRelative(Distance distance) {
     
 }
 
+/**
+ * @brief Turn the robot to a specified heading.
+ * @param heading The heading to turn to.
+*/
 void ChassisController::turnToHeading(Angle heading){
 
 }
 
-void ChassisController::moveToPoint(Pose2D pose) {
-    
-}
+/**
+ * @brief A simple move to point function that drives the robot
+ *   to a specified point in the field by first turning to face the point and then moving forward.
+ * @param pose The target pose to move to.
 */
+void ChassisController::moveToPoint(Pose2D pose) {
+    // Calculate the angle to the target point
+    double deltaX = pose.getX().asIN() - currentPosition.getX().asIN();
+    double deltaY = pose.getY().asIN() - currentPosition.getY().asIN();
+    double targetAngle = atan2(deltaY, deltaX); // Angle to the target point
+}

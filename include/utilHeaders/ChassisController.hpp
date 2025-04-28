@@ -78,19 +78,23 @@ class ChassisController{
          */
         double getBackWheelDistance();
 
-        // /**
-        //  * @brief Move the robot forward a specified distance.
-        //  * @param distance The distance to move forward.
-        //  */
-        // void moveForwardRelative(Distance distance);
+        /**
+         * @brief Move the robot forward a specified distance.
+         * @param distance The distance to move forward.
+         */
+        void moveForwardRelative(Distance distance);
 
-        // /**
-        //  * @brief Turn the robot to a specified heading.
-        //  * @param heading The heading to turn to.
-        //  */
-        // void turnToHeading(Angle heading);
+        /**
+         * @brief Turn the robot to a specified heading.
+         * @param heading The heading to turn to.
+         */
+        void turnToHeading(Angle heading);
 
-        // /** Basic Move function (Turn towards the desired position and drive there) */
-        // void moveToPoint(Pose2d pose);
+        /**
+         * @brief A simple move to point function that drives the robot
+         *   to a specified point in the field by first turning to face the point and then moving forward.
+         * @param pose The target pose to move to.
+        */
+        void moveToPoint(Pose2D pose);
 
 };
