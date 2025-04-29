@@ -87,14 +87,21 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-	while (true) {
+		driverController.clear();
+		while (true) {
 		// Run for 20 ms then update
 		chassisController.arcade(driverController.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y), 
 								 driverController.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X));
 
-		driverController.set_text(0, 0, "Left: " + std::to_string(odometry.getLeftTrackingDistance()));
-		driverController.set_text(1, 0, "Back: " + std::to_string(odometry.getBackTrackingDistance()));
-		pros::delay(20);  
+		//driverController.set_text(0, 0, "Left: " + std::to_string(odometry.getLeftTrackingDistance()));
+		//driverController.set_text(1, 0, "Back: " + std::to_string(odometry.getBackTrackingDistance()));
+		// chassisController.calculate();
+		Pose2D pos = chassisController.getCurrentPosition();
+
+		driverController.set_text(0,0, "X: " + std::to_string(pos.getX().asIN()));pros::delay(50); 
+		driverController.set_text(1,0, "Y: " + std::to_string(pos.getY().asIN()));pros::delay(50); 
+		driverController.set_text(2,0, "H: " + std::to_string(pos.getHeading().asDeg()));pros::delay(50); 
+		// pros::delay(50);  
 	}
 }
 

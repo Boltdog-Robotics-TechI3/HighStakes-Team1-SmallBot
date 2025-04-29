@@ -76,7 +76,7 @@ class OdomSensors {
 
         Angle getCurrentHeading();
 
-        void addToTotalChanges(double leftChange, double rightChange, double backChange);
+        void addToTotalChanges(double leftChange, double backChange);
 
         
         

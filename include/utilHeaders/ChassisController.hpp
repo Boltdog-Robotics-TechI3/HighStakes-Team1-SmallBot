@@ -4,17 +4,23 @@
 #include "utilHeaders/Angle.hpp"
 #include "utilHeaders/Drivetrain.hpp"
 #include "utilHeaders/OdomSensors.hpp"
+#include "PIDController.hpp"
+
 
 class ChassisController{
 
     private:
         Drivetrain *drivetrain;
         OdomSensors *odomSensors;
+        
 
         int leftY;
         int rightX;
 
         Pose2D currentPosition;
+        PIDController pid;
+
+        
 
     public:
 
@@ -88,7 +94,7 @@ class ChassisController{
          * @brief Turn the robot to a specified heading.
          * @param heading The heading to turn to.
          */
-        void turnToHeading(Angle heading);
+        void turnToHeading(Angle heading/*, double angle double maxVel, PIDController pid*/);
 
         /**
          * @brief A simple move to point function that drives the robot

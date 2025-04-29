@@ -79,4 +79,12 @@ class Pose2D {
          * @return the distance between the poses in inches.
          */
         Distance getDistance(Pose2D pose);
+
+        Angle getAngleTo(Pose2D pose);
+
+        void setPolar(Distance radius, Angle theta);
+
+        void rotate(Angle angle);
+
+        
 };

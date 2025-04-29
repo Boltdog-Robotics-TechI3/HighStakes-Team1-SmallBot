@@ -129,8 +129,8 @@ Angle OdomSensors::getCurrentHeading() {
     return imu->get_heading();
 }
 
-void OdomSensors::addToTotalChanges(double leftChange, double rightChange, double backChange) {
+void OdomSensors::addToTotalChanges(double leftChange, double backChange) {
     leftWheel->addToTotalChange(leftChange);
-    rightWheel->addToTotalChange(rightChange);
+    // rightWheel->addToTotalChange(rightChange);
     backWheel->addToTotalChange(backChange);
 };

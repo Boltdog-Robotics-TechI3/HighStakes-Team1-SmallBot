@@ -100,6 +100,24 @@ Distance Pose2D::getDistance(Pose2D pose) {
     auto yDistance = this->y - pose.y;
 
     return Distance::fromIN(sqrt((xDistance*xDistance + yDistance*yDistance).asIN()));  
-    
+}
 
+Angle Pose2D::getAngleTo(Pose2D pose) {
+    auto xDistance = pose.x - this->x;
+    auto yDistance = pose.y - this->y;
+
+    return Angle::fromRad(atan2(xDistance.asIN(), yDistance.asIN())) - Angle::fromRad(atan2(x.asIN(), y.asIN()));
+}
+
+void Pose2D::setPolar(Distance radius, Angle theta) {
+    setPose(radius * cos(theta.asRad()), radius * sin(theta.asRad()), theta);
+}
+
+void Pose2D::rotate(Angle angle) {
+    double magnitude = sqrt((x*x).asIN() + (y*y).asIN());
+    double theta = (atan2(x.asIN(), y.asIN()));
+
+    theta += angle.asRad();
+
+    setPolar(Distance::fromIN(magnitude), Angle::fromRad(theta));
 }

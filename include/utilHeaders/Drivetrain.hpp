@@ -15,7 +15,9 @@ class Drivetrain {
 
         Drivetrain();
 
+        /**Retuns the current left motor encoder values */
         double getLeftIME();
+        /**Retuns the current right motor encoder values */
         double getRightIME();
 
         /** Returns the current brake mode of the drivetrain */
@@ -50,7 +52,9 @@ class Drivetrain {
         */
         void setRightSideSpeed(double rightSpeed);
 
+        /** Gets the gear ratio (unitless) */
         double getGearRatio();
+        /** Sets the gear ratio (unitless) */
         void setGearRatio(double gearRatio);
 
         /** Gets the diameter of the wheels in inches
@@ -62,7 +66,13 @@ class Drivetrain {
         */
         void setWheelDiameter(double wheelDiameter);
         
+        /** Gets the distance between the front and back wheels
+        * @return wheel base in inches
+        */
         double getWheelBase();
+        /** Sets the distance between the front and back wheels
+        * @param wheelBase wheel base in inches
+        */
         void setWheelBase(double wheelBase);
 
         /** Gets the distance between the left and right wheels
