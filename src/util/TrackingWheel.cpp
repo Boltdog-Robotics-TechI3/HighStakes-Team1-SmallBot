@@ -17,6 +17,11 @@ TrackingWheel::TrackingWheel(pros::Rotation &rotationSensor, Pose2D offset, doub
     }
 }
 
+void TrackingWheel::reset() {
+    encoder->set_position(0); // reset the encoder position to 0
+    previousPosition = 0; // reset the previous position to 0
+}
+
 double TrackingWheel::getWheelRotations() {
     // the tracking wheel getPostion() method returns the distance in centidegrees.
     // 1 rotation = 360 degrees = 36000 centidegrees

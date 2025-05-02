@@ -121,3 +121,7 @@ void Pose2D::rotate(Angle angle) {
 
     setPolar(Distance::fromIN(magnitude), Angle::fromRad(theta));
 }
+
+std::string Pose2D::asString() {
+    return std::to_string(x.asIN()) + ", " + std::to_string(y.asIN()) + ", " + std::to_string(heading.asDeg());
+}

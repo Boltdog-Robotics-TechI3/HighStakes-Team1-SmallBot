@@ -53,6 +53,26 @@ OdomSensors::OdomSensors() {
     this->imu = NULL;
 }
 
+/**
+ * @brief Resets the odometry sensors to their initial state.
+ * This function resets the tracking wheels and IMU to their initial positions.
+ */
+void OdomSensors::reset() {
+    if (leftWheel != NULL) {
+        leftWheel->reset();
+    }
+    if (rightWheel != NULL) {
+        rightWheel->reset();
+    }
+    if (backWheel != NULL) {
+        backWheel->reset();
+    }
+    if (imu != NULL) {
+        imu->reset();
+        while (imu->is_calibrating()); // Wait for the IMU to calibrate
+    }
+}
+
 double OdomSensors::getLeftTrackingDistance() {
     if (leftWheel != NULL) {
         return leftWheel->getWheelDistance();
@@ -93,7 +113,7 @@ double OdomSensors::getPreviousLeftDistance() {
     if (leftWheel != NULL) {
         return leftWheel->getPreviousDistance();
     } else {
-        return -1;
+        return INT_MIN;
     }
 }
 
@@ -101,7 +121,7 @@ double OdomSensors::getPreviousRightDistance() {
     if (leftWheel != NULL) {
         return rightWheel->getPreviousDistance();
     } else {
-        return -1;
+        return INT_MIN;
     }
 }
 
@@ -109,7 +129,7 @@ double OdomSensors::getPreviousBackDistance() {
     if (leftWheel != NULL) {
         return backWheel->getPreviousDistance();
     } else {
-        return -1;
+        return INT_MIN;
     }
 }
 

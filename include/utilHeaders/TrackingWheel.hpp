@@ -30,6 +30,11 @@ class TrackingWheel {
         );
 
         /**
+         * Resets the wheel's position and previous position to 0
+         */
+        void reset();
+
+        /**
          * Gets the distance the wheel has turned from its starting position in wheel rotations
          * 
          * @return the distance the wheel has turned in wheel rotations

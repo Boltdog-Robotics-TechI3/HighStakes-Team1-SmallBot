@@ -54,6 +54,12 @@ class OdomSensors {
         */
         OdomSensors();
 
+        /** 
+         * @brief Resets the odometry sensors to their initial state.
+         * This function resets the tracking wheels and IMU to their initial positions.
+        */
+        void reset();
+
         double getLeftTrackingDistance();
 
         double getRightTrackingDistance();

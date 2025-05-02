@@ -15,13 +15,22 @@ class Drivetrain {
 
         Drivetrain();
 
+        /**
+        * @brief Resets the motor encoders to 0
+        * 
+        * This function sets the zero position of all motors in the left and right motor groups to 0.
+        */
+        void reset();
+
         /**Retuns the current left motor encoder values */
         double getLeftIME();
+
         /**Retuns the current right motor encoder values */
         double getRightIME();
 
         /** Returns the current brake mode of the drivetrain */
         pros::v5::MotorBrake getBrakeMode();
+
         /** Returns the current limit set on the motors
         * @return current limit in mA
         */
@@ -31,6 +40,7 @@ class Drivetrain {
         * @return Speed of motors in RPM
         */
         int getLeftSideSpeed();
+
         /** Returns the current speed of the right motor group
         * @return Speed of motors in RPM
         */
@@ -38,6 +48,7 @@ class Drivetrain {
 
         /** Sets the brake mode of the drivetrain */
         void setBrakeMode(pros::motor_brake_mode_e_t mode);
+
         /** Sets the current limit of the motors of the drivetrain
         * @param limit limit im mA
         */
@@ -47,6 +58,7 @@ class Drivetrain {
         * @param leftSpeed motor voltage [-127, 127]
         */
         void setLeftSideSpeed(double leftSpeed);
+
         /** Sets the right motors to move at the provided speed
         * @param leftSpeed motor voltage [-127, 127]
         */
@@ -54,6 +66,7 @@ class Drivetrain {
 
         /** Gets the gear ratio (unitless) */
         double getGearRatio();
+
         /** Sets the gear ratio (unitless) */
         void setGearRatio(double gearRatio);
 
@@ -61,6 +74,7 @@ class Drivetrain {
         * @return diameter in inches
         */
         double getWheelDiameter();
+
         /** Sets the diameter of the wheels in inches
         * @param wheelDiameter diameter in inches
         */
@@ -70,6 +84,7 @@ class Drivetrain {
         * @return wheel base in inches
         */
         double getWheelBase();
+
         /** Sets the distance between the front and back wheels
         * @param wheelBase wheel base in inches
         */
@@ -79,6 +94,7 @@ class Drivetrain {
         * @return wheel track in inches
         */
         double getWheelTrack();
+
         /** Gets the distance between the left and right wheels
         * @param wheelTrack wheel track in inches
         */
