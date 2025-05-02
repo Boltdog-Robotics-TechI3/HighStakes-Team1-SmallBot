@@ -54,26 +54,55 @@ class OdomSensors {
         */
         OdomSensors();
 
+        /** Returns the distance of the left tracking wheel based on the current encoder reading
+        * @returns distance in inches
+        */
         double getLeftTrackingDistance();
 
+        /** Returns the distance of the right tracking wheel based on the current encoder reading
+        * @returns distance in inches
+        */
         double getRightTrackingDistance();
 
+        /** Returns the distance of the back tracking wheel based on the current encoder reading
+        * @returns distance in inches
+        */
         double getBackTrackingDistance();
         
+        /** Period update function to update the internally stored previous tracking distance in the tracking wheels. */
         void updatePreviousTrackingDistances();
       
+        /** Get the previously read left tracking wheel distance
+        * @returns distance in inches
+        */
         double getPreviousLeftDistance();
       
+        /** Get the previously read right tracking wheel distance
+        * @returns distance in inches
+        */
         double getPreviousRightDistance();
       
+        /** Get the previously read back tracking wheel distance
+        * @returns distance in inches
+        */
         double getPreviousBackDistance();
 
+        /** Gets the horizontal distance of the left wheel from the center of the robot
+        * @returns offset in inches
+        */
         double getLeftWheelOffset();
 
+        /** Gets the horizontal distance of the right wheel from the center of the robot
+        * @returns offset in inches
+        */
         double getRightWheelOffset();
 
+        /** Gets the vertical distance of the back wheel from the center of the robot
+        * @returns offset in inches
+        */
         double getBackWheelOffset();
 
+        /** Gets the current heading of the robot according to the IMU */
         Angle getCurrentHeading();
 
         void addToTotalChanges(double leftChange, double backChange);
