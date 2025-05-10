@@ -146,7 +146,11 @@ double OdomSensors::getBackWheelOffset() {
 }
 
 Angle OdomSensors::getCurrentHeading() {
-    return imu->get_heading();
+    return Angle::fromDeg(imu->get_heading());
+}
+
+Angle OdomSensors::getCurrentRotation() {
+    return imu->get_rotation();
 }
 
 void OdomSensors::addToTotalChanges(double leftChange, double backChange) {

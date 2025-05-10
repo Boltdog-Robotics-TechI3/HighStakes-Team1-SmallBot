@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <cmath>
 
+#include "api.h"
 #include "utilHeaders/Pose2D.hpp"
 
 /**
@@ -110,14 +111,21 @@ Angle Pose2D::getAngleTo(Pose2D pose) {
 }
 
 void Pose2D::setPolar(Distance radius, Angle theta) {
-    setPose(radius * cos(theta.asRad()), radius * sin(theta.asRad()), theta);
+    setPose((radius * Distance::fromIN(sin(theta.asRad()))), radius * Distance::fromIN(cos(theta.asRad())), theta);
 }
 
 void Pose2D::rotate(Angle angle) {
     double magnitude = sqrt((x*x).asIN() + (y*y).asIN());
+    if (y.asIN() == 0) {
+        return;
+    }
     double theta = (atan2(x.asIN(), y.asIN()));
 
+    pros::lcd::print(5, "theta: %f", theta);
+
     theta += angle.asRad();
+
+    pros::lcd::print(6, "theta2: %f", theta);
 
     setPolar(Distance::fromIN(magnitude), Angle::fromRad(theta));
 }

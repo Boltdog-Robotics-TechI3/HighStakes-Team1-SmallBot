@@ -7,7 +7,7 @@ ChassisController::ChassisController(Drivetrain &drivetrain, OdomSensors &odomSe
     pros::Task task{[=] {
         while (true) {
             calculate();
-            pros::delay(20);
+            pros::delay(200);
         }
     }};
 }
@@ -60,12 +60,15 @@ Angle delTheta;
 void ChassisController::calculate() {
     Pose2D updatedPosition;
 
+    
+
     //this is step one
     double currentLeft = this->getLeftWheelDistance();
     // auto currentRight = this->getRightWheelDistance();
     double currentBack = this->getBackWheelDistance();
-
-    driverController.set_text(0, 0, "L:" + std::to_string(round(currentLeft / 1000.0) * 1000) + " B:" + std::to_string(round(currentBack / 1000.0) * 1000)); pros::delay(500);
+    
+    pros::lcd::print(0, "%f", currentBack);
+    pros::lcd::print(1, "%f", currentLeft);
 
     //2. the change in the encoder conveted to wheel travel
     double previousLeft = odomSensors->getPreviousLeftDistance();
@@ -79,13 +82,16 @@ void ChassisController::calculate() {
     //3. update previous positions
     odomSensors->updatePreviousTrackingDistances();
 
+
     //4 this is cumulative so add to that
     auto formerPosition = this->getCurrentPosition();
+    // pros::lcd::print(4, "former h: %f", formerPosition.getHeading().asDeg());
     
     odomSensors->addToTotalChanges(leftChange, backChange);
 
     //5-6. update the heading
     delTheta = odomSensors->getCurrentHeading() - formerPosition.getHeading();
+    // pros::lcd::print(3, "Deltheta: %f", delTheta.asDeg());
     
     //7-8. 
     double deltaDl[2]; 
@@ -107,6 +113,9 @@ void ChassisController::calculate() {
     //11. update the position
     updatedPosition.setPose(formerPosition.getX() + deltaD.getX(), formerPosition.getY() + deltaD.getY(), odomSensors->getCurrentHeading());
     this->setPose(updatedPosition);
+
+    pros::lcd::print(2, "%s", updatedPosition.asString());
+    // pros::lcd::print(5, "updated h: %f", updatedPosition.getHeading().asDeg());
 }
 
 void ChassisController::setPose(Pose2D newPos) {
@@ -145,7 +154,7 @@ void ChassisController::moveForwardRelative(Distance distance) {
  * @brief Turn the robot to a specified heading.
  * @param heading The heading to turn to.
 */
-void ChassisController::turnToHeading(Angle heading/*, double angle, double maxVel, PIDController pid */){
+void ChassisController::turnToHeading(Angle heading/*, double angle, double maxVel, PIDController pid, int timeout */){
     /*double point = angle + heading;
     double error = angle;
     double previousError = 0;
@@ -161,6 +170,12 @@ void ChassisController::turnToHeading(Angle heading/*, double angle, double maxV
         } else if(velocity < 0){
          velocity = std::clamp(veloity - pid.miniVelocity, -600.0 * maxVel, 0.0);
          }
+
+         drivetrain->setLeftSideSpeed(velocity);
+         drivetrain->setRightSideSpeed(-velocity);
+
+
+         
     } */
 }
 

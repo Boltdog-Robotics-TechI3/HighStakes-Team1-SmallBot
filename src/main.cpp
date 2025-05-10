@@ -32,6 +32,9 @@ void initialize() {
 	initializeScreen();
 	drivetrain.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
 
+	//set text on the brain screen
+	pros::lcd::initialize();
+	
 	// Call the subsystems' initialize functions
 }
 

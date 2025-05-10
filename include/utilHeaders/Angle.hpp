@@ -24,7 +24,7 @@ class Angle {
             return Angle(angleDeg + other.angleDeg);
         }
         Angle operator-(Angle const& other) {
-            return Angle(angleDeg + other.angleDeg);
+            return Angle(angleDeg - other.angleDeg);
         }
         Angle operator*(Angle const& other) {
             return Angle(angleDeg * other.angleDeg);
