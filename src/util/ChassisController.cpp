@@ -85,13 +85,11 @@ void ChassisController::calculate() {
 
     //4 this is cumulative so add to that
     auto formerPosition = this->getCurrentPosition();
-    // pros::lcd::print(4, "former h: %f", formerPosition.getHeading().asDeg());
     
     odomSensors->addToTotalChanges(leftChange, backChange);
 
     //5-6. update the heading
     delTheta = odomSensors->getCurrentHeading() - formerPosition.getHeading();
-    // pros::lcd::print(3, "Deltheta: %f", delTheta.asDeg());
     
     //7-8. 
     double deltaDl[2]; 
@@ -108,14 +106,11 @@ void ChassisController::calculate() {
     double thetaM = formerPosition.getHeading().asRad() + (delTheta.asRad() / 2);
 
     //10. rotate vector deltaD by -thetaM
-    deltaD.rotate(-1 * thetaM);
+    deltaD.rotate(Angle::fromRad(-1*thetaM));
 
     //11. update the position
     updatedPosition.setPose(formerPosition.getX() + deltaD.getX(), formerPosition.getY() + deltaD.getY(), odomSensors->getCurrentHeading());
     this->setPose(updatedPosition);
-
-    pros::lcd::print(2, "%s", updatedPosition.asString());
-    // pros::lcd::print(5, "updated h: %f", updatedPosition.getHeading().asDeg());
 }
 
 void ChassisController::setPose(Pose2D newPos) {
