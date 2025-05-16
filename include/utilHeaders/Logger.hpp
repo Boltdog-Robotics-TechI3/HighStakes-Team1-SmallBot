@@ -4,7 +4,7 @@
 class Logger {
     private:
         bool logToSDCard;
-        const char* logFileLocation = "/usd/lastlog.log";
+        const char* logFileLocation = "/usd/vexlog.0.log";
         FILE *logFile;
     public:
         ~Logger() {
