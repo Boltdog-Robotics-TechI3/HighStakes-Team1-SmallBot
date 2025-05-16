@@ -54,6 +54,12 @@ class OdomSensors {
         */
         OdomSensors();
 
+        /** 
+         * @brief Resets the odometry sensors to their initial state.
+         * This function resets the tracking wheels and IMU to their initial positions.
+        */
+        void reset();
+
         /** Returns the distance of the left tracking wheel based on the current encoder reading
         * @returns distance in inches
         */
@@ -104,6 +110,8 @@ class OdomSensors {
 
         /** Gets the current heading of the robot according to the IMU */
         Angle getCurrentHeading();
+
+        Angle getCurrentRotation();
 
         void addToTotalChanges(double leftChange, double backChange);
 

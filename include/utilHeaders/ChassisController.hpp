@@ -31,6 +31,11 @@ class ChassisController{
         ChassisController(Drivetrain &drivetrain);
 
         /**
+         * * @brief Resets the pose and all of the robot's sensors to their initial state.
+         */
+        void reset();
+
+        /**
          * @brief Move the robot in arcade mode. The left joystick controls the forward/backward movement, and the right joystick controls the rotation.
          * @param leftY The value of the left joystick (forward/backward movement).
          * @param rightX The value of the right joystick (rotation).

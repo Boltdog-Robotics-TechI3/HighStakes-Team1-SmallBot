@@ -6,7 +6,7 @@ double wheelDiameter = 3.25;
 double trackWidth = 10.875;
 double gearRatio = 1.0; // 1:1
 
-pros::IMU imu(20); // IMU on port 20
+pros::IMU imu(11); // IMU on port 20
 
 pros::Rotation leftRotSensor(18);
 pros::Rotation backRotSensor(19);
@@ -26,9 +26,15 @@ ChassisController chassisController = ChassisController(drivetrain, odometry);
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
+	pros::delay(100);
+	chassisController.reset(); // Reset the chassis controller
+
 	initializeScreen();
 	drivetrain.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
 
+	//set text on the brain screen
+	pros::lcd::initialize();
+	
 	// Call the subsystems' initialize functions
 }
 
@@ -89,19 +95,18 @@ void autonomous() {
 void opcontrol() {
 		driverController.clear();
 		while (true) {
-		// Run for 20 ms then update
-		chassisController.arcade(driverController.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y), 
-								 driverController.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X));
+			// Run for 20 ms then update
+			chassisController.arcade(driverController.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y), 
+									driverController.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X));
 
-		//driverController.set_text(0, 0, "Left: " + std::to_string(odometry.getLeftTrackingDistance()));
-		//driverController.set_text(1, 0, "Back: " + std::to_string(odometry.getBackTrackingDistance()));
-		// chassisController.calculate();
-		Pose2D pos = chassisController.getCurrentPosition();
+			Pose2D pos = chassisController.getCurrentPosition();
 
-		driverController.set_text(0,0, "X: " + std::to_string(pos.getX().asIN()));pros::delay(50); 
-		driverController.set_text(1,0, "Y: " + std::to_string(pos.getY().asIN()));pros::delay(50); 
-		driverController.set_text(2,0, "H: " + std::to_string(pos.getHeading().asDeg()));pros::delay(50); 
-		// pros::delay(50);  
+			driverController.set_text(1,0, pos.asString());
+			// driverController.set_text(1, 0, "deg: " + std::to_string(odometry.getCurrentHeading().asDeg()));
+			// driverController.set_text(2, 0, "vert: " + std::to_string(odometry.getLeftTrackingDistance()));
+			// driverController.set_text(3, 0, "horz: " + std::to_string(odometry.getBackTrackingDistance()));
+		
+			pros::delay(20);  
 	}
 }
 

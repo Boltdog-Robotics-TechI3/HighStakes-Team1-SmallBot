@@ -28,7 +28,7 @@ class Distance {
             return Distance(distIN + other.distIN);
         }
         Distance operator-(Distance const& other) {
-            return Distance(distIN + other.distIN);
+            return Distance(distIN - other.distIN);
         }
         Distance operator*(Distance const& other) {
             return Distance(distIN * other.distIN);

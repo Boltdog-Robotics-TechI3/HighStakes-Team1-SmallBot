@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <cmath>
 
+#include "api.h"
 #include "utilHeaders/Pose2D.hpp"
 
 /**
@@ -110,7 +111,7 @@ Angle Pose2D::getAngleTo(Pose2D pose) {
 }
 
 void Pose2D::setPolar(Distance radius, Angle theta) {
-    setPose(radius * cos(theta.asRad()), radius * sin(theta.asRad()), theta);
+    setPose((radius * Distance::fromIN(sin(theta.asRad()))), radius * Distance::fromIN(cos(theta.asRad())), theta);
 }
 
 void Pose2D::rotate(Angle angle) {
@@ -120,4 +121,8 @@ void Pose2D::rotate(Angle angle) {
     theta += angle.asRad();
 
     setPolar(Distance::fromIN(magnitude), Angle::fromRad(theta));
+}
+
+std::string Pose2D::asString() {
+    return std::to_string(x.asIN()) + ", " + std::to_string(y.asIN()) + ", " + std::to_string(heading.asDeg());
 }

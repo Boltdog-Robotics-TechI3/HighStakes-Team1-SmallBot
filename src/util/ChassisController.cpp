@@ -1,20 +1,28 @@
 #include "utilHeaders/ChassisController.hpp"
 #include "globals.hpp"
 
-
-// ChassisController::arcade
-
 ChassisController::ChassisController(Drivetrain &drivetrain, OdomSensors &odomSensors) {
     this->drivetrain = &drivetrain;
     this->odomSensors = &odomSensors;
     pros::Task task{[=] {
         while (true) {
             calculate();
-            pros::delay(10);
+            pros::delay(200);
         }
     }};
 }
 
+/**
+ * * @brief Resets the pose and all of the robot's sensors to their initial state.
+ */
+void ChassisController::reset() {
+    // Reset the drivetrain and odometry sensors
+    drivetrain->reset();
+    odomSensors->reset();
+
+    // Reset the current position to (0, 0, 0)
+    currentPosition.reset();
+}
 
 void ChassisController::arcade(int leftY, int rightX) {
     // Calculate the left and right wheel speeds based on the forward and turn inputs
@@ -52,12 +60,15 @@ Angle delTheta;
 void ChassisController::calculate() {
     Pose2D updatedPosition;
 
-    // print to the brain screen for debugging
+    
 
     //this is step one
     double currentLeft = this->getLeftWheelDistance();
     // auto currentRight = this->getRightWheelDistance();
     double currentBack = this->getBackWheelDistance();
+    
+    pros::lcd::print(0, "%f", currentBack);
+    pros::lcd::print(1, "%f", currentLeft);
 
     //2. the change in the encoder conveted to wheel travel
     double previousLeft = odomSensors->getPreviousLeftDistance();
@@ -70,6 +81,7 @@ void ChassisController::calculate() {
     
     //3. update previous positions
     odomSensors->updatePreviousTrackingDistances();
+
 
     //4 this is cumulative so add to that
     auto formerPosition = this->getCurrentPosition();
@@ -93,11 +105,11 @@ void ChassisController::calculate() {
     //9. get theta m 
     double thetaM = formerPosition.getHeading().asRad() + (delTheta.asRad() / 2);
 
-    //10. 
-    deltaD.rotate(-1 * thetaM);
+    //10. rotate vector deltaD by -thetaM
+    deltaD.rotate(Angle::fromRad(-1*thetaM));
 
-    //11.
-    updatedPosition.setPose(formerPosition.getX() + deltaD.getX(), formerPosition.getY() + deltaD.getY(), delTheta);
+    //11. update the position
+    updatedPosition.setPose(formerPosition.getX() + deltaD.getX(), formerPosition.getY() + deltaD.getY(), odomSensors->getCurrentHeading());
     this->setPose(updatedPosition);
 }
 
@@ -137,7 +149,7 @@ void ChassisController::moveForwardRelative(Distance distance) {
  * @brief Turn the robot to a specified heading.
  * @param heading The heading to turn to.
 */
-void ChassisController::turnToHeading(Angle heading/*, double angle, double maxVel, PIDController pid */){
+void ChassisController::turnToHeading(Angle heading/*, double angle, double maxVel, PIDController pid, int timeout */){
     /*double point = angle + heading;
     double error = angle;
     double previousError = 0;
@@ -153,6 +165,12 @@ void ChassisController::turnToHeading(Angle heading/*, double angle, double maxV
         } else if(velocity < 0){
          velocity = std::clamp(veloity - pid.miniVelocity, -600.0 * maxVel, 0.0);
          }
+
+         drivetrain->setLeftSideSpeed(velocity);
+         drivetrain->setRightSideSpeed(-velocity);
+
+
+         
     } */
 }
 
@@ -167,6 +185,10 @@ void ChassisController::moveToPoint(Pose2D pose) {
     double deltaY = pose.getY().asIN() - currentPosition.getY().asIN();
     double targetAngle = atan2(deltaY, deltaX); // Angle to the target point
 
+    double targetDistance = sqrt(deltaX * deltaX + deltaY * deltaY); // Distance to the target point
 
-    
+    turnToHeading(Angle::fromRad(targetAngle)); // Turn to face the target point
+
+    moveForwardRelative(Distance::fromIN(targetDistance)); // Move forward to the target point
+
 }
