@@ -44,8 +44,8 @@ void Pose2D::reset() {
  * @param heading the new heading of the robot in radians
  */
 void Pose2D::setPose(Distance x, Distance y, Angle heading) {
-    this->x = Distance::fromIN(std::clamp(x.asIN(), -72.0, 72.0));
-    this->y = Distance::fromIN(std::clamp(y.asIN(), -72.0, 72.0));
+    this->x = Distance::fromIN(x.asIN());
+    this->y = Distance::fromIN(y.asIN());
     this->heading = Angle::fromDeg(std::clamp(heading.asDeg(), 0.0, 360.0));
     // pros::Task::notify();
 }
